@@ -1,0 +1,233 @@
+---
+name: Midnight Neon Modern
+colors:
+  surface: '#131313'
+  surface-dim: '#131313'
+  surface-bright: '#3a3939'
+  surface-container-lowest: '#0e0e0e'
+  surface-container-low: '#1c1b1b'
+  surface-container: '#201f1f'
+  surface-container-high: '#2a2a2a'
+  surface-container-highest: '#353534'
+  on-surface: '#e5e2e1'
+  on-surface-variant: '#e2bdc4'
+  inverse-surface: '#e5e2e1'
+  inverse-on-surface: '#313030'
+  outline: '#aa888f'
+  outline-variant: '#5a3f46'
+  surface-tint: '#ffb1c3'
+  primary: '#ffb1c3'
+  on-primary: '#66002d'
+  primary-container: '#d80b69'
+  on-primary-container: '#fff0f1'
+  inverse-primary: '#bb0059'
+  secondary: '#fff0c6'
+  on-secondary: '#3b2f00'
+  secondary-container: '#fbd100'
+  on-secondary-container: '#6d5a00'
+  tertiary: '#c8c6c5'
+  on-tertiary: '#303030'
+  tertiary-container: '#706f6f'
+  on-tertiary-container: '#f6f3f3'
+  error: '#ffb4ab'
+  on-error: '#690005'
+  error-container: '#93000a'
+  on-error-container: '#ffdad6'
+  primary-fixed: '#ffd9e0'
+  primary-fixed-dim: '#ffb1c3'
+  on-primary-fixed: '#3f0019'
+  on-primary-fixed-variant: '#8f0043'
+  secondary-fixed: '#ffe177'
+  secondary-fixed-dim: '#ebc300'
+  on-secondary-fixed: '#231b00'
+  on-secondary-fixed-variant: '#554500'
+  tertiary-fixed: '#e4e2e1'
+  tertiary-fixed-dim: '#c8c6c5'
+  on-tertiary-fixed: '#1b1c1c'
+  on-tertiary-fixed-variant: '#474746'
+  background: '#131313'
+  on-background: '#e5e2e1'
+  surface-variant: '#353534'
+  surface-100: '#1a1a1a'
+  surface-200: '#2a2a2a'
+  surface-300: '#3a3a3a'
+  destructive-dark: '#7f1d1d'
+  muted-dark: '#121212'
+  provider-netflix: '#e50914'
+  provider-disney: '#113ccf'
+  provider-prime: '#00a8e1'
+  provider-crunchyroll: '#f47521'
+typography:
+  display-lg:
+    fontFamily: Roboto Flex
+    fontSize: 32px
+    fontWeight: '800'
+    lineHeight: 38px
+    letterSpacing: -0.025em
+  display-lg-mobile:
+    fontFamily: Roboto Flex
+    fontSize: 26px
+    fontWeight: '800'
+    lineHeight: 32px
+    letterSpacing: -0.025em
+  headline-lg:
+    fontFamily: Roboto Flex
+    fontSize: 24px
+    fontWeight: '700'
+    lineHeight: 30px
+    letterSpacing: -0.02em
+  headline-md:
+    fontFamily: Roboto Flex
+    fontSize: 20px
+    fontWeight: '700'
+    lineHeight: 26px
+    letterSpacing: -0.015em
+  headline-sm:
+    fontFamily: Roboto Flex
+    fontSize: 18px
+    fontWeight: '600'
+    lineHeight: 24px
+  title-md:
+    fontFamily: Roboto Flex
+    fontSize: 16px
+    fontWeight: '600'
+    lineHeight: 22px
+  body-lg:
+    fontFamily: Roboto Flex
+    fontSize: 16px
+    fontWeight: '400'
+    lineHeight: 24px
+  body-md:
+    fontFamily: Roboto Flex
+    fontSize: 14px
+    fontWeight: '400'
+    lineHeight: 21px
+  body-sm:
+    fontFamily: Roboto Flex
+    fontSize: 13px
+    fontWeight: '400'
+    lineHeight: 18px
+  label-lg:
+    fontFamily: Roboto Flex
+    fontSize: 14px
+    fontWeight: '600'
+    lineHeight: 18px
+    letterSpacing: 0.025em
+  label-md:
+    fontFamily: Roboto Flex
+    fontSize: 12px
+    fontWeight: '600'
+    lineHeight: 16px
+    letterSpacing: 0.035em
+  caption-sm:
+    fontFamily: Roboto Flex
+    fontSize: 11px
+    fontWeight: '400'
+    lineHeight: 14px
+    letterSpacing: 0.02em
+rounded:
+  sm: 0.25rem
+  DEFAULT: 0.5rem
+  md: 0.75rem
+  lg: 1rem
+  xl: 1.5rem
+  full: 9999px
+spacing:
+  gutter: 1rem
+  gutter-mobile: 0.75rem
+  margin: 1.25rem
+  margin-mobile: 1rem
+  space-2xs: 0.125rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 0.75rem
+  space-lg: 1rem
+  space-xl: 1.5rem
+  space-2xl: 2rem
+---
+
+## Brand & Style
+
+The design system embodies a high-voltage cinematic dark theme engineered for rapid, tactile entertainment discovery. It is tailored for digital-first entertainment seekers who value immediate gratification, social validation, and effortless filtering over tedious catalog browsing. 
+
+The aesthetic is High-Contrast Modern Dark-Mode with tactile cyber-cinema influences. It rejects muddy grays in favor of an inky, pitch-black foundation (`#0a0a0a`), layered with precise obsidian surface tiers and ignited by electric neon accents. The visual identity evokes late-night streaming marathons, dynamic cinema screens, and crisp handheld gaming devices. Key emotional touchpoints are urgency, clarity, and excitement—driven by snappy feedback loops, sharp glowing affordances, and zero cognitive drag during decision moments.
+
+## Colors
+
+The palette operates on strict functional segregation designed to preserve eye comfort in dim environments while delivering unmistakable interaction hierarchy:
+
+- **Primary (`#d80b69`):** High-saturation neon pink. Reserved strictly for primary call-to-action buttons, successful swipe/match confirmations, active navigational indicators, and primary selections. Text placed over the primary color must always be `#ffffff`.
+- **Secondary / Highlight (`#ffd405`):** Electric highlight yellow. Reserved for high-value signals: star ratings, review scores, achievement badges, spoiler tags, and prominent focus rings in dark mode. Text on secondary surfaces must use `#000000` to preserve maximum legibility.
+- **Tertiary / Elevated Surface (`#2a2a2a`):** Used for elevated cards, active tab pills, interactive list rows on hover/press, and swipe control counterweights.
+- **Neutral / Canvas (`#0a0a0a`):** Deep canvas background ensuring deep OLED contrast and battery savings. 
+- **Surface Scale:**
+  - `muted-dark` (`#121212`): Recessed canvas, bottom tab bar shell, and inset sections.
+  - `surface-100` (`#1a1a1a`): Base card surfaces and stack tiers.
+  - `surface-200` (`#2a2a2a`): Flyouts, dialogs, elevated chips, and interactive cards.
+  - `surface-300` (`#3a3a3a`): Structural border outlines, divider rules, and input strokes.
+- **Provider Identity Colors:** Dedicated streaming identity tokens (`provider-netflix`, `provider-disney`, `provider-prime`, `provider-crunchyroll`) are strictly encapsulated within badge pills to prevent visual competition with system actions.
+
+## Typography
+
+The typography scale utilizes **Roboto Flex** across all mobile viewports to combine geometric balance, high scannability, and versatile optical adjustments. 
+
+- **Display & Headlines:** Headings use heavy weights (`700` and `800`) paired with negative letter tracking (`-0.015em` to `-0.025em`) to project confidence and compact impact on movie titles and hero metrics.
+- **Body Text:** Set with standard line heights (`1.5`) in neutral off-white (`#ffffff`) for readability against high-contrast black backdrops. Secondary descriptions use a toned-down light gray (`#a3a3a3`) to control visual fatigue.
+- **Labels, Badges & Chips:** Compact, semibold treatments (`label-md` and `label-lg`) are letter-spaced with wide tracking (`0.025em` to `0.035em`) to ensure instant legibility on micro-tags such as streaming services, audio formats ("DE-Audio"), and runtime badges.
+
+## Layout & Spacing
+
+The layout is engineered around a fluid, touch-optimized single-column framework tailored for mobile hand postures:
+
+- **Grid & Margins:** The mobile viewport operates on a flexible 4-column system with `margin-mobile` (`1rem` / 16px) on phone edges, expanding to `1.25rem` (20px) on tablet devices. Gutters between multi-column cards scale between `0.75rem` and `1rem`.
+- **Rhythm & Touch Boundaries:** Built upon a 4px base increment (`space-xs: 0.25rem`). Interactive targets (swipe triggers, filter toggles, provider chips) must satisfy a minimum touch boundary of 44x44px, surrounded by at least `space-sm` (`0.5rem`) clearance.
+- **Vertical Hierarchy:**
+  - `space-xs` (4px) to `space-sm` (8px): Icon-to-text spacing, inline meta chips, badge padding.
+  - `space-md` (12px) to `space-lg` (16px): Card internal container padding, list item separation.
+  - `space-xl` (24px) to `space-2xl` (32px): Separation between distinct feed blocks, sheet margins, and bottom sheet headers.
+- **Thumb Zone Safety:** Bottom swipe trigger buttons and primary action clusters are anchored within the bottom 25% of the screen, elevated clear above the device navigation bar by a fixed padded dock.
+
+## Elevation & Depth
+
+Visual hierarchy does not rely on light diffuse shadows. Instead, it leverages a hybrid approach combining **Tonal Surface Tiers**, **Accent Focus Glows**, and **Aggressive Dark-Mode Cast Shadows**:
+
+- **Tonal Layers:**
+  - **Tier 0 (Base):** Canvas `#0a0a0a`.
+  - **Tier 1 (Surface Containers):** Inset trays and swipe background containers `#121212`.
+  - **Tier 2 (Cards & Active Elements):** Movie cards, lists, and bottom sheets `#1a1a1a`.
+  - **Tier 3 (Floating Controls & Modal Sheets):** Swipe action buttons, popovers, and dialogs `#2a2a2a`.
+- **Structural Outlines:** Every card and interactive surface is bound by a crisp 1px border in `#3a3a3a`. This guarantees razor-sharp separation regardless of ambient screen brightness or dark mode panel clipping.
+- **Deep Cast Shadows:** Elevated surfaces (floating action buttons and active swipe cards) feature deep shadows: `0px 4px 15px rgba(0, 0, 0, 0.50)` compounded with `0px 8px 24px rgba(0, 0, 0, 0.70)`.
+- **Luminescent Overlays:** Swiping gestures produce dynamic edge-gradient glows: rightward swipe illuminates a neon pink blur (`rgba(216, 11, 105, 0.35)`), while leftward pass illuminates a neutral obsidian blur (`rgba(58, 58, 58, 0.50)`).
+
+## Shapes
+
+The design system maintains a balanced, contemporary rounded corner architecture (`level 2`):
+
+- **Standard Elements (`0.5rem` / 8px):** Applied to primary movie cards, streaming service filter cards, dialog boxes, and text inputs.
+- **Small Controls (`0.25rem` to `0.375rem` / 4px to 6px):** Used for platform provider badges, spoiler-warning indicators, audio tag flags, and metadata chips.
+- **Pill / Circular Treatment (Full Roundedness):** Floating swipe buttons (Pass, Super-Like, Watchlist), star rating buttons, and segmented pill tabs utilize full circular geometry (`9999px`) to distinguish actionable gestures from static content containers.
+
+## Components
+
+### Buttons
+- **Primary Action (Match / Save CTA):** Solid `#d80b69` background with `#ffffff` text, 48px height, rounded to `0.5rem` (or pill for floating actions), bold typography. Active state scales to `0.97` with a subtle pink glow.
+- **Highlight Action (Quick Review / Upgrade):** Solid `#ffd405` background with `#000000` text, 44px height.
+- **Secondary / Ghost:** Outlined with 1px `#3a3a3a` over `#1a1a1a` background, text in `#ffffff`. Focus outline triggers a 2px `#ffd405` ring.
+- **Swipe Floating Action Icons:** Circular 56px buttons (Pass: `#2a2a2a` surface with `#737373` icon; Match: `#2a2a2a` with `#d80b69` icon; Info: `#2a2a2a` with `#ffd405` icon).
+
+### Provider Chips & Tags
+- **Streaming Provider Chips:** Horizontal badge with provider logo/text. Unselected: `#1a1a1a` fill with `#3a3a3a` border and `#a3a3a3` text. Selected: Colored border matching provider identity (`#e50914`, `#113ccf`, etc.) with 15% tinted provider background fill.
+- **Audio / Metadata Tags:** Small 20px height rectangular badges with `#2a2a2a` surface, `#ffffff` font, and 1px `#3a3a3a` border. "DE-Audio" and "4K" tags utilize bold `caption-sm`.
+
+### Input Fields & Review Modals
+- **Text Inputs & Quick Reviews:** `#121212` background, 1px `#3a3a3a` stroke, rounded to `0.375rem`. Text color `#ffffff`, placeholder text `#737373`. Max 100-character counter positioned at bottom-right in `caption-sm` (`#a3a3a3`).
+- **Focus State:** 1px `#ffd405` border with an ambient yellow focus ring.
+
+### Cards (Swipe Deck & Watchlist)
+- **Deck Cards:** Ratio 3:4. Surface `#1a1a1a` wrapped in a 1px `#3a3a3a` border with a 0.5rem corner radius. Poster image takes top 70% with a vertical linear gradient darkening to `#1a1a1a` at the bottom.
+- **Card Content Tray:** Bottom section contains title (`headline-md`), release year, streaming icons inline, and electric yellow star badge (`#ffd405` text over `#2a2a2a`).
+
+### Rating & Review Components
+- **Star Rating Selector:** 5-star or 10-star horizontal row. Inactive stars: `#3a3a3a` fill. Active stars: `#ffd405` electric yellow with subtle ambient bloom.
+- **Spoiler Switch:** Compact toggle switch. Inactive: `#2a2a2a` track. Active: `#d80b69` track with `#ffffff` thumb.

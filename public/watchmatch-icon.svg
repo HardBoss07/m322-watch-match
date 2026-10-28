@@ -1,0 +1,43 @@
+<svg width="128" height="128" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- App Icon Squircle Background -->
+  <rect width="120" height="120" rx="26" fill="#141414" />
+
+  <!-- Tilted Pink Film Card (Background) -->
+  <g transform="rotate(14 68 58)">
+    <rect x="38" y="14" width="54" height="82" rx="12" fill="#d80b69" />
+    <!-- Pink card right sprocket holes -->
+    <rect x="78" y="24" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+    <rect x="78" y="34" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+    <rect x="78" y="44" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+    <rect x="78" y="54" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+    <rect x="78" y="64" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+    <rect x="78" y="74" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+  </g>
+
+  <!-- Foreground Yellow Film Card -->
+  <g>
+    <!-- Dark body with Electric Yellow Border -->
+    <rect x="18" y="18" width="58" height="84" rx="14" fill="#1c1b1b" stroke="#ffd405" stroke-width="6" />
+
+    <!-- Left sprocket holes -->
+    <rect x="25" y="28" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="25" y="38" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="25" y="48" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="25" y="58" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="25" y="68" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="25" y="78" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="25" y="88" width="6" height="5" rx="1.5" fill="#ffd405" />
+
+    <!-- Right sprocket holes -->
+    <rect x="63" y="28" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="63" y="38" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="63" y="48" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="63" y="58" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="63" y="68" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="63" y="78" width="6" height="5" rx="1.5" fill="#ffd405" />
+    <rect x="63" y="88" width="6" height="5" rx="1.5" fill="#ffd405" />
+
+    <!-- Play Triangle Symbol in Center -->
+    <polygon points="41,47 57,59 41,71" fill="#ffd405" />
+  </g>
+</svg>

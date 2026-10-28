@@ -1,0 +1,44 @@
+<svg width="340" height="72" viewBox="0 0 340 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="logo-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#d80b69" floodOpacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- ICON -->
+  <g transform="translate(6, 2) scale(0.58)">
+    <!-- Tilted Pink Film Card (Background) -->
+    <g transform="rotate(14 68 58)" filter="url(#logo-glow)">
+      <rect x="38" y="14" width="54" height="82" rx="12" fill="#d80b69" />
+      <rect x="78" y="24" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+      <rect x="78" y="34" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+      <rect x="78" y="44" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+      <rect x="78" y="54" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+      <rect x="78" y="64" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+      <rect x="78" y="74" width="7" height="5" rx="1.5" fill="#ffffff" fill-opacity="0.4" />
+    </g>
+
+    <!-- Foreground Yellow Film Card -->
+    <g>
+      <rect x="18" y="18" width="58" height="84" rx="14" fill="#1c1b1b" stroke="#ffd405" stroke-width="6" />
+      <rect x="25" y="28" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="25" y="38" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="25" y="48" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="25" y="58" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="25" y="68" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="25" y="78" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="25" y="88" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="63" y="28" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="63" y="38" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="63" y="48" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="63" y="58" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="63" y="68" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="63" y="78" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <rect x="63" y="88" width="6" height="5" rx="1.5" fill="#ffd405" />
+      <polygon points="41,47 57,59 41,71" fill="#ffd405" />
+    </g>
+  </g>
+
+  <!-- WORDMARK: WatchMatch. -->
+  <text x="76" y="47" font-family="'Roboto Flex', 'Inter', system-ui, sans-serif" font-size="34" font-weight="700" letter-spacing="-0.02em"><tspan fill="#ffffff">Watch</tspan><tspan fill="#d80b69">Match</tspan><tspan fill="#ffd405">.</tspan></text>
+</svg>

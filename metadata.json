@@ -1,0 +1,6 @@
+{
+  "name": "WatchMatch - CineSwipe Movie & Series Matcher",
+  "description": "Finde gemeinsame Filme und Serien für deinen nächsten Streaming-Abend mit interaktivem Swipe-Deck, Community-Feed und Streaming-Filtern.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
