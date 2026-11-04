@@ -104,3 +104,21 @@ export function filterMovies(movies: Movie[], filters: FilterSettings): Movie[] 
     return true;
   });
 }
+
+/**
+ * Computes the next index in the deck and whether a wrap-around occurred.
+ */
+export function getNextDeckIndex(currentIndex: number, deckLength: number): {
+  nextIndex: number;
+  didWrap: boolean;
+} {
+  if (deckLength <= 0) {
+    return { nextIndex: 0, didWrap: false };
+  }
+  const isLast = currentIndex >= deckLength - 1;
+  const nextIndex = (currentIndex + 1) % deckLength;
+  return {
+    nextIndex,
+    didWrap: isLast && deckLength > 1,
+  };
+}

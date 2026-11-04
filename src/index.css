@@ -58,3 +58,14 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Strict root viewport lock to prevent outer page scrollbars on desktop */
+html,
+body,
+#root {
+  height: 100%;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}

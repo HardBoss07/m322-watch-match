@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Movie, FilterSettings } from '../types';
 import { Button, IconButton, ButtonIcon } from './ui/button';
 import { Pill } from './ui/Pill';
+import { getNextDeckIndex } from '../utils/matching';
+import { useMobileFrame } from './MobileFrame';
 
 interface MatchDeckProps {
   movies: Movie[];
@@ -11,6 +13,7 @@ interface MatchDeckProps {
   onMatch: (movie: Movie) => void;
   onPass: (movie: Movie) => void;
   onSuperlike: (movie: Movie) => void;
+  onDeckWrapped?: (message: string) => void;
 }
 
 export const MatchDeck: React.FC<MatchDeckProps> = ({
@@ -21,6 +24,7 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
   onMatch,
   onPass,
   onSuperlike,
+  onDeckWrapped,
 }) => {
   const [deck, setDeck] = useState<Movie[]>(movies);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -32,17 +36,62 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
     friendName: string;
     matchPercent: number;
   } | null>(null);
+  const [wrapNotice, setWrapNotice] = useState<string | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const startPosRef = useRef({ x: 0, y: 0 });
+  const wrapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const prevMovieIdsRef = useRef<string>(movies.map((m) => m.id).join(','));
 
   useEffect(() => {
-    setDeck(movies);
-    setCurrentIndex(0);
+    const currentIds = movies.map((m) => m.id).join(',');
+    // Only reset index when movie set actually changes (e.g. filter changes)
+    if (currentIds !== prevMovieIdsRef.current) {
+      prevMovieIdsRef.current = currentIds;
+      setDeck(movies);
+      setCurrentIndex(0);
+      setDragOffset({ x: 0, y: 0 });
+    } else {
+      setDeck(movies);
+    }
   }, [movies]);
 
-  const currentMovie = deck[currentIndex];
-  const nextMovie = deck[currentIndex + 1] || deck[0];
+  useEffect(() => {
+    return () => {
+      if (wrapTimeoutRef.current) clearTimeout(wrapTimeoutRef.current);
+    };
+  }, []);
+
+  const deckLength = deck.length;
+  const safeIndex = deckLength > 0 ? currentIndex % deckLength : 0;
+  const currentMovie = deck[safeIndex];
+  const nextMovie = deckLength > 1 ? deck[(safeIndex + 1) % deckLength] : null;
+
+  const triggerWrapNotification = () => {
+    const msg = 'Du hast alle aktuellen Empfehlungen gesehen! Die Liste wurde neu gestartet.';
+    setWrapNotice(msg);
+    if (wrapTimeoutRef.current) clearTimeout(wrapTimeoutRef.current);
+    wrapTimeoutRef.current = setTimeout(() => {
+      setWrapNotice(null);
+    }, 3500);
+
+    onDeckWrapped?.(msg);
+  };
+
+  const advanceToNextCard = () => {
+    if (deckLength === 0) return;
+    const { nextIndex, didWrap } = getNextDeckIndex(safeIndex, deckLength);
+
+    setDragOffset({ x: 0, y: 0 });
+    setIsDragging(false);
+    setCurrentIndex(nextIndex);
+
+    if (didWrap) {
+      triggerWrapNotification();
+    }
+  };
+
+  const { scale: frameScale } = useMobileFrame();
 
   const handleDragStart = (clientX: number, clientY: number) => {
     setIsDragging(true);
@@ -51,8 +100,9 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
 
   const handleDragMove = (clientX: number, clientY: number) => {
     if (!isDragging) return;
-    const deltaX = clientX - startPosRef.current.x;
-    const deltaY = clientY - startPosRef.current.y;
+    const currentScale = frameScale > 0 ? frameScale : 1;
+    const deltaX = (clientX - startPosRef.current.x) / currentScale;
+    const deltaY = (clientY - startPosRef.current.y) / currentScale;
     setDragOffset({ x: deltaX, y: deltaY });
   };
 
@@ -60,10 +110,12 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
     if (!isDragging) return;
     setIsDragging(false);
 
-    if (dragOffset.x > 100) {
+    if (dragOffset.x > 90) {
       triggerLike();
-    } else if (dragOffset.x < -100) {
+    } else if (dragOffset.x < -90) {
       triggerPass();
+    } else if (dragOffset.y < -120) {
+      triggerSuperlike();
     } else {
       setDragOffset({ x: 0, y: 0 });
     }
@@ -71,42 +123,65 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
 
   const triggerLike = () => {
     if (!currentMovie) return;
+    const movieToMatch = currentMovie;
     setDragOffset({ x: 450, y: 20 });
-    onMatch(currentMovie);
+    onMatch(movieToMatch);
 
     // If movie has high match score with Dario, trigger friendship match modal
-    if (currentMovie.matchScore && currentMovie.matchScore >= 90) {
-      setTimeout(() => {
-        setMatchNotification({
-          movie: currentMovie,
-          friendName: 'Dario M.',
-          matchPercent: currentMovie.matchScore || 92,
-        });
-      }, 300);
+    if (movieToMatch.matchScore && movieToMatch.matchScore >= 90) {
+      setMatchNotification({
+        movie: movieToMatch,
+        friendName: 'Dario M.',
+        matchPercent: movieToMatch.matchScore || 92,
+      });
     }
 
-    advanceCard();
+    // Advance to next card in underlying stack
+    setTimeout(() => {
+      advanceToNextCard();
+    }, 240);
   };
 
   const triggerPass = () => {
     if (!currentMovie) return;
     setDragOffset({ x: -450, y: 20 });
     onPass(currentMovie);
-    advanceCard();
+    setTimeout(() => {
+      advanceToNextCard();
+    }, 240);
   };
 
   const triggerSuperlike = () => {
     if (!currentMovie) return;
     setDragOffset({ x: 0, y: -400 });
     onSuperlike(currentMovie);
-    advanceCard();
+    setTimeout(() => {
+      advanceToNextCard();
+    }, 240);
   };
 
-  const advanceCard = () => {
-    setTimeout(() => {
+  const handleDismissMatchModal = () => {
+    const matchedMovieId = matchNotification?.movie.id;
+    setMatchNotification(null);
+    setDragOffset({ x: 0, y: 0 });
+    setIsDragging(false);
+
+    // If the deck is somehow still pointing to the matched movie, advance immediately
+    if (matchedMovieId && deck[currentIndex % deckLength]?.id === matchedMovieId) {
+      advanceToNextCard();
+    }
+  };
+
+  const toggleSurpriseMode = () => {
+    const nextMode = !surpriseMode;
+    setSurpriseMode(nextMode);
+    if (nextMode && deckLength > 1) {
+      const shuffled = [...deck].sort(() => Math.random() - 0.5);
+      setDeck(shuffled);
+      setCurrentIndex(0);
       setDragOffset({ x: 0, y: 0 });
-      setCurrentIndex((prev) => (prev + 1 < deck.length ? prev + 1 : 0));
-    }, 280);
+      onDeckWrapped?.('Zufallsmodus aktiviert — Deck neu gemischt! 🎲');
+    }
   };
 
   // Rotation and stamp calculations
@@ -125,9 +200,9 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
     : 'Keine Abos gewählt';
 
   return (
-    <div className="flex flex-col w-full relative px-4 gap-2.5 select-none pb-3 max-w-lg mx-auto">
+    <div className="flex flex-col w-full h-full justify-between relative px-3 sm:px-4 gap-2 select-none pb-2 max-w-lg mx-auto flex-1 min-h-0">
       {/* Interactive Filters Header & Surprise Toggle */}
-      <div className="flex items-center justify-between gap-2.5 mt-1">
+      <div className="flex items-center justify-between gap-2 mt-1 shrink-0">
         {/* Active Filters Pill Button */}
         <Button
           variant="secondary"
@@ -135,14 +210,14 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
           radius="full"
           onClick={onOpenFilters}
           aria-label="Aktive Filter anpassen"
-          className="h-auto min-h-[42px] py-1.5 px-3.5 bg-[#201f1f] hover:bg-[#2a2a2a] border-[#333333] justify-between text-left shadow-none group font-normal flex-1 max-w-[270px]"
+          className="h-auto min-h-[38px] py-1 px-3 bg-[#201f1f] hover:bg-[#2a2a2a] border-[#333333] justify-between text-left shadow-none group font-normal flex-1 max-w-[260px]"
         >
           <div className="flex items-center gap-2 min-w-0">
             <ButtonIcon position="left" size="sm">
-              <span className="material-symbols-outlined text-[18px] text-[#ffd405]">tune</span>
+              <span className="material-symbols-outlined text-[17px] text-[#ffd405]">tune</span>
             </ButtonIcon>
             <div className="flex flex-col min-w-0 leading-tight">
-              <span className="text-xs font-semibold text-white truncate">
+              <span className="text-[11px] font-semibold text-white truncate">
                 {activeProvidersSummary}
               </span>
               <span className="text-[10px] text-[#a3a3a3] truncate">
@@ -150,28 +225,49 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
               </span>
             </div>
           </div>
-
         </Button>
 
         {/* Surprise Mode Toggle */}
-        <div className="flex items-center gap-2 bg-[#201f1f] border border-[#333333] px-3 py-2 rounded-full shrink-0">
-          <span className="material-symbols-outlined text-[18px] text-[#ffb1c3]">shuffle</span>
-          <span className="text-xs font-semibold text-white hidden xs:inline">Zufall</span>
+        <div className="flex items-center gap-1.5 bg-[#201f1f] border border-[#333333] px-2.5 py-1.5 rounded-full shrink-0">
+          <span className="material-symbols-outlined text-[17px] text-[#ffb1c3]">shuffle</span>
+          <span className="text-[11px] font-semibold text-white hidden xs:inline">Zufall</span>
           <button
             role="switch"
             aria-checked={surpriseMode}
-            onClick={() => setSurpriseMode(!surpriseMode)}
-            className={`w-9 h-5 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
+            onClick={toggleSurpriseMode}
+            className={`w-8 h-4.5 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
               surpriseMode ? 'bg-[#d80b69] justify-end' : 'bg-[#353534] justify-start'
             }`}
           >
-            <span className="w-4 h-4 rounded-full bg-white shadow-sm block transition-transform"></span>
+            <span className="w-3.5 h-3.5 rounded-full bg-white shadow-sm block transition-transform"></span>
           </button>
         </div>
       </div>
 
+      {/* Non-intrusive Wrap Notification Banner */}
+      {wrapNotice && (
+        <div className="absolute top-12 inset-x-3 sm:inset-x-4 z-40 bg-[#201f1f]/95 border border-[#ffd405] text-white px-3.5 py-2 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.85)] flex items-center gap-2.5 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
+          <span className="material-symbols-outlined text-[18px] text-[#ffd405] shrink-0">
+            sync
+          </span>
+          <div className="flex-1 min-w-0">
+            <p className="text-[11px] font-bold text-[#ffd405]">Deck neu gestartet</p>
+            <p className="text-[10px] text-[#e5e2e1] leading-tight">
+              {wrapNotice}
+            </p>
+          </div>
+          <button
+            onClick={() => setWrapNotice(null)}
+            className="text-[#a3a3a3] hover:text-white p-1"
+            aria-label="Hinweis schließen"
+          >
+            <span className="material-symbols-outlined text-[14px]">close</span>
+          </button>
+        </div>
+      )}
+
       {/* Deck Stack Container */}
-      <div className="relative w-full h-[315px] flex items-center justify-center mt-0.5">
+      <div className="relative w-full flex-1 min-h-[250px] max-h-[380px] flex items-center justify-center my-auto">
         {/* Background Ghost Card (Stack depth tier 2) */}
         <div className="absolute inset-x-4 top-2 bottom-0 bg-[#0e0e0e] border border-[#262626] rounded-2xl shadow-xl transform scale-90 translate-y-3 opacity-40 pointer-events-none"></div>
 
@@ -207,11 +303,11 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
               transform: `translateX(${dragOffset.x}px) translateY(${dragOffset.y * 0.2}px) rotate(${rotation}deg)`,
               transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
             }}
-            className="absolute inset-0 bg-[#1a1a1a] border border-[#3a3a3a] rounded-2xl overflow-hidden shadow-[0_12px_36px_rgba(0,0,0,0.85)] flex flex-col justify-end cursor-grab active:cursor-grabbing will-change-transform"
+            className="absolute inset-0 bg-[#1a1a1a] border border-[#3a3a3a] rounded-2xl overflow-hidden shadow-[0_12px_36px_rgba(0,0,0,0.85)] flex flex-col justify-end cursor-grab active:cursor-grabbing will-change-transform touch-none"
           >
             {/* Poster Art with Cinematic Gradient Scrim */}
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center pointer-events-none"
               style={{ backgroundImage: `url(${currentMovie.posterUrl})` }}
             ></div>
             <div className="absolute inset-0 bg-gradient-to-t from-[#131313] via-[#131313]/85 via-50% to-transparent pointer-events-none"></div>
@@ -219,22 +315,22 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
             {/* Gesture Feedback Stamps */}
             <div
               style={{ opacity: matchOpacity }}
-              className="absolute top-5 right-5 px-3 py-1 bg-[#d80b69] text-white rounded-xl font-bold text-base rotate-12 pointer-events-none transition-opacity shadow-lg flex items-center gap-1.5 border-2 border-white/50"
+              className="absolute top-4 right-4 px-3 py-1 bg-[#d80b69] text-white rounded-xl font-bold text-sm rotate-12 pointer-events-none transition-opacity shadow-lg flex items-center gap-1.5 border-2 border-white/50 z-20"
             >
-              <span className="material-symbols-outlined text-[18px] icon-filled">favorite</span>
+              <span className="material-symbols-outlined text-[16px] icon-filled">favorite</span>
               MATCH
             </div>
 
             <div
               style={{ opacity: passOpacity }}
-              className="absolute top-5 left-5 px-3 py-1 bg-[#2a2a2a] text-[#e5e2e1] rounded-xl font-bold text-base -rotate-12 pointer-events-none transition-opacity shadow-lg flex items-center gap-1.5 border-2 border-[#555555]"
+              className="absolute top-4 left-4 px-3 py-1 bg-[#2a2a2a] text-[#e5e2e1] rounded-xl font-bold text-sm -rotate-12 pointer-events-none transition-opacity shadow-lg flex items-center gap-1.5 border-2 border-[#555555] z-20"
             >
-              <span className="material-symbols-outlined text-[18px]">close</span>
+              <span className="material-symbols-outlined text-[16px]">close</span>
               PASS
             </div>
 
             {/* Card Content Dock */}
-            <div className="relative z-10 p-3.5 flex flex-col gap-1.5">
+            <div className="relative z-10 p-3 flex flex-col gap-1">
               {/* Badges Row with Standardized Uniform Pills */}
               <div className="flex items-center flex-wrap gap-1.5">
                 {currentMovie.providers.map((p) => {
@@ -255,7 +351,7 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
                 {currentMovie.hasDeAudio && (
                   <Pill
                     variant="audio"
-                    icon={<span className="material-symbols-outlined text-[13px]">record_voice_over</span>}
+                    icon={<span className="material-symbols-outlined text-[12px]">record_voice_over</span>}
                   >
                     Audio: DE
                   </Pill>
@@ -268,20 +364,17 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
               {/* Title & Rating */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex flex-col min-w-0">
-                  <h2 className="text-xl font-extrabold text-white tracking-tight truncate leading-tight">
+                  <h2 className="text-lg font-extrabold text-white tracking-tight truncate leading-tight">
                     {currentMovie.title}
                   </h2>
-                  <span className="text-[11px] text-[#a3a3a3] mt-0.5 truncate">
+                  <span className="text-[10px] text-[#a3a3a3] mt-0.5 truncate">
                     {currentMovie.type === 'series' ? 'Serie' : 'Film'} • {currentMovie.year} • {currentMovie.duration || `${currentMovie.episodes} Episoden`} • {currentMovie.genres.slice(0, 2).join(' / ')}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-1 bg-[#201f1f] border border-[#3a3a3a] px-2 py-0.5 rounded-full shrink-0 shadow-sm">
-                  <span className="material-symbols-outlined text-[15px] text-[#ffd405] icon-filled">star</span>
+                  <span className="material-symbols-outlined text-[14px] text-[#ffd405] icon-filled">star</span>
                   <span className="text-xs text-[#ffd405] font-bold">{currentMovie.rating}</span>
-                  {currentMovie.ratingCount && (
-                    <span className="text-[9px] text-[#a3a3a3]">({currentMovie.ratingCount})</span>
-                  )}
                 </div>
               </div>
 
@@ -300,7 +393,7 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
                     onOpenDetails(currentMovie);
                   }}
                   rightIcon={
-                    <span className="material-symbols-outlined text-[15px] transform group-hover:translate-x-1 transition-transform text-[#ffd405]">
+                    <span className="material-symbols-outlined text-[14px] transform group-hover:translate-x-1 transition-transform text-[#ffd405]">
                       arrow_forward
                     </span>
                   }
@@ -314,25 +407,22 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
         ) : (
           <div className="bg-[#1a1a1a] border border-[#3a3a3a] rounded-2xl p-6 text-center flex flex-col items-center justify-center gap-3">
             <span className="material-symbols-outlined text-4xl text-[#ffd405]">movie_filter</span>
-            <h3 className="text-lg font-bold text-white">Alle Titel durchgesehen!</h3>
-            <p className="text-xs text-[#a3a3a3]">Passe deine Streaming-Abos an oder mische das Deck neu.</p>
+            <h3 className="text-lg font-bold text-white">Keine passenden Titel</h3>
+            <p className="text-xs text-[#a3a3a3]">Passe deine Streaming-Abos an oder setze Filter zurück.</p>
             <Button
               variant="primary"
               size="sm"
               radius="md"
-              onClick={() => {
-                setDeck(movies);
-                setCurrentIndex(0);
-              }}
+              onClick={onOpenFilters}
             >
-              Deck neu laden
+              Filter anpassen
             </Button>
           </div>
         )}
       </div>
 
       {/* Floating Cinematic Controls Dock */}
-      <div className="flex items-center justify-center gap-3 py-1">
+      <div className="flex items-center justify-center gap-3 py-1 shrink-0">
         {/* Pass Button */}
         <IconButton
           onClick={triggerPass}
@@ -340,9 +430,9 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
           variant="secondary"
           size="lg"
           radius="full"
-          className="w-13 h-13 min-w-[52px] min-h-[52px] border-[#3a3a3a] text-[#a3a3a3] hover:text-white hover:bg-[#333333]"
+          className="w-12 h-12 min-w-[48px] min-h-[48px] border-[#3a3a3a] text-[#a3a3a3] hover:text-white hover:bg-[#333333]"
         >
-          <span className="material-symbols-outlined text-[24px]">close</span>
+          <span className="material-symbols-outlined text-[22px]">close</span>
         </IconButton>
 
         {/* Info Button */}
@@ -352,9 +442,9 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
           variant="secondary"
           size="md"
           radius="full"
-          className="w-11 h-11 min-w-[44px] min-h-[44px] border-[#3a3a3a] text-white hover:bg-[#333333]"
+          className="w-10 h-10 min-w-[40px] min-h-[40px] border-[#3a3a3a] text-white hover:bg-[#333333]"
         >
-          <span className="material-symbols-outlined text-[20px]">info</span>
+          <span className="material-symbols-outlined text-[18px]">info</span>
         </IconButton>
 
         {/* Superlike Button */}
@@ -364,9 +454,9 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
           variant="secondary"
           size="md"
           radius="full"
-          className="w-11 h-11 min-w-[44px] min-h-[44px] border-[#3a3a3a] text-[#ffd405] hover:bg-[#333333]"
+          className="w-10 h-10 min-w-[40px] min-h-[40px] border-[#3a3a3a] text-[#ffd405] hover:bg-[#333333]"
         >
-          <span className="material-symbols-outlined text-[20px] icon-filled">star</span>
+          <span className="material-symbols-outlined text-[18px] icon-filled">star</span>
         </IconButton>
 
         {/* Like / Match Button */}
@@ -376,21 +466,29 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
           variant="primary"
           size="xl"
           radius="full"
-          className="w-15 h-15 min-w-[60px] min-h-[60px] shadow-lg shadow-black/50"
+          className="w-14 h-14 min-w-[56px] min-h-[56px] shadow-lg shadow-black/50"
         >
-          <span className="material-symbols-outlined text-[28px] icon-filled">favorite</span>
+          <span className="material-symbols-outlined text-[26px] icon-filled">favorite</span>
         </IconButton>
       </div>
 
       {/* Friend Match Celebration Modal */}
       {matchNotification && (
         <div className="absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-[#1a1a1a] border border-[#333333] rounded-2xl p-6 max-w-xs w-full text-center flex flex-col items-center gap-3 shadow-2xl relative overflow-hidden">
+          <div className="bg-[#1a1a1a] border border-[#333333] rounded-2xl p-5 max-w-xs w-full text-center flex flex-col items-center gap-3 shadow-2xl relative overflow-hidden">
+            <button
+              onClick={handleDismissMatchModal}
+              aria-label="Schließen"
+              className="absolute top-3 right-3 text-[#a3a3a3] hover:text-white p-1"
+            >
+              <span className="material-symbols-outlined text-[18px]">close</span>
+            </button>
+
             <div className="relative my-1">
               <img
                 src="/watchmatch-icon.svg"
                 alt="WatchMatch"
-                className="w-16 h-16 relative z-10 animate-bounce"
+                className="w-14 h-14 relative z-10 animate-bounce"
               />
             </div>
 
@@ -417,7 +515,7 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
                 size="md"
                 radius="md"
                 fullWidth
-                onClick={() => setMatchNotification(null)}
+                onClick={handleDismissMatchModal}
               >
                 Super, weiter matchen!
               </Button>

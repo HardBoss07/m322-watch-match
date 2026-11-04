@@ -81,8 +81,11 @@ export default function App() {
     setTimeout(() => setToastMessage(null), 2500);
   };
 
-  // Filtered Movie list for Match Deck
-  const deckMovies = filterMovies(movies, filters);
+  // Filtered Movie list for Match Deck (memoized to prevent resetting card index on unrelated re-renders)
+  const deckMovies = React.useMemo(() => {
+    const filtered = filterMovies(movies, filters);
+    return filtered.length > 0 ? filtered : movies;
+  }, [movies, filters]);
 
   // Handlers for Match Deck
   const handleMatch = (movie: Movie) => {
@@ -292,16 +295,17 @@ export default function App() {
         />
 
         {/* Main Tab Views (Scrollable) */}
-        <main className="flex-1 w-full bg-[#131313] flex flex-col overflow-y-auto no-scrollbar">
+        <main className="flex-1 min-h-0 w-full bg-[#131313] flex flex-col overflow-y-auto no-scrollbar">
           {activeTab === 'match' && (
             <MatchDeck
-              movies={deckMovies.length > 0 ? deckMovies : movies}
+              movies={deckMovies}
               filters={filters}
               onOpenFilters={() => setActiveModal('settings')}
               onOpenDetails={handleOpenDetails}
               onMatch={handleMatch}
               onPass={handlePass}
               onSuperlike={handleSuperlike}
+              onDeckWrapped={(msg) => showToast(msg)}
             />
           )}
 
@@ -505,9 +509,9 @@ export default function App() {
 
       {/* Global Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-[#201f1f] border border-[#ffd405] text-white px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 z-50 text-xs font-bold animate-in fade-in slide-in-from-bottom-2 duration-150">
-          <span className="material-symbols-outlined text-[16px] text-[#ffd405]">check_circle</span>
-          <span>{toastMessage}</span>
+        <div className="absolute bottom-18 left-1/2 -translate-x-1/2 max-w-[90%] bg-[#201f1f]/95 border border-[#ffd405] text-white px-3.5 py-1.5 rounded-full shadow-2xl flex items-center gap-2 z-50 text-xs font-bold animate-in fade-in slide-in-from-bottom-2 duration-150 pointer-events-none backdrop-blur-md">
+          <span className="material-symbols-outlined text-[16px] text-[#ffd405] shrink-0">check_circle</span>
+          <span className="truncate">{toastMessage}</span>
         </div>
       )}
     </MobileFrame>

@@ -19,6 +19,7 @@ export const WatchMatchIcon: React.FC<{ size?: number; className?: string }> = (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`shrink-0 ${className}`}
+    >
       {/* Tilted Pink Film Card (Background) */}
       <g transform="rotate(14 68 58)">
         <rect

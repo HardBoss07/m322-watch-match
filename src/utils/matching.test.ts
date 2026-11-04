@@ -4,7 +4,8 @@ import {
   calculateTasteMatch,
   getSentimentLabel,
   calculateXpProgress,
-  filterMovies
+  filterMovies,
+  getNextDeckIndex,
 } from './matching';
 import { Movie, FilterSettings } from '../types';
 
@@ -100,4 +101,32 @@ test('filterMovies respects provider, German audio and max runtime', () => {
   // English-Only should be filtered out (Paramount disabled, no DE audio)
   assert.equal(filtered.length, 1);
   assert.equal(filtered[0].id, 'm1');
+});
+
+test('getNextDeckIndex advances queue and loops back to zero with wrap notification flag', () => {
+  const deckLength = 5;
+
+  // Normal advancement
+  const step1 = getNextDeckIndex(0, deckLength);
+  assert.equal(step1.nextIndex, 1);
+  assert.equal(step1.didWrap, false);
+
+  const step2 = getNextDeckIndex(3, deckLength);
+  assert.equal(step2.nextIndex, 4);
+  assert.equal(step2.didWrap, false);
+
+  // Wrapping at the end of the deck
+  const wrapStep = getNextDeckIndex(4, deckLength);
+  assert.equal(wrapStep.nextIndex, 0);
+  assert.equal(wrapStep.didWrap, true);
+
+  // Single card deck should stay on 0 and not wrap-notify
+  const singleCard = getNextDeckIndex(0, 1);
+  assert.equal(singleCard.nextIndex, 0);
+  assert.equal(singleCard.didWrap, false);
+
+  // Empty deck guard
+  const emptyDeck = getNextDeckIndex(0, 0);
+  assert.equal(emptyDeck.nextIndex, 0);
+  assert.equal(emptyDeck.didWrap, false);
 });
