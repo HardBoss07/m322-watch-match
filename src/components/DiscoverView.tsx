@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Movie } from '../types';
-import { Button, IconButton, ButtonIcon } from './ui/button';
+import React, { useState } from "react";
+import { Movie } from "../types";
+import { Button, IconButton } from "./ui/button";
 
 interface DiscoverViewProps {
   movies: Movie[];
@@ -13,17 +13,18 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
   onOpenMovieDetails,
   onOpenFilters,
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedMood, setSelectedMood] = useState<string>('Alle');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedMood, setSelectedMood] = useState<string>("Alle");
 
-  const moods = ['Alle', 'Sci-Fi', 'Anime', 'Thriller', 'Action', 'Mystery'];
+  const moods = ["Alle", "Sci-Fi", "Anime", "Thriller", "Action", "Mystery"];
 
   const filteredMovies = movies.filter((m) => {
     const matchesSearch =
       m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       m.genres.some((g) => g.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesMood =
-      selectedMood === 'Alle' || m.genres.some((g) => g.toLowerCase() === selectedMood.toLowerCase());
+      selectedMood === "Alle" ||
+      m.genres.some((g) => g.toLowerCase() === selectedMood.toLowerCase());
     return matchesSearch && matchesMood;
   });
 
@@ -31,7 +32,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
     <div className="flex flex-col w-full px-4 pt-3 pb-24 max-w-lg mx-auto gap-4">
       {/* Search Bar */}
       <div className="relative flex items-center">
-        <span className="material-symbols-outlined absolute left-3.5 text-[#737373] text-[20px]">
+        <span className="material-symbols-outlined absolute left-3.5 text-tertiary text-[20px]">
           search
         </span>
         <input
@@ -39,19 +40,21 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Filme, Serien, Anime durchsuchen..."
-          className="w-full h-11 pl-10 pr-10 rounded-xl bg-[#1c1b1b] border border-[#2a2a2a] text-xs text-white placeholder:text-[#737373] outline-none focus:border-[#d80b69]"
+          className="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low border border-surface-300 text-xs text-white placeholder:text-tertiary outline-none focus:border-primary-container"
         />
         {searchQuery && (
           <div className="absolute right-2">
             <IconButton
-              onClick={() => setSearchQuery('')}
+              onClick={() => setSearchQuery("")}
               aria-label="Suche löschen"
               variant="ghost"
               size="xs"
               radius="full"
-              className="text-[#737373] hover:text-white"
+              className="text-tertiary hover:text-white"
             >
-              <span className="material-symbols-outlined text-[16px]">close</span>
+              <span className="material-symbols-outlined text-[16px]">
+                close
+              </span>
             </IconButton>
           </div>
         )}
@@ -62,7 +65,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
         {moods.map((mood) => (
           <Button
             key={mood}
-            variant={selectedMood === mood ? 'accent' : 'secondary'}
+            variant={selectedMood === mood ? "accent" : "secondary"}
             size="sm"
             radius="full"
             onClick={() => setSelectedMood(mood)}
@@ -77,12 +80,14 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
       <div>
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#ffd405] text-[18px] icon-filled">
+            <span className="material-symbols-outlined text-secondary text-[18px] icon-filled">
               local_fire_department
             </span>
             <span>Beliebt bei Freunden</span>
           </span>
-          <span className="text-[10px] text-[#ffd405] font-semibold">90%+ Match</span>
+          <span className="text-[10px] text-secondary font-semibold">
+            90%+ Match
+          </span>
         </div>
 
         <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
@@ -90,7 +95,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
             <div
               key={m.id}
               onClick={() => onOpenMovieDetails(m.id)}
-              className="flex-shrink-0 w-32 bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#3a3a3a] rounded-xl overflow-hidden shadow-md cursor-pointer transition-transform active:scale-95"
+              className="flex-shrink-0 w-32 bg-surface-100 border border-surface-300 hover:border-surface-bright rounded-xl overflow-hidden shadow-md cursor-pointer transition-transform active:scale-95"
             >
               <div className="relative aspect-[3/4.2] overflow-hidden">
                 <img
@@ -99,15 +104,19 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
                   className="w-full h-full object-cover"
                 />
                 <span className="absolute top-1.5 left-1.5 bg-black/80 text-white text-[9px] font-bold px-1.5 py-0.2 rounded">
-                  {m.providers[0]?.name || 'Netflix'}
+                  {m.providers[0]?.name || "Netflix"}
                 </span>
-                <span className="absolute bottom-1.5 right-1.5 bg-[#fbd100] text-[#3b2f00] text-[9px] font-black px-1.5 py-0.2 rounded flex items-center gap-0.5">
+                <span className="absolute bottom-1.5 right-1.5 bg-secondary-container text-on-secondary-container text-[9px] font-black px-1.5 py-0.2 rounded flex items-center gap-0.5">
                   ★ {m.rating}
                 </span>
               </div>
               <div className="p-2">
-                <h4 className="text-xs font-bold text-white truncate">{m.title}</h4>
-                <span className="text-[10px] text-[#a3a3a3] block mt-0.5">{m.year} • {m.genres[0]}</span>
+                <h4 className="text-xs font-bold text-white truncate">
+                  {m.title}
+                </h4>
+                <span className="text-[10px] text-tertiary block mt-0.5">
+                  {m.year} • {m.genres[0]}
+                </span>
               </div>
             </div>
           ))}
@@ -118,7 +127,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
       <div>
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#d80b69] text-[18px]">
+            <span className="material-symbols-outlined text-primary-container text-[18px]">
               record_voice_over
             </span>
             <span>Deutsche Synchronisation</span>
@@ -128,7 +137,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
             size="sm"
             radius="md"
             onClick={onOpenFilters}
-            className="p-1 h-auto text-[10px] text-[#a3a3a3] hover:text-white"
+            className="p-1 h-auto text-[10px] text-tertiary hover:text-white"
           >
             Filter anpassen
           </Button>
@@ -139,7 +148,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
             <div
               key={m.id}
               onClick={() => onOpenMovieDetails(m.id)}
-              className="bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#3a3a3a] rounded-xl p-2 flex gap-2.5 items-center cursor-pointer shadow-sm transition-all active:scale-[0.98]"
+              className="bg-surface-100 border border-surface-300 hover:border-surface-bright rounded-xl p-2 flex gap-2.5 items-center cursor-pointer shadow-sm transition-all active:scale-[0.98]"
             >
               <img
                 src={m.posterUrl}
@@ -147,11 +156,17 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({
                 className="w-14 h-20 rounded-lg object-cover shrink-0"
               />
               <div className="flex flex-col min-w-0 justify-center">
-                <span className="text-xs font-bold text-white truncate">{m.title}</span>
-                <span className="text-[10px] text-[#a3a3a3] mt-0.5">{m.year} • {m.genres[0]}</span>
-                <div className="flex items-center gap-1 text-[#ffd405] text-[10px] font-bold mt-1">
+                <span className="text-xs font-bold text-white truncate">
+                  {m.title}
+                </span>
+                <span className="text-[10px] text-tertiary mt-0.5">
+                  {m.year} • {m.genres[0]}
+                </span>
+                <div className="flex items-center gap-1 text-secondary text-[10px] font-bold mt-1">
                   <span>★ {m.rating}</span>
-                  <span className="text-[#737373] font-normal">• {m.providers[0]?.name}</span>
+                  <span className="text-tertiary font-normal">
+                    • {m.providers[0]?.name}
+                  </span>
                 </div>
               </div>
             </div>

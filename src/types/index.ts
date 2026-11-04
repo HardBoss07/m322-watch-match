@@ -1,10 +1,11 @@
-export type StreamingProvider = 'netflix' | 'disney' | 'prime' | 'crunchyroll' | 'apple' | 'paramount';
+export type StreamingProvider =
+  "netflix" | "disney" | "prime" | "crunchyroll" | "apple" | "paramount";
 
 export interface Movie {
   id: string;
   title: string;
   originalTitle?: string;
-  type: 'movie' | 'series';
+  type: "movie" | "series";
   year: number;
   duration?: string;
   episodes?: number;

@@ -1,24 +1,24 @@
-import React, { forwardRef } from 'react';
-import { IconButtonProps } from './types';
-import { getIconButtonClasses } from './button.variants';
-import { ButtonIcon } from './ButtonIcon';
+import React, { forwardRef } from "react";
+import { IconButtonProps } from "./types";
+import { getIconButtonClasses } from "./button.variants";
+import { ButtonIcon } from "./ButtonIcon";
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   (
     {
-      'aria-label': ariaLabel,
-      variant = 'secondary',
-      size = 'md',
-      radius = 'full',
+      "aria-label": ariaLabel,
+      variant = "secondary",
+      size = "md",
+      radius = "full",
       isLoading = false,
       icon,
       className,
       disabled,
       children,
-      type = 'button',
+      type = "button",
       ...props
     },
-    ref
+    ref,
   ) => {
     const isButtonDisabled = disabled || isLoading;
     const content = icon || children;
@@ -68,7 +68,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         )}
       </button>
     );
-  }
+  },
 );
 
-IconButton.displayName = 'IconButton';
+IconButton.displayName = "IconButton";

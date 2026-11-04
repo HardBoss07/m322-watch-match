@@ -1,8 +1,8 @@
-import React from 'react';
-import { cn } from '../../utils/cn';
+import React from "react";
+import { cn } from "../../utils/cn";
 
 export interface PillProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'provider' | 'audio' | 'quality' | 'accent' | 'neutral';
+  variant?: "default" | "provider" | "audio" | "quality" | "accent" | "neutral";
   dotColor?: string;
   icon?: React.ReactNode;
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export interface PillProps extends React.HTMLAttributes<HTMLSpanElement> {
  * Standard dimensions: h-6, px-2.5, text-[11px] font-semibold, rounded-full.
  */
 export const Pill: React.FC<PillProps> = ({
-  variant = 'default',
+  variant = "default",
   dotColor,
   icon,
   children,
@@ -24,12 +24,16 @@ export const Pill: React.FC<PillProps> = ({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 h-6 px-2.5 py-0 rounded-full text-[11px] font-medium leading-none whitespace-nowrap select-none shrink-0 border border-[#333333] bg-[#201f1f]/90 text-white shadow-none transition-colors',
-        variant === 'accent' && 'border-[#ffd405]/40 text-[#ffd405] bg-[#201f1f]',
-        variant === 'audio' && 'border-[#333333] text-[#ffd405] bg-[#201f1f]',
-        variant === 'quality' && 'border-[#333333] text-[#a3a3a3] bg-[#201f1f]',
-        variant === 'neutral' && 'border-[#2a2a2a] text-[#a3a3a3] bg-[#1c1b1b]',
-        className
+        "inline-flex items-center gap-1.5 h-6 px-2.5 py-0 rounded-full text-[11px] font-medium leading-none whitespace-nowrap select-none shrink-0 border border-surface-300 bg-surface-container/90 text-white shadow-none transition-colors",
+        variant === "accent" &&
+          "border-secondary/40 text-secondary bg-surface-container",
+        variant === "audio" &&
+          "border-surface-300 text-secondary bg-surface-container",
+        variant === "quality" &&
+          "border-surface-300 text-tertiary bg-surface-container",
+        variant === "neutral" &&
+          "border-surface-container-high text-tertiary bg-surface-container-low",
+        className,
       )}
       {...props}
     >

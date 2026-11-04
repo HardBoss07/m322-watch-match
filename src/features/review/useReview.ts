@@ -1,12 +1,17 @@
-import { useState, useCallback } from 'react';
-import { Review, UserProfile, Movie } from '../../types';
-import { MOCK_REVIEWS } from '../../data/mockData';
+import { useState, useCallback } from "react";
+import { Review, UserProfile, Movie } from "../../types";
+import { MOCK_REVIEWS } from "../../data/mockData";
 
 export function useReview(user: UserProfile) {
   const [reviews, setReviews] = useState<Review[]>(MOCK_REVIEWS);
 
   const createReview = useCallback(
-    (movie: Movie, rating: number, comment: string, isSpoiler: boolean = false) => {
+    (
+      movie: Movie,
+      rating: number,
+      comment: string,
+      isSpoiler: boolean = false,
+    ) => {
       const fullReview: Review = {
         id: `rev-${Date.now()}`,
         userId: user.id,
@@ -17,12 +22,12 @@ export function useReview(user: UserProfile) {
         movieId: movie.id,
         movieTitle: movie.title,
         moviePoster: movie.posterUrl,
-        movieInfo: `${movie.providers[0]?.name || 'Netflix'} • ${movie.year || '2024'}`,
+        movieInfo: `${movie.providers[0]?.name || "Netflix"} • ${movie.year || "2024"}`,
         rating: rating,
         ratingMax: 10,
         text: comment.trim(),
         isSpoiler: isSpoiler,
-        createdAt: 'Gerade eben',
+        createdAt: "Gerade eben",
         likes: 1,
         commentsCount: 0,
         likedByMe: true,
@@ -32,7 +37,7 @@ export function useReview(user: UserProfile) {
       setReviews((prev) => [fullReview, ...prev]);
       return fullReview;
     },
-    [user]
+    [user],
   );
 
   const toggleLikeReview = useCallback((reviewId: string) => {
@@ -47,7 +52,7 @@ export function useReview(user: UserProfile) {
           };
         }
         return r;
-      })
+      }),
     );
   }, []);
 

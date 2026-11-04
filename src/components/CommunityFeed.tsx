@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Review, Recommendation, ChatThread, Movie } from '../types';
-import { Button, IconButton, ButtonIcon } from './ui/button';
+import React, { useState } from "react";
+import { Review, ChatThread } from "../types";
+import { Button, IconButton } from "./ui/button";
 
 interface CommunityFeedProps {
   reviews: Review[];
@@ -25,8 +25,10 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
   onToggleLike,
   onToggleWatchlist,
 }) => {
-  const [subTab, setSubTab] = useState<'reviews' | 'chats'>('reviews');
-  const [revealedSpoilers, setRevealedSpoilers] = useState<Record<string, boolean>>({});
+  const [subTab, setSubTab] = useState<"reviews" | "chats">("reviews");
+  const [revealedSpoilers, setRevealedSpoilers] = useState<
+    Record<string, boolean>
+  >({});
 
   const toggleSpoilerReveal = (id: string) => {
     setRevealedSpoilers((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -35,32 +37,44 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
   return (
     <div className="flex flex-col w-full pb-24 max-w-lg mx-auto">
       {/* Sub-Tabs: Freunde & Reviews vs Direkt-Chats */}
-      <div className="px-4 pt-2.5 pb-2 bg-[#131313] sticky top-0 z-20">
-        <div className="flex p-1 bg-[#1c1b1b] border border-[#262626] rounded-xl gap-1">
+      <div className="px-4 pt-2.5 pb-2 bg-surface sticky top-0 z-20">
+        <div className="flex p-1 bg-surface-container-low border border-surface-bright rounded-xl gap-1">
           <Button
-            variant={subTab === 'reviews' ? 'primary' : 'ghost'}
+            variant={subTab === "reviews" ? "primary" : "ghost"}
             size="sm"
             radius="md"
-            onClick={() => setSubTab('reviews')}
+            onClick={() => setSubTab("reviews")}
             className={`flex-1 font-bold ${
-              subTab === 'reviews' ? 'text-white' : 'text-[#a3a3a3] hover:text-white'
+              subTab === "reviews"
+                ? "text-white"
+                : "text-tertiary hover:text-white"
             }`}
-            leftIcon={<span className="material-symbols-outlined text-[18px]">group</span>}
+            leftIcon={
+              <span className="material-symbols-outlined text-[18px]">
+                group
+              </span>
+            }
           >
             Freunde & Reviews
           </Button>
 
           <Button
-            variant={subTab === 'chats' ? 'primary' : 'ghost'}
+            variant={subTab === "chats" ? "primary" : "ghost"}
             size="sm"
             radius="md"
-            onClick={() => setSubTab('chats')}
+            onClick={() => setSubTab("chats")}
             className={`flex-1 font-bold ${
-              subTab === 'chats' ? 'text-white' : 'text-[#a3a3a3] hover:text-white'
+              subTab === "chats"
+                ? "text-white"
+                : "text-tertiary hover:text-white"
             }`}
-            leftIcon={<span className="material-symbols-outlined text-[18px]">chat</span>}
+            leftIcon={
+              <span className="material-symbols-outlined text-[18px]">
+                chat
+              </span>
+            }
             rightIcon={
-              <span className="px-1.5 py-0.2 rounded-full bg-[#2a2a2a] text-[#ffd405] text-[10px] font-bold">
+              <span className="px-1.5 py-0.2 rounded-full bg-surface-container-high text-secondary text-[10px] font-bold">
                 {chats.filter((c) => c.unreadCount > 0).length || 3}
               </span>
             }
@@ -71,44 +85,56 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
       </div>
 
       {/* VIEW 1: Freunde & Reviews */}
-      {subTab === 'reviews' && (
+      {subTab === "reviews" && (
         <div className="flex flex-col gap-3 px-4 pt-1">
           {/* Quick Action: Tipp an Freunde senden */}
-          <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-3 flex items-center justify-between shadow-sm">
+          <div
+            onClick={onOpenSendRecommendation}
+            className="bg-surface-100 border border-surface-300 rounded-xl p-3 flex items-center justify-between shadow-sm cursor-pointer hover:border-surface-bright transition-colors"
+          >
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-full bg-[#2a2a2a] flex items-center justify-center shrink-0 text-white">
-                <span className="material-symbols-outlined text-[20px]">send</span>
+              <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0 text-white">
+                <span className="material-symbols-outlined text-[20px]">
+                  send
+                </span>
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-xs font-bold text-white truncate">Empfehlung teilen</span>
-                <span className="text-[11px] text-[#a3a3a3] truncate">
+                <span className="text-xs font-bold text-white truncate">
+                  Empfehlung teilen
+                </span>
+                <span className="text-[11px] text-tertiary truncate">
                   Sende einen Filmtipp an deine Freunde
                 </span>
               </div>
             </div>
+            <span className="material-symbols-outlined text-tertiary text-[18px]">
+              chevron_right
+            </span>
           </div>
 
           {/* Friend Recommendation Highlight Banner: Arcane S2 */}
-          <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-3 flex flex-col gap-2 shadow-sm">
+          <div className="bg-surface-100 border border-surface-300 rounded-xl p-3 flex flex-col gap-2 shadow-sm">
             <div className="flex items-center justify-between gap-2">
               <div
-                onClick={() => onOpenUserProfile('dario-m')}
+                onClick={() => onOpenUserProfile("dario-m")}
                 className="flex items-center gap-2 min-w-0 cursor-pointer group"
               >
                 <img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX-DATfZHnME16uKVt6ohsEU31ezgDSVxOcOEmRXW0MlDDTT2yHeNNw_iZK7kEDnW09Q7oa6WzgdiapNlqNsVykTW7r23d0F_JC8CScXmxfWQ680JXQ91eGZl_rJA7nIABj6n_5apEseObUZ9oGXAqK-WVFms2wF-wBFlkuBe4OnxySo0ycSaCOXDlBF_gEBIMUr0IquTRM3BGJo9yvl-D1JCvzlXbJ9q5ccaUZrPrX0wRwgB9WkCK"
                   alt="Dario Profilbild"
-                  className="w-9 h-9 rounded-full object-cover shrink-0 ring-1 ring-[#ffd405]/50"
+                  className="w-9 h-9 rounded-full object-cover shrink-0 ring-1 ring-secondary/50"
                 />
                 <div className="flex flex-col min-w-0">
-                  <span className="text-xs font-bold text-white group-hover:text-[#ffb1c3] transition-colors truncate">
+                  <span className="text-xs font-bold text-white group-hover:text-primary transition-colors truncate">
                     Dario empfiehlt
                   </span>
-                  <span className="text-[10px] text-[#a3a3a3] truncate">Staffel 2 • 9.1/10 Match</span>
+                  <span className="text-[10px] text-tertiary truncate">
+                    Staffel 2 • 9.1/10 Match
+                  </span>
                 </div>
               </div>
 
-              <span className="px-2 py-0.5 rounded bg-[#2a2a2a] text-[#a3a3a3] text-[10px] font-semibold">
+              <span className="px-2 py-0.5 rounded bg-surface-container-high text-tertiary text-[10px] font-semibold">
                 Heute
               </span>
             </div>
@@ -118,20 +144,24 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcxi1K6Kj4ffG8g4_xb9SvzHFgmDyYSTgebhEIPgRUGOpg6C5p1He4eocAitUCWjZAPleZEQf1wmKAkzl1vkqAUJ-9uCXewTVGSKunEPxBNpluQwt1tK4ASE9n-hfiNKXGRsboY3FDWxYPacQM4FeF8SKtkK-qNmudLh9w79H41DpNhhmzFJznh9SP_XAVGgKQZNe8hmxtKUbrqxemSeMbkhf9dFzzSs-6MLjYYyXSCu-bmfio8yG3"
                 alt="Arcane Poster"
                 className="w-14 h-18 rounded-lg object-cover shrink-0 shadow-md cursor-pointer"
-                onClick={() => onOpenMovieDetails('arcane-s2')}
+                onClick={() => onOpenMovieDetails("arcane-s2")}
               />
               <div className="flex flex-col min-w-0 flex-1">
-                <span className="text-[10px] text-[#a3a3a3]">Netflix Serie</span>
+                <span className="text-[10px] text-tertiary">Netflix Serie</span>
                 <h4
-                  onClick={() => onOpenMovieDetails('arcane-s2')}
-                  className="text-sm font-bold text-white truncate cursor-pointer hover:text-[#d80b69] transition-colors"
+                  onClick={() => onOpenMovieDetails("arcane-s2")}
+                  className="text-sm font-bold text-white truncate cursor-pointer hover:text-primary-container transition-colors"
                 >
                   Arcane: Staffel 2
                 </h4>
-                <div className="flex items-center gap-1 text-[#ffd405] text-[11px] font-bold mt-0.5">
-                  <span className="material-symbols-outlined text-[14px] icon-filled">star</span>
+                <div className="flex items-center gap-1 text-secondary text-[11px] font-bold mt-0.5">
+                  <span className="material-symbols-outlined text-[14px] icon-filled">
+                    star
+                  </span>
                   <span>9.1</span>
-                  <span className="text-[#737373] font-normal">• Höchste Match-Rate</span>
+                  <span className="text-tertiary font-normal">
+                    • Höchste Match-Rate
+                  </span>
                 </div>
               </div>
 
@@ -139,9 +169,9 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                 variant="secondary"
                 size="sm"
                 radius="md"
-                onClick={() => onOpenMovieDetails('arcane-s2')}
+                onClick={() => onOpenMovieDetails("arcane-s2")}
                 leftIcon={
-                  <span className="material-symbols-outlined text-[16px] text-[#ffd405] icon-filled">
+                  <span className="material-symbols-outlined text-[16px] text-secondary icon-filled">
                     play_arrow
                   </span>
                 }
@@ -157,7 +187,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
             return (
               <article
                 key={rev.id}
-                className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-3 flex flex-col gap-3 shadow-sm"
+                className="bg-surface-100 border border-surface-300 rounded-xl p-3 flex flex-col gap-3 shadow-sm"
               >
                 {/* Author Info */}
                 <div className="flex items-center justify-between">
@@ -168,25 +198,25 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                     <img
                       src={rev.userAvatar}
                       alt={rev.userName}
-                      className="w-10 h-10 rounded-full object-cover shrink-0 ring-1 ring-[#3a3a3a]"
+                      className="w-10 h-10 rounded-full object-cover shrink-0 ring-1 ring-surface-bright"
                     />
                     <div className="flex flex-col min-w-0">
                       <div className="flex items-center gap-1">
-                        <span className="text-xs font-bold text-white group-hover:text-[#d80b69] transition-colors truncate">
-                          {rev.userName} {rev.userAge ? `(${rev.userAge})` : ''}
+                        <span className="text-xs font-bold text-white group-hover:text-primary-container transition-colors truncate">
+                          {rev.userName} {rev.userAge ? `(${rev.userAge})` : ""}
                         </span>
                         {rev.isVerified && (
-                          <span className="material-symbols-outlined text-[15px] text-[#ffd405] icon-filled">
+                          <span className="material-symbols-outlined text-[15px] text-secondary icon-filled">
                             verified
                           </span>
                         )}
                         {rev.isSpoiler && (
-                          <span className="px-1.5 py-0.2 rounded bg-[#2a2a2a] text-[#ffd405] text-[9px] font-bold">
+                          <span className="px-1.5 py-0.2 rounded bg-surface-container-high text-secondary text-[9px] font-bold">
                             Spoiler
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-1 text-[#a3a3a3] text-[10px]">
+                      <div className="flex items-center gap-1 text-tertiary text-[10px]">
                         <span className="truncate">{rev.userHandle}</span>
                         <span>•</span>
                         <span className="shrink-0">{rev.createdAt}</span>
@@ -199,16 +229,18 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                     variant="ghost"
                     size="sm"
                     radius="full"
-                    className="text-[#737373] hover:text-white"
+                    className="text-tertiary hover:text-white"
                   >
-                    <span className="material-symbols-outlined text-[18px]">more_horiz</span>
+                    <span className="material-symbols-outlined text-[18px]">
+                      more_horiz
+                    </span>
                   </IconButton>
                 </div>
 
                 {/* Embedded Movie Ribbon */}
                 <div
                   onClick={() => onOpenMovieDetails(rev.movieId)}
-                  className="flex items-center gap-2.5 p-2 bg-[#121212] border border-[#262626] rounded-lg cursor-pointer hover:border-[#3a3a3a] transition-colors"
+                  className="flex items-center gap-2.5 p-2 bg-surface border border-surface-bright rounded-lg cursor-pointer hover:border-surface-300 transition-colors"
                 >
                   <img
                     src={rev.moviePoster}
@@ -216,15 +248,21 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                     className="w-11 h-14 rounded object-cover shrink-0 shadow"
                   />
                   <div className="flex flex-col min-w-0 flex-1">
-                    <span className="text-xs font-bold text-white truncate">{rev.movieTitle}</span>
-                    <span className="text-[10px] text-[#a3a3a3] mt-0.5">{rev.movieInfo}</span>
+                    <span className="text-xs font-bold text-white truncate">
+                      {rev.movieTitle}
+                    </span>
+                    <span className="text-[10px] text-tertiary mt-0.5">
+                      {rev.movieInfo}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-0.5 text-[#ffd405] pr-1">
+                  <div className="flex items-center gap-0.5 text-secondary pr-1">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <span
                         key={s}
                         className={`material-symbols-outlined text-[14px] ${
-                          rev.rating >= s ? 'icon-filled text-[#ffd405]' : 'text-[#353534]'
+                          rev.rating >= s
+                            ? "icon-filled text-secondary"
+                            : "text-surface-container-highest"
                         }`}
                       >
                         star
@@ -233,11 +271,11 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                   </div>
                 </div>
 
-                {/* Review Text with Spoiler Blur Protection */}
+                {/* Review Text with Spoiler Protection */}
                 <div className="relative pl-1">
                   <p
                     className={`text-xs text-white leading-relaxed ${
-                      isObscured ? 'filter blur-sm select-none' : ''
+                      isObscured ? "filter blur-sm select-none" : ""
                     }`}
                   >
                     {rev.text}
@@ -248,8 +286,12 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                       size="sm"
                       radius="md"
                       onClick={() => toggleSpoilerReveal(rev.id)}
-                      leftIcon={<span className="material-symbols-outlined text-[16px]">visibility</span>}
-                      className="absolute inset-0 bg-black/60 backdrop-blur-xs text-[#ffd405] hover:text-[#ffd405] hover:bg-black/70 font-bold"
+                      leftIcon={
+                        <span className="material-symbols-outlined text-[16px]">
+                          visibility
+                        </span>
+                      }
+                      className="absolute inset-0 bg-black/60 backdrop-blur-xs text-secondary hover:text-secondary hover:bg-black/70 font-bold"
                     >
                       Spoiler anzeigen
                     </Button>
@@ -257,7 +299,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                 </div>
 
                 {/* Bottom Actions: Like, Comment, Watchlist */}
-                <div className="flex items-center justify-between pt-1 border-t border-[#222222]">
+                <div className="flex items-center justify-between pt-1 border-t border-surface-container-high">
                   <div className="flex items-center gap-2">
                     <Button
                       variant="ghost"
@@ -267,13 +309,15 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                       leftIcon={
                         <span
                           className={`material-symbols-outlined text-[18px] ${
-                            rev.likedByMe ? 'icon-filled text-[#d80b69]' : ''
+                            rev.likedByMe
+                              ? "icon-filled text-primary-container"
+                              : ""
                           }`}
                         >
                           favorite
                         </span>
                       }
-                      className="px-2.5 h-7 text-xs text-[#a3a3a3] hover:text-[#d80b69]"
+                      className="px-2.5 h-7 text-xs text-tertiary hover:text-primary-container"
                     >
                       <span className="font-bold text-white">{rev.likes}</span>
                     </Button>
@@ -282,21 +326,29 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                       variant="ghost"
                       size="sm"
                       radius="full"
-                      leftIcon={<span className="material-symbols-outlined text-[18px]">chat_bubble</span>}
-                      className="px-2.5 h-7 text-xs text-[#a3a3a3] hover:text-white"
+                      leftIcon={
+                        <span className="material-symbols-outlined text-[18px]">
+                          chat_bubble
+                        </span>
+                      }
+                      className="px-2.5 h-7 text-xs text-tertiary hover:text-white"
                     >
-                      <span className="font-bold text-white">{rev.commentsCount}</span>
+                      <span className="font-bold text-white">
+                        {rev.commentsCount}
+                      </span>
                     </Button>
                   </div>
 
                   <Button
-                    variant={rev.savedToWatchlist ? 'primary' : 'secondary'}
+                    variant={rev.savedToWatchlist ? "primary" : "secondary"}
                     size="sm"
                     radius="md"
                     onClick={() => onToggleWatchlist(rev.movieTitle)}
                     leftIcon={
                       <span className="material-symbols-outlined text-[15px]">
-                        {rev.savedToWatchlist ? 'bookmark_added' : 'bookmark_add'}
+                        {rev.savedToWatchlist
+                          ? "bookmark_added"
+                          : "bookmark_add"}
                       </span>
                     }
                     className="h-8 text-xs font-semibold"
@@ -311,29 +363,29 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
       )}
 
       {/* VIEW 2: Direkt-Chats */}
-      {subTab === 'chats' && (
+      {subTab === "chats" && (
         <div className="flex flex-col gap-2 px-4 pt-1">
           <div className="flex items-center justify-between pb-1">
             <span className="text-xs font-bold text-white uppercase tracking-wider">
               Aktive Unterhaltungen
             </span>
-            <span className="text-[11px] text-[#a3a3a3]">3 Kontakte</span>
+            <span className="text-[11px] text-tertiary">3 Kontakte</span>
           </div>
 
           {chats.map((chat) => (
             <div
               key={chat.id}
               onClick={() => onOpenChat(chat)}
-              className="bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#3a3a3a] p-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all active:scale-[0.99] shadow-sm"
+              className="bg-surface-100 border border-surface-300 hover:border-surface-bright p-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all active:scale-[0.99] shadow-sm"
             >
               <div className="relative shrink-0">
                 <img
                   src={chat.participantAvatar}
                   alt={chat.participantName}
-                  className="w-12 h-12 rounded-full object-cover ring-1 ring-[#3a3a3a]"
+                  className="w-12 h-12 rounded-full object-cover ring-1 ring-surface-bright"
                 />
                 {chat.isOnline && (
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full ring-2 ring-[#1a1a1a]"></span>
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full ring-2 ring-surface-100"></span>
                 )}
               </div>
 
@@ -343,19 +395,21 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                     <span className="text-xs font-bold text-white truncate">
                       {chat.participantName}
                     </span>
-                    <span className="px-1.5 py-0.2 rounded-full bg-[#fbd100]/15 text-[#ffd405] text-[10px] font-bold">
+                    <span className="px-1.5 py-0.2 rounded-full bg-secondary-container/15 text-secondary text-[10px] font-bold">
                       {chat.matchPercent}% Match
                     </span>
                   </div>
-                  <span className="text-[10px] text-[#737373] shrink-0 font-mono">
+                  <span className="text-[10px] text-tertiary shrink-0 font-mono">
                     {chat.lastMessageTime}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between mt-1">
-                  <p className="text-xs text-[#a3a3a3] truncate pr-2">{chat.lastMessage}</p>
+                  <p className="text-xs text-tertiary truncate pr-2">
+                    {chat.lastMessage}
+                  </p>
                   {chat.unreadCount > 0 && (
-                    <span className="w-5 h-5 rounded-full bg-[#d80b69] text-white text-[10px] font-bold flex items-center justify-center shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-primary-container text-white text-[10px] font-bold flex items-center justify-center shrink-0">
                       {chat.unreadCount}
                     </span>
                   )}
@@ -366,15 +420,17 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
         </div>
       )}
 
-      {/* Floating Action Button (Review verfassen) */}
+      {/* Floating Action Button */}
       <div className="sticky bottom-4 self-end mr-4 z-30 mt-2">
         <Button
           variant="primary"
           size="md"
           radius="full"
           onClick={onOpenReviewModal}
-          leftIcon={<span className="material-symbols-outlined text-[18px]">edit</span>}
-          className="shadow-xl shadow-[#d80b69]/40 font-bold"
+          leftIcon={
+            <span className="material-symbols-outlined text-[18px]">edit</span>
+          }
+          className="shadow-xl shadow-primary-container/40 font-bold"
         >
           Review verfassen
         </Button>

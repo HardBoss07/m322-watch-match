@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Movie, StreamingProvider } from '../types';
-import { Button, IconButton, ButtonIcon } from './ui/button';
+import React, { useState } from "react";
+import { Movie } from "../types";
+import { Button, IconButton } from "./ui/button";
 
 interface WatchlistViewProps {
   movies: Movie[];
@@ -15,10 +15,10 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
   onRemoveFromWatchlist,
   onShareRecommendation,
 }) => {
-  const [filterProvider, setFilterProvider] = useState<string>('all');
+  const [filterProvider, setFilterProvider] = useState<string>("all");
 
   const filtered = movies.filter((m) => {
-    if (filterProvider !== 'all') {
+    if (filterProvider !== "all") {
       const matchProv = m.providers.some((p) => p.id === filterProvider);
       if (!matchProv) return false;
     }
@@ -30,12 +30,20 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-black text-white tracking-tight">Deine Watchlist</h2>
-          <p className="text-xs text-[#a3a3a3] mt-0.5">{movies.length} gemerkte Titel</p>
+          <h2 className="text-xl font-black text-white tracking-tight">
+            Deine Watchlist
+          </h2>
+          <p className="text-xs text-tertiary mt-0.5">
+            {movies.length} gemerkte Titel
+          </p>
         </div>
 
-        <span className="px-2.5 py-1 rounded-full bg-[#fbd100]/15 text-[#ffd405] text-xs font-bold flex items-center gap-1.5">
-          <img src="/watchmatch-icon.svg" alt="" className="w-4 h-4 object-contain" />
+        <span className="px-2.5 py-1 rounded-full bg-secondary-container/15 text-secondary text-xs font-bold flex items-center gap-1.5">
+          <img
+            src="/watchmatch-icon.svg"
+            alt=""
+            className="w-4 h-4 object-contain"
+          />
           <span>WatchMatch Liste</span>
         </span>
       </div>
@@ -43,24 +51,24 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
       {/* Provider Filter Chips */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
         <Button
-          variant={filterProvider === 'all' ? 'primary' : 'secondary'}
+          variant={filterProvider === "all" ? "primary" : "secondary"}
           size="sm"
           radius="full"
-          onClick={() => setFilterProvider('all')}
+          onClick={() => setFilterProvider("all")}
           className="font-bold shrink-0"
         >
           Alle Dienste
         </Button>
-        {['netflix', 'prime', 'crunchyroll', 'apple'].map((prov) => (
+        {["netflix", "prime", "crunchyroll", "apple"].map((prov) => (
           <Button
             key={prov}
-            variant={filterProvider === prov ? 'primary' : 'secondary'}
+            variant={filterProvider === prov ? "primary" : "secondary"}
             size="sm"
             radius="full"
             onClick={() => setFilterProvider(prov)}
             className="font-bold shrink-0 capitalize"
           >
-            {prov === 'prime' ? 'Prime Video' : prov}
+            {prov === "prime" ? "Prime Video" : prov}
           </Button>
         ))}
       </div>
@@ -71,7 +79,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
           filtered.map((movie) => (
             <div
               key={movie.id}
-              className="bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#3a3a3a] rounded-xl p-3 flex gap-3 items-center shadow-sm"
+              className="bg-surface-100 border border-surface-300 hover:border-surface-bright rounded-xl p-3 flex gap-3 items-center shadow-sm"
             >
               <img
                 src={movie.posterUrl}
@@ -85,23 +93,26 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
                   <div className="flex items-start justify-between gap-1">
                     <h3
                       onClick={() => onOpenMovieDetails(movie.id)}
-                      className="text-xs font-bold text-white truncate cursor-pointer hover:text-[#d80b69] transition-colors"
+                      className="text-xs font-bold text-white truncate cursor-pointer hover:text-primary-container transition-colors"
                     >
                       {movie.title}
                     </h3>
-                    <div className="flex items-center gap-0.5 text-[#ffd405] text-xs font-bold shrink-0">
-                      <span className="material-symbols-outlined text-[14px] icon-filled">star</span>
+                    <div className="flex items-center gap-0.5 text-secondary text-xs font-bold shrink-0">
+                      <span className="material-symbols-outlined text-[14px] icon-filled">
+                        star
+                      </span>
                       <span>{movie.rating}</span>
                     </div>
                   </div>
-                  <p className="text-[10px] text-[#a3a3a3] mt-0.5">
-                    {movie.year} • {movie.genres.slice(0, 2).join(' / ')} • {movie.duration || `${movie.episodes} Episoden`}
+                  <p className="text-[10px] text-tertiary mt-0.5">
+                    {movie.year} • {movie.genres.slice(0, 2).join(" / ")} •{" "}
+                    {movie.duration || `${movie.episodes} Episoden`}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between mt-2 pt-1 border-t border-[#262626]">
-                  <span className="text-[10px] text-[#ffd405] font-semibold bg-[#2a2a2a] px-2 py-0.5 rounded">
-                    {movie.providers[0]?.name || 'Netflix'}
+                <div className="flex items-center justify-between mt-2 pt-1 border-t border-surface-bright">
+                  <span className="text-[10px] text-secondary font-semibold bg-surface-container-high px-2 py-0.5 rounded">
+                    {movie.providers[0]?.name || "Netflix"}
                   </span>
 
                   <div className="flex items-center gap-1.5">
@@ -111,9 +122,11 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
                       variant="secondary"
                       size="xs"
                       radius="md"
-                      className="text-[#a3a3a3] hover:text-white"
+                      className="text-tertiary hover:text-white"
                     >
-                      <span className="material-symbols-outlined text-[15px]">send</span>
+                      <span className="material-symbols-outlined text-[15px]">
+                        send
+                      </span>
                     </IconButton>
                     <IconButton
                       onClick={() => onRemoveFromWatchlist(movie.id)}
@@ -121,9 +134,11 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
                       variant="secondary"
                       size="xs"
                       radius="md"
-                      className="text-[#a3a3a3] hover:text-[#ffb4ab]"
+                      className="text-tertiary hover:text-red-400"
                     >
-                      <span className="material-symbols-outlined text-[15px]">delete</span>
+                      <span className="material-symbols-outlined text-[15px]">
+                        delete
+                      </span>
                     </IconButton>
                   </div>
                 </div>
@@ -131,10 +146,18 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
             </div>
           ))
         ) : (
-          <div className="p-8 text-center bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl flex flex-col items-center gap-2.5">
-            <img src="/watchmatch-icon.svg" alt="" className="w-10 h-10 opacity-60" />
-            <span className="text-xs font-bold text-white">Keine Titel in diesem Filter</span>
-            <p className="text-[11px] text-[#a3a3a3]">Swipen im Match-Deck fügt Titel automatisch hier hinzu.</p>
+          <div className="p-8 text-center bg-surface-100 border border-surface-300 rounded-xl flex flex-col items-center gap-2.5">
+            <img
+              src="/watchmatch-icon.svg"
+              alt=""
+              className="w-10 h-10 opacity-60"
+            />
+            <span className="text-xs font-bold text-white">
+              Keine Titel in diesem Filter
+            </span>
+            <p className="text-[11px] text-tertiary">
+              Swipen im Match-Deck fügt Titel automatisch hier hinzu.
+            </p>
           </div>
         )}
       </div>

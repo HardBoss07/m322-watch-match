@@ -1,30 +1,30 @@
-import { useState, useCallback } from 'react';
-import { FilterSettings, StreamingProvider } from '../../types';
-import { INITIAL_FILTERS } from '../../data/mockData';
+import { useState, useCallback } from "react";
+import { FilterSettings, StreamingProvider } from "../../types";
+import { INITIAL_FILTERS } from "../../data/mockData";
 
 export const AVAILABLE_AUDIO_LANGUAGES = [
-  { code: 'DE', label: 'Deutsch (DE)', flag: '🇩🇪' },
-  { code: 'EN', label: 'Englisch (EN)', flag: '🇬🇧' },
-  { code: 'JA', label: 'Japanisch (JA)', flag: '🇯🇵' },
-  { code: 'FR', label: 'Französisch (FR)', flag: '🇫🇷' },
-  { code: 'ES', label: 'Spanisch (ES)', flag: '🇪🇸' },
+  { code: "DE", label: "Deutsch (DE)", flag: "🇩🇪" },
+  { code: "EN", label: "Englisch (EN)", flag: "🇬🇧" },
+  { code: "JA", label: "Japanisch (JA)", flag: "🇯🇵" },
+  { code: "FR", label: "Französisch (FR)", flag: "🇫🇷" },
+  { code: "ES", label: "Spanisch (ES)", flag: "🇪🇸" },
 ];
 
 export const AVAILABLE_GENRES = [
-  'Sci-Fi',
-  'Action',
-  'Anime',
-  'Dystopie',
-  'Drama',
-  'Abenteuer',
-  'Mystery',
-  'Horror',
+  "Sci-Fi",
+  "Action",
+  "Anime",
+  "Dystopie",
+  "Drama",
+  "Abenteuer",
+  "Mystery",
+  "Horror",
 ];
 
 export function useFilters(initial: FilterSettings = INITIAL_FILTERS) {
   const [filters, setFilters] = useState<FilterSettings>({
     ...initial,
-    audioLanguages: initial.audioLanguages || ['DE'],
+    audioLanguages: initial.audioLanguages || ["DE"],
     genres: initial.genres || [],
   });
 
@@ -40,15 +40,15 @@ export function useFilters(initial: FilterSettings = INITIAL_FILTERS) {
 
   const toggleAudioLanguage = useCallback((code: string) => {
     setFilters((prev) => {
-      const current = prev.audioLanguages || ['DE'];
+      const current = prev.audioLanguages || ["DE"];
       const next = current.includes(code)
         ? current.filter((c) => c !== code)
         : [...current, code];
       // Keep onlyDeAudio synced: true if only DE is selected or DE is in selection
       return {
         ...prev,
-        audioLanguages: next.length > 0 ? next : ['DE'],
-        onlyDeAudio: next.length === 1 && next[0] === 'DE',
+        audioLanguages: next.length > 0 ? next : ["DE"],
+        onlyDeAudio: next.length === 1 && next[0] === "DE",
       };
     });
   }, []);

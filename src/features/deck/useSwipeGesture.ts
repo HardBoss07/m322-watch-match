@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { useMobileFrame } from '../../components/MobileFrame';
+import { useState, useRef, useEffect, useCallback } from "react";
+import { useMobileFrame } from "../../components/MobileFrame";
 
 interface UseSwipeGestureProps {
   onSwipeRight: () => void;
@@ -41,11 +41,17 @@ export function useSwipeGesture({
       }, idleTimeoutMs);
     };
 
-    window.addEventListener('mousemove', handleUserActivity, { passive: true });
-    window.addEventListener('pointermove', handleUserActivity, { passive: true });
-    window.addEventListener('pointerdown', handleUserActivity, { passive: true });
-    window.addEventListener('keydown', handleUserActivity, { passive: true });
-    window.addEventListener('touchstart', handleUserActivity, { passive: true });
+    window.addEventListener("mousemove", handleUserActivity, { passive: true });
+    window.addEventListener("pointermove", handleUserActivity, {
+      passive: true,
+    });
+    window.addEventListener("pointerdown", handleUserActivity, {
+      passive: true,
+    });
+    window.addEventListener("keydown", handleUserActivity, { passive: true });
+    window.addEventListener("touchstart", handleUserActivity, {
+      passive: true,
+    });
 
     // Initial timeout for idle detection
     idleTimerRef.current = setTimeout(() => {
@@ -54,11 +60,11 @@ export function useSwipeGesture({
 
     return () => {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      window.removeEventListener('mousemove', handleUserActivity);
-      window.removeEventListener('pointermove', handleUserActivity);
-      window.removeEventListener('pointerdown', handleUserActivity);
-      window.removeEventListener('keydown', handleUserActivity);
-      window.removeEventListener('touchstart', handleUserActivity);
+      window.removeEventListener("mousemove", handleUserActivity);
+      window.removeEventListener("pointermove", handleUserActivity);
+      window.removeEventListener("pointerdown", handleUserActivity);
+      window.removeEventListener("keydown", handleUserActivity);
+      window.removeEventListener("touchstart", handleUserActivity);
     };
   }, [idleTimeoutMs]);
 

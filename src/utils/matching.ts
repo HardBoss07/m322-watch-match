@@ -1,4 +1,4 @@
-import { Movie, FilterSettings } from '../types';
+import { Movie, FilterSettings } from "../types";
 
 /**
  * Calculates taste compatibility score between two users as a percentage (0 - 100).
@@ -6,13 +6,13 @@ import { Movie, FilterSettings } from '../types';
 export function calculateTasteMatch(
   userGenresA: string[],
   userGenresB: string[],
-  sharedHits: number = 0
+  sharedHits: number = 0,
 ): number {
   if (userGenresA.length === 0 || userGenresB.length === 0) return 50;
-  
-  const setB = new Set(userGenresB.map(g => g.toLowerCase().trim()));
-  const setA = new Set(userGenresA.map(g => g.toLowerCase().trim()));
-  
+
+  const setB = new Set(userGenresB.map((g) => g.toLowerCase().trim()));
+  const setA = new Set(userGenresA.map((g) => g.toLowerCase().trim()));
+
   // Calculate direct matches and soft matches (e.g. "Psychological Thriller" and "Thriller")
   let matches = 0;
   for (const gA of setA) {
@@ -30,12 +30,12 @@ export function calculateTasteMatch(
   }
 
   const avgSize = (setA.size + setB.size) / 2;
-  const matchRatio = avgSize > 0 ? (matches / avgSize) : 0;
-  
+  const matchRatio = avgSize > 0 ? matches / avgSize : 0;
+
   if (matchRatio === 0 && sharedHits === 0) {
     return 15;
   }
-  
+
   const hitBonus = Math.min(sharedHits * 1.5, 20);
   const score = Math.round(matchRatio * 75 + hitBonus);
   return Math.min(Math.max(score, 10), 99);
@@ -47,24 +47,27 @@ export function calculateTasteMatch(
 export function getSentimentLabel(rating: number): string {
   const rounded = Math.round(rating);
   const sentiments: Record<number, string> = {
-    1: 'Enttäuschend',
-    2: 'Schwach',
-    3: 'Mäßig',
-    4: 'Ganz okay',
-    5: 'Durchschnittlich',
-    6: 'Solide Unterhaltung',
-    7: 'Gut gemacht',
-    8: 'Sehr empfehlenswert!',
-    9: 'Absolutes Meisterwerk',
-    10: 'Legendär / Kult'
+    1: "Enttäuschend",
+    2: "Schwach",
+    3: "Mäßig",
+    4: "Ganz okay",
+    5: "Durchschnittlich",
+    6: "Solide Unterhaltung",
+    7: "Gut gemacht",
+    8: "Sehr empfehlenswert!",
+    9: "Absolutes Meisterwerk",
+    10: "Legendär / Kult",
   };
-  return sentiments[rounded] || 'Sehr empfehlenswert';
+  return sentiments[rounded] || "Sehr empfehlenswert";
 }
 
 /**
  * Calculates XP percentage and remaining XP to next rank.
  */
-export function calculateXpProgress(currentXp: number, targetXp: number): {
+export function calculateXpProgress(
+  currentXp: number,
+  targetXp: number,
+): {
   percent: number;
   xpRemaining: number;
 } {
@@ -77,10 +80,15 @@ export function calculateXpProgress(currentXp: number, targetXp: number): {
 /**
  * Filters movies based on active subscriptions, DE audio flag, and runtime limit.
  */
-export function filterMovies(movies: Movie[], filters: FilterSettings): Movie[] {
-  return movies.filter(movie => {
+export function filterMovies(
+  movies: Movie[],
+  filters: FilterSettings,
+): Movie[] {
+  return movies.filter((movie) => {
     // Check provider availability
-    const hasActiveProvider = movie.providers.some(p => filters.providers[p.id]);
+    const hasActiveProvider = movie.providers.some(
+      (p) => filters.providers[p.id],
+    );
     if (!hasActiveProvider) return false;
 
     // Check German audio requirement
@@ -92,11 +100,13 @@ export function filterMovies(movies: Movie[], filters: FilterSettings): Movie[] 
     if (filters.audioLanguages && filters.audioLanguages.length > 0) {
       const hasLanguageMatch = movie.providers.some((p) =>
         p.audio.some((audioTrack) =>
-          filters.audioLanguages!.some((lang) =>
-            audioTrack.toLowerCase().includes(lang.toLowerCase()) ||
-            (lang === 'DE' && (audioTrack.includes('DE') || movie.hasDeAudio))
-          )
-        )
+          filters.audioLanguages!.some(
+            (lang) =>
+              audioTrack.toLowerCase().includes(lang.toLowerCase()) ||
+              (lang === "DE" &&
+                (audioTrack.includes("DE") || movie.hasDeAudio)),
+          ),
+        ),
       );
       if (!hasLanguageMatch) return false;
     }
@@ -104,10 +114,11 @@ export function filterMovies(movies: Movie[], filters: FilterSettings): Movie[] 
     // Check genre match if specific genres are selected
     if (filters.genres && filters.genres.length > 0) {
       const hasGenreMatch = movie.genres.some((g) =>
-        filters.genres!.some((selected) =>
-          g.toLowerCase().includes(selected.toLowerCase()) ||
-          selected.toLowerCase().includes(g.toLowerCase())
-        )
+        filters.genres!.some(
+          (selected) =>
+            g.toLowerCase().includes(selected.toLowerCase()) ||
+            selected.toLowerCase().includes(g.toLowerCase()),
+        ),
       );
       if (!hasGenreMatch) return false;
     }
@@ -116,8 +127,8 @@ export function filterMovies(movies: Movie[], filters: FilterSettings): Movie[] 
     if (filters.maxRuntimeMinutes < 210 && movie.duration) {
       const match = movie.duration.match(/(\d+)h\s*(\d+)?m?/);
       if (match) {
-        const hours = parseInt(match[1] || '0', 10);
-        const mins = parseInt(match[2] || '0', 10);
+        const hours = parseInt(match[1] || "0", 10);
+        const mins = parseInt(match[2] || "0", 10);
         const totalMinutes = hours * 60 + mins;
         if (totalMinutes > filters.maxRuntimeMinutes) {
           return false;
@@ -132,7 +143,10 @@ export function filterMovies(movies: Movie[], filters: FilterSettings): Movie[] 
 /**
  * Computes the next index in the deck and whether a wrap-around occurred.
  */
-export function getNextDeckIndex(currentIndex: number, deckLength: number): {
+export function getNextDeckIndex(
+  currentIndex: number,
+  deckLength: number,
+): {
   nextIndex: number;
   didWrap: boolean;
 } {

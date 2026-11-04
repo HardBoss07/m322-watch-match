@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { FilterSettings, StreamingProvider } from '../types';
-import { Button, IconButton, ButtonIcon } from './ui/button';
+import React, { useState } from "react";
+import { FilterSettings, StreamingProvider } from "../types";
+import { Button, IconButton } from "./ui/button";
 
 interface SettingsModalProps {
   filters: FilterSettings;
@@ -15,7 +15,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onClose,
   onOpenOnboarding,
 }) => {
-  const [localFilters, setLocalFilters] = useState<FilterSettings>({ ...filters });
+  const [localFilters, setLocalFilters] = useState<FilterSettings>({
+    ...filters,
+  });
   const [showSavedFeedback, setShowSavedFeedback] = useState(false);
 
   const toggleProvider = (p: StreamingProvider) => {
@@ -37,19 +39,44 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     }, 900);
   };
 
-  const providerConfigs: { id: StreamingProvider; name: string; tag: string; color: string; icon: string }[] = [
-    { id: 'netflix', name: 'Netflix', tag: 'N', color: '#e50914', icon: 'subscriptions' },
-    { id: 'disney', name: 'Disney+', tag: 'D+', color: '#113ccf', icon: 'tv' },
-    { id: 'prime', name: 'Prime Video', tag: 'Prime', color: '#00a8e1', icon: 'play_circle' },
-    { id: 'crunchyroll', name: 'Crunchyroll', tag: 'CR', color: '#f47521', icon: 'animation' },
-    { id: 'apple', name: 'Apple TV+', tag: 'Apple', color: '#a3a3a3', icon: 'tv' },
-    { id: 'paramount', name: 'Paramount+', tag: 'P+', color: '#0064ff', icon: 'movie' },
+  const providerConfigs: {
+    id: StreamingProvider;
+    name: string;
+    tag: string;
+    color: string;
+  }[] = [
+    {
+      id: "netflix",
+      name: "Netflix",
+      tag: "N",
+      color: "var(--color-provider-netflix, #e50914)",
+    },
+    {
+      id: "disney",
+      name: "Disney+",
+      tag: "D+",
+      color: "var(--color-provider-disney, #113ccf)",
+    },
+    {
+      id: "prime",
+      name: "Prime Video",
+      tag: "Prime",
+      color: "var(--color-provider-prime, #00a8e1)",
+    },
+    {
+      id: "crunchyroll",
+      name: "Crunchyroll",
+      tag: "CR",
+      color: "var(--color-provider-crunchyroll, #f47521)",
+    },
+    { id: "apple", name: "Apple TV+", tag: "Apple", color: "#a3a3a3" },
+    { id: "paramount", name: "Paramount+", tag: "P+", color: "#0064ff" },
   ];
 
   return (
-    <div className="absolute inset-0 z-50 bg-[#131313] overflow-y-auto flex flex-col animate-in fade-in duration-150">
+    <div className="absolute inset-0 z-50 bg-surface overflow-y-auto flex flex-col animate-in fade-in duration-150">
       {/* Top Header */}
-      <header className="sticky top-0 inset-x-0 z-30 bg-[#131313]/90 backdrop-blur-xl border-b border-[#262626] h-14 px-4 flex items-center justify-between">
+      <header className="sticky top-0 inset-x-0 z-30 bg-surface/90 backdrop-blur-xl border-b border-surface-bright h-14 px-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <IconButton
             onClick={onClose}
@@ -57,11 +84,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             variant="ghost"
             size="md"
             radius="full"
-            className="-ml-2 text-white hover:text-[#d80b69]"
+            className="-ml-2 text-white hover:text-primary-container"
           >
-            <span className="material-symbols-outlined text-[24px]">arrow_back</span>
+            <span className="material-symbols-outlined text-[24px]">
+              arrow_back
+            </span>
           </IconButton>
-          <h1 className="text-sm font-bold text-white">Filter & Einstellungen</h1>
+          <h1 className="text-sm font-bold text-white">
+            Filter & Einstellungen
+          </h1>
         </div>
 
         <Button
@@ -69,7 +100,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           size="sm"
           radius="md"
           onClick={handleSave}
-          leftIcon={<span className="material-symbols-outlined text-[15px]">check</span>}
+          leftIcon={
+            <span className="material-symbols-outlined text-[15px]">check</span>
+          }
         >
           Speichern
         </Button>
@@ -79,14 +112,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       <div className="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-5 pb-24">
         {/* Intro */}
         <div>
-          <h2 className="text-xl font-black text-white tracking-tight">Streaming & Filter</h2>
-          <p className="text-xs text-[#a3a3a3] mt-0.5">Präferenzen für das Swipe-Deck verwalten</p>
+          <h2 className="text-xl font-black text-white tracking-tight">
+            Streaming & Filter
+          </h2>
+          <p className="text-xs text-tertiary mt-0.5">
+            Präferenzen für das Swipe-Deck verwalten
+          </p>
         </div>
 
         {/* Section 1: Streaming Providers */}
         <section className="flex flex-col gap-2.5">
           <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#d80b69] text-[18px] icon-filled">
+            <span className="material-symbols-outlined text-primary-container text-[18px] icon-filled">
               subscriptions
             </span>
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
@@ -105,29 +142,33 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   aria-pressed={isSelected}
                   className={`p-3 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-left ${
                     isSelected
-                      ? 'bg-[#1c1b1b] border-[#3a3a3a] shadow-sm'
-                      : 'bg-[#161616]/60 border-[#262626] opacity-60'
+                      ? "bg-surface-container-low border-surface-300 shadow-sm"
+                      : "bg-surface-container-low/60 border-surface-bright opacity-60"
                   }`}
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-xs shrink-0"
-                      style={{ backgroundColor: isSelected ? p.color : '#222222' }}
+                      style={{
+                        backgroundColor: isSelected ? p.color : "#222222",
+                      }}
                     >
                       {p.tag}
                     </div>
-                    <span className="text-xs font-bold text-white truncate">{p.name}</span>
+                    <span className="text-xs font-bold text-white truncate">
+                      {p.name}
+                    </span>
                   </div>
 
                   <div
                     className={`w-5 h-5 rounded-full flex items-center justify-center ${
                       isSelected
-                        ? 'bg-[#d80b69] text-white shadow-sm'
-                        : 'bg-[#262626] text-[#737373]'
+                        ? "bg-primary-container text-white shadow-sm"
+                        : "bg-surface-bright text-tertiary"
                     }`}
                   >
                     <span className="material-symbols-outlined text-[13px]">
-                      {isSelected ? 'check' : 'remove'}
+                      {isSelected ? "check" : "remove"}
                     </span>
                   </div>
                 </button>
@@ -139,7 +180,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Section 2: Filters & Preferences */}
         <section className="flex flex-col gap-2.5">
           <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#ffd405] text-[18px] icon-filled">
+            <span className="material-symbols-outlined text-secondary text-[18px] icon-filled">
               tune
             </span>
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
@@ -147,21 +188,30 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </h3>
           </div>
 
-          <div className="flex flex-col bg-[#1c1b1b] border border-[#2a2a2a] rounded-xl overflow-hidden divide-y divide-[#262626]">
+          <div className="flex flex-col bg-surface-container-low border border-surface-300 rounded-xl overflow-hidden divide-y divide-surface-bright">
             {/* German Audio Switch */}
             <div
               onClick={() =>
-                setLocalFilters((prev) => ({ ...prev, onlyDeAudio: !prev.onlyDeAudio }))
+                setLocalFilters((prev) => ({
+                  ...prev,
+                  onlyDeAudio: !prev.onlyDeAudio,
+                }))
               }
-              className="flex items-center justify-between p-3 cursor-pointer hover:bg-[#201f1f] transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer hover:bg-surface-container transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#0e0e0e] flex items-center justify-center text-[#ffd405]">
-                  <span className="material-symbols-outlined text-[18px]">record_voice_over</span>
+                <div className="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary">
+                  <span className="material-symbols-outlined text-[18px]">
+                    record_voice_over
+                  </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-white">Nur deutsche Tonspur (DE Audio)</span>
-                  <span className="text-[10px] text-[#a3a3a3]">Deutsche Synchronisation bevorzugen</span>
+                  <span className="text-xs font-bold text-white">
+                    Nur deutsche Tonspur (DE Audio)
+                  </span>
+                  <span className="text-[10px] text-tertiary">
+                    Deutsche Synchronisation bevorzugen
+                  </span>
                 </div>
               </div>
               <button
@@ -169,7 +219,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 role="switch"
                 aria-checked={localFilters.onlyDeAudio}
                 className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
-                  localFilters.onlyDeAudio ? 'bg-[#d80b69] justify-end' : 'bg-[#2a2a2a] justify-start'
+                  localFilters.onlyDeAudio
+                    ? "bg-primary-container justify-end"
+                    : "bg-surface-200 justify-start"
                 }`}
               >
                 <div className="w-5 h-5 rounded-full bg-white shadow-md"></div>
@@ -179,17 +231,26 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             {/* Unreleased Titles Switch */}
             <div
               onClick={() =>
-                setLocalFilters((prev) => ({ ...prev, hideUnreleased: !prev.hideUnreleased }))
+                setLocalFilters((prev) => ({
+                  ...prev,
+                  hideUnreleased: !prev.hideUnreleased,
+                }))
               }
-              className="flex items-center justify-between p-3 cursor-pointer hover:bg-[#201f1f] transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer hover:bg-surface-container transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#0e0e0e] flex items-center justify-center text-[#737373]">
-                  <span className="material-symbols-outlined text-[18px]">event_busy</span>
+                <div className="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-tertiary">
+                  <span className="material-symbols-outlined text-[18px]">
+                    event_busy
+                  </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-white">Unveröffentlichte Titel ausblenden</span>
-                  <span className="text-[10px] text-[#a3a3a3]">Nur sofort streambare Titel anzeigen</span>
+                  <span className="text-xs font-bold text-white">
+                    Unveröffentlichte Titel ausblenden
+                  </span>
+                  <span className="text-[10px] text-tertiary">
+                    Nur sofort streambare Titel anzeigen
+                  </span>
                 </div>
               </div>
               <button
@@ -197,7 +258,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 role="switch"
                 aria-checked={localFilters.hideUnreleased}
                 className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
-                  localFilters.hideUnreleased ? 'bg-[#d80b69] justify-end' : 'bg-[#2a2a2a] justify-start'
+                  localFilters.hideUnreleased
+                    ? "bg-primary-container justify-end"
+                    : "bg-surface-200 justify-start"
                 }`}
               >
                 <div className="w-5 h-5 rounded-full bg-white shadow-md"></div>
@@ -208,14 +271,18 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="p-3 flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#0e0e0e] flex items-center justify-center text-[#ffd405]">
-                    <span className="material-symbols-outlined text-[18px]">timelapse</span>
+                  <div className="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary">
+                    <span className="material-symbols-outlined text-[18px]">
+                      timelapse
+                    </span>
                   </div>
-                  <span className="text-xs font-bold text-white">Maximale Filmlänge</span>
+                  <span className="text-xs font-bold text-white">
+                    Maximale Filmlänge
+                  </span>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-md bg-[#0e0e0e] border border-[#2a2a2a] text-[#ffd405] font-bold text-xs font-mono">
+                <span className="px-2.5 py-0.5 rounded-md bg-surface-container-lowest border border-surface-300 text-secondary font-bold text-xs font-mono">
                   {localFilters.maxRuntimeMinutes >= 210
-                    ? 'Kein Limit'
+                    ? "Kein Limit"
                     : `${localFilters.maxRuntimeMinutes} min`}
                 </span>
               </div>
@@ -232,9 +299,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     maxRuntimeMinutes: parseInt(e.target.value, 10),
                   }))
                 }
-                className="w-full h-2 rounded-lg bg-[#262626] appearance-none accent-[#ffd405] cursor-pointer mt-1"
+                className="w-full h-2 rounded-lg bg-surface-bright appearance-none accent-secondary cursor-pointer mt-1"
               />
-              <div className="flex justify-between text-[10px] text-[#737373]">
+              <div className="flex justify-between text-[10px] text-tertiary">
                 <span>80 min</span>
                 <span>150 min</span>
                 <span>210+ min (Kein Limit)</span>
@@ -246,7 +313,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Section 3: Notifications & Alerts */}
         <section className="flex flex-col gap-2.5">
           <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#d80b69] text-[18px] icon-filled">
+            <span className="material-symbols-outlined text-primary-container text-[18px] icon-filled">
               notifications_active
             </span>
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
@@ -254,21 +321,30 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </h3>
           </div>
 
-          <div className="flex flex-col bg-[#1c1b1b] border border-[#2a2a2a] rounded-xl overflow-hidden divide-y divide-[#262626]">
+          <div className="flex flex-col bg-surface-container-low border border-surface-300 rounded-xl overflow-hidden divide-y divide-surface-bright">
             {/* New Seasons Switch */}
             <div
               onClick={() =>
-                setLocalFilters((prev) => ({ ...prev, pushNewSeasons: !prev.pushNewSeasons }))
+                setLocalFilters((prev) => ({
+                  ...prev,
+                  pushNewSeasons: !prev.pushNewSeasons,
+                }))
               }
-              className="flex items-center justify-between p-3 cursor-pointer hover:bg-[#201f1f] transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer hover:bg-surface-container transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#0e0e0e] flex items-center justify-center text-[#d80b69]">
-                  <span className="material-symbols-outlined text-[18px]">update</span>
+                <div className="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary-container">
+                  <span className="material-symbols-outlined text-[18px]">
+                    update
+                  </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-white">Neue Staffeln verfolgter Serien</span>
-                  <span className="text-[10px] text-[#a3a3a3]">Push-Info bei neuen Episoden</span>
+                  <span className="text-xs font-bold text-white">
+                    Neue Staffeln verfolgter Serien
+                  </span>
+                  <span className="text-[10px] text-tertiary">
+                    Push-Info bei neuen Episoden
+                  </span>
                 </div>
               </div>
               <button
@@ -276,7 +352,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 role="switch"
                 aria-checked={localFilters.pushNewSeasons}
                 className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
-                  localFilters.pushNewSeasons ? 'bg-[#d80b69] justify-end' : 'bg-[#2a2a2a] justify-start'
+                  localFilters.pushNewSeasons
+                    ? "bg-primary-container justify-end"
+                    : "bg-surface-200 justify-start"
                 }`}
               >
                 <div className="w-5 h-5 rounded-full bg-white shadow-md"></div>
@@ -291,15 +369,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   pushFriendRecommendations: !prev.pushFriendRecommendations,
                 }))
               }
-              className="flex items-center justify-between p-3 cursor-pointer hover:bg-[#201f1f] transition-colors"
+              className="flex items-center justify-between p-3 cursor-pointer hover:bg-surface-container transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#0e0e0e] flex items-center justify-center text-[#ffd405]">
-                  <span className="material-symbols-outlined text-[18px]">groups</span>
+                <div className="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary">
+                  <span className="material-symbols-outlined text-[18px]">
+                    groups
+                  </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-white">Freundes-Empfehlungen melden</span>
-                  <span className="text-[10px] text-[#a3a3a3]">Hinweis bei gemeinsamen Matches</span>
+                  <span className="text-xs font-bold text-white">
+                    Freundes-Empfehlungen melden
+                  </span>
+                  <span className="text-[10px] text-tertiary">
+                    Hinweis bei gemeinsamen Matches
+                  </span>
                 </div>
               </div>
               <button
@@ -308,8 +392,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 aria-checked={localFilters.pushFriendRecommendations}
                 className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
                   localFilters.pushFriendRecommendations
-                    ? 'bg-[#d80b69] justify-end'
-                    : 'bg-[#2a2a2a] justify-start'
+                    ? "bg-primary-container justify-end"
+                    : "bg-surface-200 justify-start"
                 }`}
               >
                 <div className="w-5 h-5 rounded-full bg-white shadow-md"></div>
@@ -321,32 +405,52 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Section 4: Account & Security */}
         <section className="flex flex-col gap-2.5">
           <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[#a3a3a3] text-[18px]">security</span>
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Konto & Sicherheit</h3>
+            <span className="material-symbols-outlined text-tertiary text-[18px]">
+              security
+            </span>
+            <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+              Konto & Sicherheit
+            </h3>
           </div>
 
           <div className="flex flex-col gap-2">
             <button
-              onClick={() => alert('Cache und gespeicherte Daten wurden geleert.')}
-              className="w-full flex items-center justify-between p-3 rounded-xl bg-[#1c1b1b] border border-[#2a2a2a] text-left hover:bg-[#201f1f] cursor-pointer"
+              type="button"
+              onClick={() =>
+                alert("Cache und gespeicherte Daten wurden geleert.")
+              }
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-surface-300 text-left hover:bg-surface-container cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-[#a3a3a3] text-[18px]">manage_accounts</span>
-                <span className="text-xs font-semibold text-white">Gespeicherte Daten & Cache verwalten</span>
+                <span className="material-symbols-outlined text-tertiary text-[18px]">
+                  manage_accounts
+                </span>
+                <span className="text-xs font-semibold text-white">
+                  Gespeicherte Daten & Cache verwalten
+                </span>
               </div>
-              <span className="material-symbols-outlined text-[#737373] text-[18px]">chevron_right</span>
+              <span className="material-symbols-outlined text-tertiary text-[18px]">
+                chevron_right
+              </span>
             </button>
 
             {onOpenOnboarding && (
               <button
+                type="button"
                 onClick={onOpenOnboarding}
-                className="w-full flex items-center justify-between p-3 rounded-xl bg-[#1c1b1b] border border-[#2a2a2a] text-left hover:bg-[#201f1f] cursor-pointer"
+                className="w-full flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-surface-300 text-left hover:bg-surface-container cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-[#ffd405] text-[18px]">lock_reset</span>
-                  <span className="text-xs font-semibold text-white">Anmeldedaten & Onboarding Setup</span>
+                  <span className="material-symbols-outlined text-secondary text-[18px]">
+                    lock_reset
+                  </span>
+                  <span className="text-xs font-semibold text-white">
+                    Anmeldedaten & Onboarding Setup
+                  </span>
                 </div>
-                <span className="material-symbols-outlined text-[#737373] text-[18px]">chevron_right</span>
+                <span className="material-symbols-outlined text-tertiary text-[18px]">
+                  chevron_right
+                </span>
               </button>
             )}
 
@@ -358,8 +462,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               onClick={() => {
                 if (onOpenOnboarding) onOpenOnboarding();
               }}
-              leftIcon={<span className="material-symbols-outlined text-[18px]">logout</span>}
-              className="mt-1 text-[#ffb4ab] border-[#3a3a3a] hover:border-red-500/50 hover:bg-red-500/10"
+              leftIcon={
+                <span className="material-symbols-outlined text-[18px]">
+                  logout
+                </span>
+              }
+              className="mt-1 text-primary border-surface-300 hover:border-red-500/50 hover:bg-red-500/10"
             >
               Ausloggen
             </Button>
@@ -374,16 +482,24 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             radius="md"
             fullWidth
             onClick={handleSave}
-            leftIcon={<span className="material-symbols-outlined text-[20px]">sync_saved_locally</span>}
-            className="font-bold shadow-xl shadow-[#d80b69]/25"
+            leftIcon={
+              <span className="material-symbols-outlined text-[20px]">
+                sync_saved_locally
+              </span>
+            }
+            className="font-bold shadow-xl shadow-primary-container/25"
           >
             Filter speichern & anwenden
           </Button>
 
           {showSavedFeedback && (
-            <div className="w-full py-2 px-3 rounded-xl bg-[#1c1b1b] border border-[#ffd405]/50 text-[#ffd405] text-xs font-bold flex items-center justify-center gap-2 shadow-md animate-in fade-in duration-150">
-              <span className="material-symbols-outlined text-[16px]">check_circle</span>
-              <span>Abo-Filter synchronisiert! Swipe-Deck wird aktualisiert.</span>
+            <div className="w-full py-2 px-3 rounded-xl bg-surface-container-low border border-secondary/50 text-secondary text-xs font-bold flex items-center justify-center gap-2 shadow-md animate-in fade-in duration-150">
+              <span className="material-symbols-outlined text-[16px]">
+                check_circle
+              </span>
+              <span>
+                Abo-Filter synchronisiert! Swipe-Deck wird aktualisiert.
+              </span>
             </div>
           )}
         </div>

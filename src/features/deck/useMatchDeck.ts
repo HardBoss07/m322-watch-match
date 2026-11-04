@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Movie } from '../../types';
-import { getNextDeckIndex } from '../../utils/matching';
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Movie } from "../../types";
+import { getNextDeckIndex } from "../../utils/matching";
 
 interface UseMatchDeckProps {
   movies: Movie[];
@@ -27,12 +27,12 @@ export function useMatchDeck({
     matchPercent: number;
   } | null>(null);
 
-  const prevMovieIdsRef = useRef<string>(movies.map((m) => m.id).join(','));
+  const prevMovieIdsRef = useRef<string>(movies.map((m) => m.id).join(","));
   const wrapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Sync with movies prop only when IDs actually change
   useEffect(() => {
-    const currentIds = movies.map((m) => m.id).join(',');
+    const currentIds = movies.map((m) => m.id).join(",");
     if (currentIds !== prevMovieIdsRef.current) {
       prevMovieIdsRef.current = currentIds;
       setDeck(movies);
@@ -54,7 +54,8 @@ export function useMatchDeck({
   const nextMovie = deckLength > 1 ? deck[(safeIndex + 1) % deckLength] : null;
 
   const triggerWrapNotification = useCallback(() => {
-    const msg = 'Du hast alle aktuellen Empfehlungen gesehen! Die Liste wurde neu gestartet.';
+    const msg =
+      "Du hast alle aktuellen Empfehlungen gesehen! Die Liste wurde neu gestartet.";
     setWrapNotice(msg);
     if (wrapTimeoutRef.current) clearTimeout(wrapTimeoutRef.current);
     wrapTimeoutRef.current = setTimeout(() => {
@@ -83,7 +84,7 @@ export function useMatchDeck({
     if (movieToMatch.matchScore && movieToMatch.matchScore >= 90) {
       setMatchNotification({
         movie: movieToMatch,
-        friendName: 'Dario M.',
+        friendName: "Dario M.",
         matchPercent: movieToMatch.matchScore || 92,
       });
     }
@@ -114,7 +115,10 @@ export function useMatchDeck({
     setMatchNotification(null);
 
     // If deck is still currently showing the matched movie, advance immediately
-    if (matchedMovieId && deck[currentIndex % deckLength]?.id === matchedMovieId) {
+    if (
+      matchedMovieId &&
+      deck[currentIndex % deckLength]?.id === matchedMovieId
+    ) {
       advanceCard();
     }
   }, [matchNotification, deck, currentIndex, deckLength, advanceCard]);
@@ -126,7 +130,7 @@ export function useMatchDeck({
       const shuffled = [...deck].sort(() => Math.random() - 0.5);
       setDeck(shuffled);
       setCurrentIndex(0);
-      onDeckWrapped?.('Zufallsmodus aktiviert — Deck neu gemischt! 🎲');
+      onDeckWrapped?.("Zufallsmodus aktiviert — Deck neu gemischt! 🎲");
     }
   }, [surpriseMode, deck, deckLength, onDeckWrapped]);
 

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Movie } from '../../types';
-import { Button } from '../../components/ui/button';
+import React from "react";
+import { Movie } from "../../types";
+import { Button } from "../../components/ui/button";
 
 interface MatchOverlayProps {
   movie: Movie;
@@ -17,11 +17,11 @@ export const MatchOverlay: React.FC<MatchOverlayProps> = ({
 }) => {
   return (
     <div className="absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="bg-[#1a1a1a] border border-[#333333] rounded-2xl p-5 max-w-xs w-full text-center flex flex-col items-center gap-3 shadow-2xl relative overflow-hidden">
+      <div className="bg-surface-100 border border-surface-300 rounded-2xl p-5 max-w-xs w-full text-center flex flex-col items-center gap-3 shadow-2xl relative overflow-hidden">
         <button
           onClick={onDismiss}
           aria-label="Schließen"
-          className="absolute top-3 right-3 text-[#a3a3a3] hover:text-white p-1"
+          className="absolute top-3 right-3 text-tertiary hover:text-white p-1 cursor-pointer"
         >
           <span className="material-symbols-outlined text-[18px]">close</span>
         </button>
@@ -35,19 +35,22 @@ export const MatchOverlay: React.FC<MatchOverlayProps> = ({
         </div>
 
         <div>
-          <span className="text-xs uppercase font-extrabold text-[#ffd405] tracking-widest block">
+          <span className="text-xs uppercase font-extrabold text-secondary tracking-widest block">
             It's a Match!
           </span>
           <h3 className="text-lg font-bold text-white mt-1">
             Du & {friendName}
           </h3>
-          <p className="text-xs text-[#a3a3a3] mt-1">
-            Ihr beide wollt <strong className="text-white">{movie.title}</strong> sehen!
+          <p className="text-xs text-tertiary mt-1">
+            Ihr beide wollt{" "}
+            <strong className="text-white">{movie.title}</strong> sehen!
           </p>
         </div>
 
-        <div className="px-3 py-1.5 rounded-full bg-[#201f1f] border border-[#333333] text-xs font-bold text-[#ffd405] flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-[15px] icon-filled">bolt</span>
+        <div className="px-3 py-1.5 rounded-full bg-surface-container border border-surface-300 text-xs font-bold text-secondary flex items-center gap-1.5">
+          <span className="material-symbols-outlined text-[15px] icon-filled">
+            bolt
+          </span>
           {matchPercent}% Übereinstimmung
         </div>
 

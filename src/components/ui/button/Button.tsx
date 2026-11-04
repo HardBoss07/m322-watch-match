@@ -1,14 +1,14 @@
-import React, { forwardRef } from 'react';
-import { ButtonProps } from './types';
-import { getButtonClasses } from './button.variants';
-import { ButtonIcon } from './ButtonIcon';
+import React, { forwardRef } from "react";
+import { ButtonProps } from "./types";
+import { getButtonClasses } from "./button.variants";
+import { ButtonIcon } from "./ButtonIcon";
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      variant = 'secondary',
-      size = 'md',
-      radius = 'md',
+      variant = "secondary",
+      size = "md",
+      radius = "md",
       isLoading = false,
       leftIcon,
       rightIcon,
@@ -16,10 +16,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       disabled,
       children,
-      type = 'button',
+      type = "button",
       ...props
     },
-    ref
+    ref,
   ) => {
     const isButtonDisabled = disabled || isLoading;
 
@@ -81,7 +81,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
       </button>
     );
-  }
+  },
 );
 
-Button.displayName = 'Button';
+Button.displayName = "Button";

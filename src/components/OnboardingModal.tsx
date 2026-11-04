@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { FilterSettings, StreamingProvider } from '../types';
-import { Button, IconButton, ButtonIcon } from './ui/button';
+import React, { useState } from "react";
+import { FilterSettings, StreamingProvider } from "../types";
+import { Button, IconButton } from "./ui/button";
 
 interface OnboardingModalProps {
   onClose: () => void;
@@ -11,11 +11,20 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   onClose,
   onComplete,
 }) => {
-  const [step, setStep] = useState<'auth' | 'prefs' | 'forgot_password'>('auth');
-  const [email, setEmail] = useState('alex@watchmatch.io');
-  const [password, setPassword] = useState('••••••••••••');
-  const [selectedGenres, setSelectedGenres] = useState<string[]>(['Sci-Fi', 'Thriller', 'Action', 'Anime']);
-  const [selectedProviders, setSelectedProviders] = useState<Record<StreamingProvider, boolean>>({
+  const [step, setStep] = useState<"auth" | "prefs" | "forgot_password">(
+    "auth",
+  );
+  const [email, setEmail] = useState("alex@watchmatch.io");
+  const [password, setPassword] = useState("••••••••••••");
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([
+    "Sci-Fi",
+    "Thriller",
+    "Action",
+    "Anime",
+  ]);
+  const [selectedProviders, setSelectedProviders] = useState<
+    Record<StreamingProvider, boolean>
+  >({
     netflix: true,
     disney: false,
     prime: true,
@@ -28,7 +37,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres((prev) =>
-      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
     );
   };
 
@@ -40,14 +49,14 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   };
 
   const genresList = [
-    { name: 'Sci-Fi', icon: 'rocket_launch' },
-    { name: 'Thriller', icon: 'fingerprint' },
-    { name: 'Anime', icon: 'brush' },
-    { name: 'Comedy', icon: 'sentiment_very_satisfied' },
-    { name: 'Drama', icon: 'theater_comedy' },
-    { name: 'Horror', icon: 'skull' },
-    { name: 'Action', icon: 'flash_on' },
-    { name: 'Doku', icon: 'public' },
+    { name: "Sci-Fi", icon: "rocket_launch" },
+    { name: "Thriller", icon: "fingerprint" },
+    { name: "Anime", icon: "brush" },
+    { name: "Comedy", icon: "sentiment_very_satisfied" },
+    { name: "Drama", icon: "theater_comedy" },
+    { name: "Horror", icon: "skull" },
+    { name: "Action", icon: "flash_on" },
+    { name: "Doku", icon: "public" },
   ];
 
   const handleFinish = () => {
@@ -59,7 +68,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 z-50 bg-[#131313] overflow-y-auto flex flex-col animate-in fade-in duration-150">
+    <div className="absolute inset-0 z-50 bg-surface overflow-y-auto flex flex-col animate-in fade-in duration-150">
       <div className="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 pb-12">
         {/* Top Close Button */}
         <div className="flex justify-end">
@@ -69,7 +78,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             variant="secondary"
             size="md"
             radius="full"
-            className="text-[#a3a3a3] hover:text-white"
+            className="text-tertiary hover:text-white"
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </IconButton>
@@ -90,34 +99,39 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             alt="WatchMatch"
             className="h-9 w-auto object-contain my-1 select-none"
           />
-          <p className="text-xs text-[#a3a3a3] max-w-[280px] mt-1.5 leading-relaxed">
-            Finde gemeinsame Filme und Serien für deinen nächsten Streaming-Abend.
+          <p className="text-xs text-tertiary max-w-[280px] mt-1.5 leading-relaxed">
+            Finde gemeinsame Filme und Serien für deinen nächsten
+            Streaming-Abend.
           </p>
         </div>
 
         {/* Step Indicator Tabs */}
-        {step !== 'forgot_password' && (
-          <div className="w-full bg-[#161616] border border-[#262626] rounded-xl p-1 mb-6 flex gap-1 shadow-md">
+        {step !== "forgot_password" && (
+          <div className="w-full bg-surface-container-low border border-surface-bright rounded-xl p-1 mb-6 flex gap-1 shadow-md">
             <Button
-              variant={step === 'auth' ? 'secondary' : 'ghost'}
+              variant={step === "auth" ? "secondary" : "ghost"}
               size="sm"
               radius="md"
               fullWidth
-              onClick={() => setStep('auth')}
+              onClick={() => setStep("auth")}
               className={`font-bold ${
-                step === 'auth' ? 'bg-[#262626] text-white shadow-sm' : 'text-[#a3a3a3] hover:text-white'
+                step === "auth"
+                  ? "bg-surface-bright text-white shadow-sm"
+                  : "text-tertiary hover:text-white"
               }`}
             >
               1. Anmelden
             </Button>
             <Button
-              variant={step === 'prefs' ? 'secondary' : 'ghost'}
+              variant={step === "prefs" ? "secondary" : "ghost"}
               size="sm"
               radius="md"
               fullWidth
-              onClick={() => setStep('prefs')}
+              onClick={() => setStep("prefs")}
               className={`font-bold ${
-                step === 'prefs' ? 'bg-[#262626] text-white shadow-sm' : 'text-[#a3a3a3] hover:text-white'
+                step === "prefs"
+                  ? "bg-surface-bright text-white shadow-sm"
+                  : "text-tertiary hover:text-white"
               }`}
             >
               2. Filter & Setup
@@ -126,16 +140,15 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         )}
 
         {/* STEP 1: AUTHENTICATION */}
-        {step === 'auth' && (
+        {step === "auth" && (
           <section className="flex flex-col gap-4">
-            {/* Social Quick Auth Stack */}
             <div className="flex flex-col gap-2">
               <Button
                 variant="outline"
                 size="lg"
                 radius="md"
                 fullWidth
-                onClick={() => setStep('prefs')}
+                onClick={() => setStep("prefs")}
                 className="bg-white text-black hover:bg-[#f0f0f0] border-transparent font-bold"
                 leftIcon={
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -151,7 +164,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 size="lg"
                 radius="md"
                 fullWidth
-                onClick={() => setStep('prefs')}
+                onClick={() => setStep("prefs")}
                 className="font-bold"
                 leftIcon={
                   <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -180,25 +193,27 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
             {/* Divider */}
             <div className="flex items-center gap-3 my-1">
-              <div className="flex-1 h-px bg-[#262626]"></div>
-              <span className="text-[10px] uppercase text-[#737373] tracking-wider font-semibold">
+              <div className="flex-1 h-px bg-surface-bright"></div>
+              <span className="text-[10px] uppercase text-tertiary tracking-wider font-semibold">
                 oder mit E-Mail
               </span>
-              <div className="flex-1 h-px bg-[#262626]"></div>
+              <div className="flex-1 h-px bg-surface-bright"></div>
             </div>
 
             {/* Form */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                setStep('prefs');
+                setStep("prefs");
               }}
               className="flex flex-col gap-3"
             >
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-semibold text-[#d4d4d4]">E-Mail-Adresse</label>
+                <label className="text-xs font-semibold text-on-surface">
+                  E-Mail-Adresse
+                </label>
                 <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3 text-[#737373] text-[18px]">
+                  <span className="material-symbols-outlined absolute left-3 text-tertiary text-[18px]">
                     mail
                   </span>
                   <input
@@ -207,24 +222,26 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="alex@watchmatch.io"
-                    className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#18181b] border border-[#262626] text-xs text-white placeholder:text-[#525252] outline-none focus:border-[#d80b69]"
+                    className="w-full h-11 pl-9 pr-3 rounded-xl bg-surface-container-low border border-surface-bright text-xs text-white placeholder:text-tertiary outline-none focus:border-primary-container"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between items-center">
-                  <label className="text-xs font-semibold text-[#d4d4d4]">Passwort</label>
+                  <label className="text-xs font-semibold text-on-surface">
+                    Passwort
+                  </label>
                   <button
                     type="button"
-                    onClick={() => setStep('forgot_password')}
-                    className="text-[11px] text-[#ffd405] hover:underline font-semibold cursor-pointer"
+                    onClick={() => setStep("forgot_password")}
+                    className="text-[11px] text-secondary hover:underline font-semibold cursor-pointer"
                   >
                     Vergessen?
                   </button>
                 </div>
                 <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3 text-[#737373] text-[18px]">
+                  <span className="material-symbols-outlined absolute left-3 text-tertiary text-[18px]">
                     lock
                   </span>
                   <input
@@ -233,7 +250,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#18181b] border border-[#262626] text-xs text-white placeholder:text-[#525252] outline-none focus:border-[#d80b69]"
+                    className="w-full h-11 pl-9 pr-3 rounded-xl bg-surface-container-low border border-surface-bright text-xs text-white placeholder:text-tertiary outline-none focus:border-primary-container"
                   />
                 </div>
               </div>
@@ -244,7 +261,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 size="lg"
                 radius="md"
                 fullWidth
-                rightIcon={<span className="material-symbols-outlined text-[18px]">arrow_forward</span>}
+                rightIcon={
+                  <span className="material-symbols-outlined text-[18px]">
+                    arrow_forward
+                  </span>
+                }
                 className="mt-1 font-bold shadow-none"
               >
                 Weiter mit E-Mail
@@ -254,11 +275,13 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         )}
 
         {/* STEP 2: PREFERENCES SETUP */}
-        {step === 'prefs' && (
+        {step === "prefs" && (
           <section className="flex flex-col gap-5">
             <div>
-              <h2 className="text-xl font-bold text-white tracking-tight">Deine Streaming-DNA</h2>
-              <p className="text-xs text-[#a3a3a3] mt-0.5">
+              <h2 className="text-xl font-bold text-white tracking-tight">
+                Deine Streaming-DNA
+              </h2>
+              <p className="text-xs text-tertiary mt-0.5">
                 Wähle Genres und Abos für punktgenaue Film- & Serienmatches.
               </p>
             </div>
@@ -267,12 +290,12 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[#ffd405] text-[18px] icon-filled">
+                  <span className="material-symbols-outlined text-secondary text-[18px] icon-filled">
                     category
                   </span>
                   <span>Lieblings-Genres</span>
                 </label>
-                <span className="text-[10px] text-[#a3a3a3]">min. 2 wählen</span>
+                <span className="text-[10px] text-tertiary">min. 2 wählen</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
@@ -285,17 +308,19 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                       onClick={() => toggleGenre(g.name)}
                       className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all text-xs font-bold cursor-pointer ${
                         isSel
-                          ? 'bg-[#d80b69]/15 border-[#d80b69] text-white shadow-sm'
-                          : 'bg-[#1c1b1b] border-[#2a2a2a] text-[#a3a3a3] hover:text-white'
+                          ? "bg-primary-container/15 border-primary-container text-white shadow-sm"
+                          : "bg-surface-container-low border-surface-300 text-tertiary hover:text-white"
                       }`}
                     >
                       <span className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[16px]">{g.icon}</span>
+                        <span className="material-symbols-outlined text-[16px]">
+                          {g.icon}
+                        </span>
                         <span>{g.name}</span>
                       </span>
                       <span
                         className={`material-symbols-outlined text-[14px] ${
-                          isSel ? 'text-[#ffb1c3] opacity-100' : 'opacity-0'
+                          isSel ? "text-primary opacity-100" : "opacity-0"
                         }`}
                       >
                         check
@@ -309,22 +334,45 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             {/* Streaming Subscriptions */}
             <div className="flex flex-col gap-2">
               <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[#00a8e1] text-[18px] icon-filled">
+                <span className="material-symbols-outlined text-provider-prime text-[18px] icon-filled">
                   play_circle
                 </span>
                 <span>Deine Streaming-Abos</span>
               </label>
 
               <div className="flex flex-wrap gap-2">
-                {(['netflix', 'prime', 'disney', 'apple', 'crunchyroll'] as StreamingProvider[]).map((prov) => {
+                {(
+                  [
+                    "netflix",
+                    "prime",
+                    "disney",
+                    "apple",
+                    "crunchyroll",
+                  ] as StreamingProvider[]
+                ).map((prov) => {
                   const isSel = selectedProviders[prov];
-                  const labels: Record<StreamingProvider, { name: string; color: string }> = {
-                    netflix: { name: 'Netflix', color: '#e50914' },
-                    prime: { name: 'Prime Video', color: '#00a8e1' },
-                    disney: { name: 'Disney+', color: '#113ccf' },
-                    apple: { name: 'Apple TV+', color: '#ffffff' },
-                    crunchyroll: { name: 'Crunchyroll', color: '#f47521' },
-                    paramount: { name: 'Paramount+', color: '#0064ff' },
+                  const labels: Record<
+                    StreamingProvider,
+                    { name: string; color: string }
+                  > = {
+                    netflix: {
+                      name: "Netflix",
+                      color: "var(--color-provider-netflix, #e50914)",
+                    },
+                    prime: {
+                      name: "Prime Video",
+                      color: "var(--color-provider-prime, #00a8e1)",
+                    },
+                    disney: {
+                      name: "Disney+",
+                      color: "var(--color-provider-disney, #113ccf)",
+                    },
+                    apple: { name: "Apple TV+", color: "#ffffff" },
+                    crunchyroll: {
+                      name: "Crunchyroll",
+                      color: "var(--color-provider-crunchyroll, #f47521)",
+                    },
+                    paramount: { name: "Paramount+", color: "#0064ff" },
                   };
                   return (
                     <button
@@ -333,8 +381,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                       onClick={() => toggleProvider(prov)}
                       className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                         isSel
-                          ? 'bg-[#201f1f] border-[#d80b69] text-white shadow-sm'
-                          : 'bg-[#161616] border-[#2a2a2a] text-[#a3a3a3]'
+                          ? "bg-surface-container border-primary-container text-white shadow-sm"
+                          : "bg-surface-container-low border-surface-300 text-tertiary"
                       }`}
                     >
                       <span
@@ -343,7 +391,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                       ></span>
                       <span>{labels[prov].name}</span>
                       {isSel && (
-                        <span className="material-symbols-outlined text-[14px] text-[#ffd405]">
+                        <span className="material-symbols-outlined text-[14px] text-secondary">
                           check
                         </span>
                       )}
@@ -354,14 +402,20 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             </div>
 
             {/* DE Audio Preference Card */}
-            <div className="p-3.5 rounded-xl bg-[#1c1b1b] border border-[#2a2a2a] flex items-center justify-between shadow-sm">
+            <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-300 flex items-center justify-between shadow-sm">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-lg bg-[#fbd100]/15 flex items-center justify-center text-[#ffd405]">
-                  <span className="material-symbols-outlined text-[20px] icon-filled">translate</span>
+                <div className="w-9 h-9 rounded-lg bg-secondary-container/15 flex items-center justify-center text-secondary">
+                  <span className="material-symbols-outlined text-[20px] icon-filled">
+                    translate
+                  </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-white">DE-Audio Vorzug</span>
-                  <span className="text-[10px] text-[#a3a3a3]">Deutsche Tonspur bevorzugt filtern</span>
+                  <span className="text-xs font-bold text-white">
+                    DE-Audio Vorzug
+                  </span>
+                  <span className="text-[10px] text-tertiary">
+                    Deutsche Tonspur bevorzugt filtern
+                  </span>
                 </div>
               </div>
 
@@ -371,7 +425,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 aria-checked={deAudioPref}
                 onClick={() => setDeAudioPref(!deAudioPref)}
                 className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
-                  deAudioPref ? 'bg-[#d80b69] justify-end' : 'bg-[#2a2a2a] justify-start'
+                  deAudioPref
+                    ? "bg-primary-container justify-end"
+                    : "bg-surface-bright justify-start"
                 }`}
               >
                 <div className="w-5 h-5 rounded-full bg-white shadow-md"></div>
@@ -385,7 +441,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               radius="md"
               fullWidth
               onClick={handleFinish}
-              leftIcon={<span className="material-symbols-outlined text-[18px] icon-filled">bolt</span>}
+              leftIcon={
+                <span className="material-symbols-outlined text-[18px] icon-filled">
+                  bolt
+                </span>
+              }
               className="mt-1 font-bold shadow-none"
             >
               Match-Deck Starten
@@ -394,21 +454,29 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         )}
 
         {/* FORGOT PASSWORD MODAL FLOW */}
-        {step === 'forgot_password' && (
+        {step === "forgot_password" && (
           <section className="flex flex-col gap-4">
             <div>
-              <h2 className="text-xl font-bold text-white tracking-tight">Passwort zurücksetzen</h2>
-              <p className="text-xs text-[#a3a3a3] mt-0.5">
-                Gib deine E-Mail-Adresse ein. Wir senden dir einen Wiederherstellungslink.
+              <h2 className="text-xl font-bold text-white tracking-tight">
+                Passwort zurücksetzen
+              </h2>
+              <p className="text-xs text-tertiary mt-0.5">
+                Gib deine E-Mail-Adresse ein. Wir senden dir einen
+                Wiederherstellungslink.
               </p>
             </div>
 
             {forgotSent ? (
-              <div className="p-4 rounded-xl bg-[#201f1f] border border-[#ffd405] text-center flex flex-col items-center gap-2">
-                <span className="material-symbols-outlined text-3xl text-[#ffd405]">mark_email_read</span>
-                <span className="text-xs font-bold text-white">Wiederherstellungslink versendet!</span>
-                <p className="text-[11px] text-[#a3a3a3]">
-                  Prüfe dein Postfach für {email}. Klicke auf den Link, um ein neues Passwort zu vergeben.
+              <div className="p-4 rounded-xl bg-surface-container border border-secondary text-center flex flex-col items-center gap-2">
+                <span className="material-symbols-outlined text-3xl text-secondary">
+                  mark_email_read
+                </span>
+                <span className="text-xs font-bold text-white">
+                  Wiederherstellungslink versendet!
+                </span>
+                <p className="text-[11px] text-tertiary">
+                  Prüfe dein Postfach für {email}. Klicke auf den Link, um ein
+                  neues Passwort zu vergeben.
                 </p>
                 <Button
                   variant="primary"
@@ -416,7 +484,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   radius="md"
                   onClick={() => {
                     setForgotSent(false);
-                    setStep('auth');
+                    setStep("auth");
                   }}
                   className="mt-2"
                 >
@@ -432,13 +500,15 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 className="flex flex-col gap-3"
               >
                 <div className="flex flex-col gap-1">
-                  <label className="text-xs font-semibold text-[#d4d4d4]">E-Mail-Adresse</label>
+                  <label className="text-xs font-semibold text-on-surface">
+                    E-Mail-Adresse
+                  </label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-11 px-3 rounded-xl bg-[#18181b] border border-[#262626] text-xs text-white outline-none focus:border-[#d80b69]"
+                    className="w-full h-11 px-3 rounded-xl bg-surface-container-low border border-surface-bright text-xs text-white outline-none focus:border-primary-container"
                   />
                 </div>
 
@@ -458,8 +528,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   size="sm"
                   radius="md"
                   fullWidth
-                  onClick={() => setStep('auth')}
-                  className="text-xs text-[#a3a3a3] hover:text-white"
+                  onClick={() => setStep("auth")}
+                  className="text-xs text-tertiary hover:text-white"
                 >
                   Zurück zur Anmeldung
                 </Button>
@@ -470,8 +540,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
         {/* Legal Trust Notice */}
         <div className="mt-8 pt-4 text-center">
-          <p className="text-[10px] text-[#737373] max-w-[300px] mx-auto leading-relaxed">
-            Keine Abos direkt über die App – wir finden schnell und neutral heraus, wo deine Filme & Serien gerade laufen.
+          <p className="text-[10px] text-tertiary max-w-[300px] mx-auto leading-relaxed">
+            Keine Abos direkt über die App – wir finden schnell und neutral
+            heraus, wo deine Filme & Serien gerade laufen.
           </p>
         </div>
       </div>

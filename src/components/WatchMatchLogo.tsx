@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
 interface WatchMatchLogoProps {
-  variant?: 'full' | 'icon' | 'wordmark';
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'custom';
+  variant?: "full" | "icon" | "wordmark";
+  size?: "sm" | "md" | "lg" | "xl" | "custom";
   className?: string;
   onClick?: () => void;
 }
 
-export const WatchMatchIcon: React.FC<{ size?: number; className?: string }> = ({
-  size = 36,
-  className = '',
-}) => {
+export const WatchMatchIcon: React.FC<{
+  size?: number;
+  className?: string;
+}> = ({ size = 36, className = "" }) => {
   return (
     <svg
       width={size}
@@ -28,15 +28,63 @@ export const WatchMatchIcon: React.FC<{ size?: number; className?: string }> = (
           width="54"
           height="82"
           rx="12"
-          fill="#d80b69"
+          fill="var(--color-primary-container, #d80b69)"
         />
         {/* Pink card right sprocket holes */}
-        <rect x="78" y="24" width="7" height="5" rx="1.5" fill="#ffffff" fillOpacity="0.4" />
-        <rect x="78" y="34" width="7" height="5" rx="1.5" fill="#ffffff" fillOpacity="0.4" />
-        <rect x="78" y="44" width="7" height="5" rx="1.5" fill="#ffffff" fillOpacity="0.4" />
-        <rect x="78" y="54" width="7" height="5" rx="1.5" fill="#ffffff" fillOpacity="0.4" />
-        <rect x="78" y="64" width="7" height="5" rx="1.5" fill="#ffffff" fillOpacity="0.4" />
-        <rect x="78" y="74" width="7" height="5" rx="1.5" fill="#ffffff" fillOpacity="0.4" />
+        <rect
+          x="78"
+          y="24"
+          width="7"
+          height="5"
+          rx="1.5"
+          fill="#ffffff"
+          fillOpacity="0.4"
+        />
+        <rect
+          x="78"
+          y="34"
+          width="7"
+          height="5"
+          rx="1.5"
+          fill="#ffffff"
+          fillOpacity="0.4"
+        />
+        <rect
+          x="78"
+          y="44"
+          width="7"
+          height="5"
+          rx="1.5"
+          fill="#ffffff"
+          fillOpacity="0.4"
+        />
+        <rect
+          x="78"
+          y="54"
+          width="7"
+          height="5"
+          rx="1.5"
+          fill="#ffffff"
+          fillOpacity="0.4"
+        />
+        <rect
+          x="78"
+          y="64"
+          width="7"
+          height="5"
+          rx="1.5"
+          fill="#ffffff"
+          fillOpacity="0.4"
+        />
+        <rect
+          x="78"
+          y="74"
+          width="7"
+          height="5"
+          rx="1.5"
+          fill="#ffffff"
+          fillOpacity="0.4"
+        />
       </g>
 
       {/* Foreground Yellow Film Card */}
@@ -48,33 +96,131 @@ export const WatchMatchIcon: React.FC<{ size?: number; className?: string }> = (
           width="58"
           height="84"
           rx="14"
-          fill="#1c1b1b"
-          stroke="#ffd405"
+          fill="var(--color-surface-container-low, #1c1b1b)"
+          stroke="var(--color-secondary, #ffd405)"
           strokeWidth="6"
         />
 
         {/* Left sprocket holes */}
-        <rect x="25" y="28" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="25" y="38" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="25" y="48" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="25" y="58" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="25" y="68" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="25" y="78" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="25" y="88" width="6" height="5" rx="1.5" fill="#ffd405" />
+        <rect
+          x="25"
+          y="28"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="25"
+          y="38"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="25"
+          y="48"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="25"
+          y="58"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="25"
+          y="68"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="25"
+          y="78"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="25"
+          y="88"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
 
         {/* Right sprocket holes */}
-        <rect x="63" y="28" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="63" y="38" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="63" y="48" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="63" y="58" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="63" y="68" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="63" y="78" width="6" height="5" rx="1.5" fill="#ffd405" />
-        <rect x="63" y="88" width="6" height="5" rx="1.5" fill="#ffd405" />
+        <rect
+          x="63"
+          y="28"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="63"
+          y="38"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="63"
+          y="48"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="63"
+          y="58"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="63"
+          y="68"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="63"
+          y="78"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
+        <rect
+          x="63"
+          y="88"
+          width="6"
+          height="5"
+          rx="1.5"
+          fill="var(--color-secondary, #ffd405)"
+        />
 
         {/* Play Triangle Symbol in Center */}
         <polygon
           points="41,47 57,59 41,71"
-          fill="#ffd405"
+          fill="var(--color-secondary, #ffd405)"
         />
       </g>
     </svg>
@@ -82,12 +228,11 @@ export const WatchMatchIcon: React.FC<{ size?: number; className?: string }> = (
 };
 
 export const WatchMatchLogo: React.FC<WatchMatchLogoProps> = ({
-  variant = 'full',
-  size = 'md',
-  className = '',
+  variant = "full",
+  size = "md",
+  className = "",
   onClick,
 }) => {
-  // Height configurations
   const heightMap = {
     sm: 24,
     md: 32,
@@ -105,28 +250,32 @@ export const WatchMatchLogo: React.FC<WatchMatchLogoProps> = ({
   };
 
   const textClassMap = {
-    sm: 'text-base',
-    md: 'text-xl',
-    lg: 'text-2xl',
-    xl: 'text-4xl',
-    custom: '',
+    sm: "text-base",
+    md: "text-xl",
+    lg: "text-2xl",
+    xl: "text-4xl",
+    custom: "",
   };
 
-  if (variant === 'icon') {
+  if (variant === "icon") {
     return <WatchMatchIcon size={iconSizeMap[size]} className={className} />;
   }
 
   return (
     <div
       onClick={onClick}
-      className={`inline-flex items-center gap-2 select-none ${onClick ? 'cursor-pointer' : ''} ${className}`}
-      style={size !== 'custom' ? { height: heightMap[size] } : undefined}
+      className={`inline-flex items-center gap-2 select-none ${onClick ? "cursor-pointer" : ""} ${className}`}
+      style={size !== "custom" ? { height: heightMap[size] } : undefined}
     >
-      {variant !== 'wordmark' && <WatchMatchIcon size={iconSizeMap[size]} />}
-      <div className={`font-black tracking-tight leading-none flex items-baseline font-sans ${textClassMap[size]}`}>
+      {variant !== "wordmark" && <WatchMatchIcon size={iconSizeMap[size]} />}
+      <div
+        className={`font-black tracking-tight leading-none flex items-baseline font-sans ${textClassMap[size]}`}
+      >
         <span className="text-white">Watch</span>
-        <span className="text-[#d80b69]">Match</span>
-        <span className="text-[#ffd405] text-[1.25em] leading-none ml-0.5 font-black">.</span>
+        <span className="text-primary-container">Match</span>
+        <span className="text-secondary text-[1.25em] leading-none ml-0.5 font-black">
+          .
+        </span>
       </div>
     </div>
   );

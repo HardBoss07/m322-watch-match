@@ -26,12 +26,14 @@
   --color-provider-disney: #113ccf;
   --color-provider-prime: #00a8e1;
   --color-provider-crunchyroll: #f47521;
-  --font-sans: "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans:
+    "Roboto Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
 }
 
 /* Material Symbols font configuration */
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Material Symbols Outlined";
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -42,12 +44,16 @@
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  -webkit-font-feature-settings: 'liga';
+  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
 
 .icon-filled {
-  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 /* Custom scrollbar suppression for authentic mobile app feel */
@@ -84,7 +90,6 @@
 .animate-swipe-nudge {
   animation: swipe-nudge 1.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 1;
 }
-
 
 /* Strict root viewport lock to prevent outer page scrollbars on desktop */
 html,
