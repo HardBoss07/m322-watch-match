@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Movie,
   Review,
@@ -23,25 +23,32 @@ import {
 } from './data/mockData';
 import { filterMovies } from './utils/matching';
 
-// Modular UI Components
+// Context Providers
+import { ToastProvider, useToast } from './context/ToastContext';
+
+// Feature Components & Hooks
+import { MatchDeck } from './features/deck/MatchDeck';
+import { ChatView } from './features/chat/ChatView';
+import { RecommendationModal } from './features/chat/RecommendationModal';
+import { StreamingFilters } from './features/filters/StreamingFilters';
+import { ReviewModal } from './features/review/ReviewModal';
+import { ProfileView } from './features/profile/ProfileView';
+
+// Standard Components
 import { MobileFrame } from './components/MobileFrame';
 import { Header } from './components/Header';
 import { BottomNav, NavTab } from './components/BottomNav';
-import { MatchDeck } from './components/MatchDeck';
 import { DiscoverView } from './components/DiscoverView';
 import { CommunityFeed } from './components/CommunityFeed';
 import { WatchlistView } from './components/WatchlistView';
-import { ProfileView } from './components/ProfileView';
 import { TitleDetailModal } from './components/TitleDetailModal';
-import { QuickReviewModal } from './components/QuickReviewModal';
-import { SettingsModal } from './components/SettingsModal';
 import { EditProfileModal } from './components/EditProfileModal';
-import { SendRecommendationModal } from './components/SendRecommendationModal';
 import { OnboardingModal } from './components/OnboardingModal';
-import { ChatView } from './components/ChatView';
 
-export default function App() {
-  // Navigation & Screen View State
+function AppContent() {
+  const { showToast } = useToast();
+
+  // Navigation State
   const [activeTab, setActiveTab] = useState<NavTab>('match');
   const [profileViewTarget, setProfileViewTarget] = useState<'my-profile' | 'friend-dario'>('my-profile');
 
@@ -57,7 +64,7 @@ export default function App() {
     | 'chat-view'
   >(null);
 
-  // Data State
+  // App Data State
   const [filters, setFilters] = useState<FilterSettings>(INITIAL_FILTERS);
   const [movies] = useState<Movie[]>(MOCK_MOVIES);
   const [watchlist, setWatchlist] = useState<Movie[]>([
@@ -68,59 +75,60 @@ export default function App() {
   const [reviews, setReviews] = useState<Review[]>(MOCK_REVIEWS);
   const [myProfile, setMyProfile] = useState<UserProfile>(CURRENT_USER_PROFILE);
   const [darioProfile, setDarioProfile] = useState<UserProfile>(DARIO_PROFILE);
-  const [chats, setChats] = useState<ChatThread[]>(MOCK_CHATS);
+  const [chats] = useState<ChatThread[]>(MOCK_CHATS);
   const [darioMessages, setDarioMessages] = useState<ChatMessage[]>(MOCK_DARIO_MESSAGES);
 
-  // Active selections
+  // Active Selections
   const [selectedMovie, setSelectedMovie] = useState<Movie>(MOCK_MOVIES[0]);
   const [selectedChat, setSelectedChat] = useState<ChatThread>(MOCK_CHATS[0]);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 2500);
-  };
-
-  // Filtered Movie list for Match Deck (memoized to prevent resetting card index on unrelated re-renders)
-  const deckMovies = React.useMemo(() => {
+  // Filtered Movie list for Match Deck
+  const deckMovies = useMemo(() => {
     const filtered = filterMovies(movies, filters);
     return filtered.length > 0 ? filtered : movies;
   }, [movies, filters]);
 
-  // Handlers for Match Deck
-  const handleMatch = (movie: Movie) => {
-    if (!watchlist.some((m) => m.id === movie.id)) {
-      setWatchlist((prev) => [movie, ...prev]);
-    }
-    showToast(`"${movie.title}" zur Watchlist hinzugefügt!`);
-  };
+  // Match Deck Actions
+  const handleMatch = useCallback((movie: Movie) => {
+    setWatchlist((prev) => {
+      if (prev.some((m) => m.id === movie.id)) return prev;
+      return [movie, ...prev];
+    });
+    showToast(`"${movie.title}" zu deiner Watchlist hinzugefügt!`);
+  }, [showToast]);
 
-  const handlePass = (movie: Movie) => {
+  const handlePass = useCallback((movie: Movie) => {
     showToast(`"${movie.title}" übersprungen`);
-  };
+  }, [showToast]);
 
-  const handleSuperlike = (movie: Movie) => {
-    if (!watchlist.some((m) => m.id === movie.id)) {
-      setWatchlist((prev) => [movie, ...prev]);
-    }
+  const handleSuperlike = useCallback((movie: Movie) => {
+    setWatchlist((prev) => {
+      if (prev.some((m) => m.id === movie.id)) return prev;
+      return [movie, ...prev];
+    });
     showToast(`Superlike für "${movie.title}"! ★`);
-  };
+  }, [showToast]);
 
-  const handleOpenDetails = (movie: Movie) => {
+  const handleOpenDetails = useCallback((movie: Movie) => {
     setSelectedMovie(movie);
     setActiveModal('title-detail');
-  };
+  }, []);
 
-  const handleOpenMovieDetailsById = (movieId: string) => {
+  const handleOpenMovieDetailsById = useCallback((movieId: string) => {
     const found = movies.find((m) => m.id === movieId);
     if (found) {
       setSelectedMovie(found);
       setActiveModal('title-detail');
     }
-  };
+  }, [movies]);
 
-  // Review Submissions
-  const handleCreateReview = (newReviewData: Partial<Review>) => {
+  // Review Flow
+  const handleOpenReview = useCallback((movie?: Movie) => {
+    if (movie) setSelectedMovie(movie);
+    setActiveModal('quick-review');
+  }, []);
+
+  const handleCreateReview = useCallback((newReviewData: Partial<Review>) => {
     const fullReview: Review = {
       id: `rev-${Date.now()}`,
       userId: myProfile.id,
@@ -128,10 +136,10 @@ export default function App() {
       userHandle: myProfile.handle,
       userAvatar: myProfile.avatar,
       isVerified: true,
-      movieId: newReviewData.movieId || 'custom',
-      movieTitle: newReviewData.movieTitle || 'Stranger Things',
-      moviePoster: newReviewData.moviePoster || MOCK_MOVIES[2].posterUrl,
-      movieInfo: newReviewData.movieInfo || 'Netflix • 2022',
+      movieId: newReviewData.movieId || selectedMovie.id,
+      movieTitle: newReviewData.movieTitle || selectedMovie.title,
+      moviePoster: newReviewData.moviePoster || selectedMovie.posterUrl,
+      movieInfo: newReviewData.movieInfo || `${selectedMovie.providers[0]?.name || 'Netflix'} • ${selectedMovie.year}`,
       rating: newReviewData.rating || 9,
       ratingMax: 10,
       text: newReviewData.text || '',
@@ -145,17 +153,16 @@ export default function App() {
 
     setReviews((prev) => [fullReview, ...prev]);
 
-    // Award XP
+    // Award +20 XP
     setMyProfile((prev) => ({
       ...prev,
       currentXp: prev.currentXp + 20,
     }));
 
     showToast('Review veröffentlicht! +20 XP erhalten 🎉');
-  };
+  }, [myProfile, selectedMovie, showToast]);
 
-  // Likes on Reviews
-  const handleToggleLikeReview = (reviewId: string) => {
+  const handleToggleLikeReview = useCallback((reviewId: string) => {
     setReviews((prev) =>
       prev.map((r) => {
         if (r.id === reviewId) {
@@ -169,28 +176,30 @@ export default function App() {
         return r;
       })
     );
-  };
+  }, []);
 
-  // Watchlist Toggles from reviews
-  const handleToggleWatchlistByTitle = (title: string) => {
+  const handleToggleWatchlistByTitle = useCallback((title: string) => {
     const movie = movies.find((m) => m.title.toLowerCase().includes(title.toLowerCase()));
     if (movie) {
-      if (watchlist.some((m) => m.id === movie.id)) {
-        setWatchlist((prev) => prev.filter((m) => m.id !== movie.id));
-        showToast(`"${movie.title}" aus Watchlist entfernt`);
-      } else {
-        setWatchlist((prev) => [movie, ...prev]);
-        showToast(`"${movie.title}" auf Watchlist gespeichert!`);
-      }
+      setWatchlist((prev) => {
+        if (prev.some((m) => m.id === movie.id)) {
+          showToast(`"${movie.title}" aus Watchlist entfernt`);
+          return prev.filter((m) => m.id !== movie.id);
+        } else {
+          showToast(`"${movie.title}" auf Watchlist gespeichert!`);
+          return [movie, ...prev];
+        }
+      });
     }
-  };
+  }, [movies, showToast]);
 
-  // Sending recommendations to friends
-  const handleSendRecommendation = (movieId: string, friendId: string, note: string) => {
+  // Recommendation Flow: Sends recommendation and auto-routes directly to recipient's Chat
+  const handleSendRecommendation = useCallback((movieId: string, friendId: string, note: string) => {
     const targetMovie = movies.find((m) => m.id === movieId);
     if (!targetMovie) return;
 
-    // Send into Dario messages
+    const targetFriend = chats.find((c) => c.id === friendId) || chats[0];
+
     const newMsg: ChatMessage = {
       id: `msg-${Date.now()}`,
       senderId: 'me',
@@ -207,22 +216,26 @@ export default function App() {
     };
 
     setDarioMessages((prev) => [...prev, newMsg]);
-    showToast(`Filmtipp für "${targetMovie.title}" an Dario M. gesendet! 🚀`);
-  };
+    setSelectedChat(targetFriend);
 
-  // Quick Jumper helper for user to directly preview any specific screen from design
-  const handleQuickJump = (screenName: string) => {
+    // Auto-transition directly to the chat view with that recipient
+    setActiveModal('chat-view');
+    showToast(`Filmtipp an ${targetFriend.participantName} gesendet! 🚀`);
+  }, [chats, movies, showToast]);
+
+  // Quick Jumper helper for user to directly preview any specific screen
+  const handleQuickJump = useCallback((screenName: string) => {
     switch (screenName) {
       case 'Match Deck':
         setActiveModal(null);
         setActiveTab('match');
         break;
       case 'Title Detail':
-        setSelectedMovie(MOCK_MOVIES[0]); // Cyberpunk
+        setSelectedMovie(MOCK_MOVIES[0]);
         setActiveModal('title-detail');
         break;
       case 'Quick Review':
-        setSelectedMovie(MOCK_MOVIES[2]); // Stranger Things 4
+        setSelectedMovie(MOCK_MOVIES[2]);
         setActiveModal('quick-review');
         break;
       case 'Community Feed':
@@ -256,10 +269,10 @@ export default function App() {
         setActiveModal(null);
         break;
     }
-  };
+  }, [chats]);
 
-  // Calculate active screen label for top bar
-  const getActiveScreenLabel = (): string => {
+  // Active Screen Label for the Top Frame Bar
+  const activeScreenLabel = useMemo((): string => {
     if (activeModal === 'title-detail') return 'Title Detail';
     if (activeModal === 'quick-review') return 'Quick Review';
     if (activeModal === 'settings') return 'Streaming Filters';
@@ -275,15 +288,15 @@ export default function App() {
     if (activeTab === 'community') return 'Community Feed';
     if (activeTab === 'watchlist') return 'Watchlist';
     return 'Match Deck';
-  };
+  }, [activeModal, activeTab, profileViewTarget]);
 
   return (
     <MobileFrame
-      activeScreenName={getActiveScreenLabel()}
+      activeScreenName={activeScreenLabel}
       onQuickJump={handleQuickJump}
     >
       <div className="flex-1 w-full flex flex-col h-full overflow-hidden relative">
-        {/* Top Header (shown on tab views) */}
+        {/* Top Header */}
         <Header
           user={myProfile}
           onOpenProfile={() => {
@@ -291,10 +304,28 @@ export default function App() {
             setActiveTab('profile');
           }}
           onOpenSettings={() => setActiveModal('settings')}
-          audioLanguage={filters.onlyDeAudio ? 'DE-Audio' : 'Alle Audio'}
+          onOpenRecommendation={() => setActiveModal('send-recommendation')}
+          onEditProfile={() => setActiveModal('edit-profile')}
+          onLogoClick={() => {
+            setActiveModal(null);
+            setActiveTab('match');
+          }}
+          audioLanguage={
+            (filters.audioLanguages && filters.audioLanguages.length > 0)
+              ? filters.audioLanguages.join(', ')
+              : 'DE'
+          }
+          onSelectLanguage={(langCode) => {
+            setFilters((prev) => ({
+              ...prev,
+              audioLanguages: [langCode],
+              onlyDeAudio: langCode === 'DE',
+            }));
+            showToast(`Tonspur auf ${langCode} gesetzt`);
+          }}
         />
 
-        {/* Main Tab Views (Scrollable) */}
+        {/* Main Tab Views */}
         <main className="flex-1 min-h-0 w-full bg-[#131313] flex flex-col overflow-y-auto no-scrollbar">
           {activeTab === 'match' && (
             <MatchDeck
@@ -302,6 +333,7 @@ export default function App() {
               filters={filters}
               onOpenFilters={() => setActiveModal('settings')}
               onOpenDetails={handleOpenDetails}
+              onOpenReview={handleOpenReview}
               onMatch={handleMatch}
               onPass={handlePass}
               onSuperlike={handleSuperlike}
@@ -322,7 +354,7 @@ export default function App() {
               reviews={reviews}
               chats={chats}
               onOpenReviewModal={() => {
-                setSelectedMovie(MOCK_MOVIES[2]); // Stranger Things 4 default
+                setSelectedMovie(MOCK_MOVIES[2]);
                 setActiveModal('quick-review');
               }}
               onOpenSendRecommendation={() => setActiveModal('send-recommendation')}
@@ -381,9 +413,26 @@ export default function App() {
                     : prev.followersCount + 1,
                 }));
               }}
+              showToast={showToast}
+              audioLanguage={filters.audioLanguages?.join(', ') || 'DE'}
             />
           )}
         </main>
+
+        {/* Global Quick Action Floating Action Button (FAB) */}
+        {!activeModal && (
+          <button
+            type="button"
+            onClick={() => setActiveModal('send-recommendation')}
+            aria-label="Filmtipp empfehlen"
+            className="absolute bottom-20 right-4 z-30 w-12 h-12 rounded-full bg-[#d80b69] hover:bg-[#ba095b] text-white shadow-xl shadow-[#d80b69]/40 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group"
+            title="Filmtipp empfehlen"
+          >
+            <span className="material-symbols-outlined text-[24px] font-bold transition-transform duration-200 group-hover:rotate-90">
+              add
+            </span>
+          </button>
+        )}
 
         {/* Persistent Bottom Navigation */}
         <BottomNav
@@ -414,9 +463,9 @@ export default function App() {
         />
       )}
 
-      {/* 2. Quick Review Modal */}
+      {/* 2. Simplified Quick Review Modal */}
       {activeModal === 'quick-review' && (
-        <QuickReviewModal
+        <ReviewModal
           movie={selectedMovie}
           onClose={() => setActiveModal(null)}
           onSubmitReview={handleCreateReview}
@@ -425,7 +474,7 @@ export default function App() {
 
       {/* 3. Streaming-Abos & Filter Settings */}
       {activeModal === 'settings' && (
-        <SettingsModal
+        <StreamingFilters
           filters={filters}
           onSave={(newFilters) => {
             setFilters(newFilters);
@@ -448,9 +497,9 @@ export default function App() {
         />
       )}
 
-      {/* 5. Send Recommendation Modal */}
+      {/* 5. Send Recommendation Modal (With Auto-Route to Chat) */}
       {activeModal === 'send-recommendation' && (
-        <SendRecommendationModal
+        <RecommendationModal
           movies={movies}
           friends={chats}
           preselectedMovie={selectedMovie}
@@ -475,7 +524,6 @@ export default function App() {
             };
             setDarioMessages((prev) => [...prev, newMsg]);
 
-            // Simulate Dario's quick reply
             setTimeout(() => {
               const replyMsg: ChatMessage = {
                 id: `reply-${Date.now()}`,
@@ -506,14 +554,14 @@ export default function App() {
           }}
         />
       )}
-
-      {/* Global Toast Notification */}
-      {toastMessage && (
-        <div className="absolute bottom-18 left-1/2 -translate-x-1/2 max-w-[90%] bg-[#201f1f]/95 border border-[#ffd405] text-white px-3.5 py-1.5 rounded-full shadow-2xl flex items-center gap-2 z-50 text-xs font-bold animate-in fade-in slide-in-from-bottom-2 duration-150 pointer-events-none backdrop-blur-md">
-          <span className="material-symbols-outlined text-[16px] text-[#ffd405] shrink-0">check_circle</span>
-          <span className="truncate">{toastMessage}</span>
-        </div>
-      )}
     </MobileFrame>
+  );
+}
+
+export default function App() {
+  return (
+    <ToastProvider>
+      <AppContent />
+    </ToastProvider>
   );
 }

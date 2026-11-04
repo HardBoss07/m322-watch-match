@@ -88,6 +88,30 @@ export function filterMovies(movies: Movie[], filters: FilterSettings): Movie[] 
       return false;
     }
 
+    // Check specific audio tracks / synchro if selected
+    if (filters.audioLanguages && filters.audioLanguages.length > 0) {
+      const hasLanguageMatch = movie.providers.some((p) =>
+        p.audio.some((audioTrack) =>
+          filters.audioLanguages!.some((lang) =>
+            audioTrack.toLowerCase().includes(lang.toLowerCase()) ||
+            (lang === 'DE' && (audioTrack.includes('DE') || movie.hasDeAudio))
+          )
+        )
+      );
+      if (!hasLanguageMatch) return false;
+    }
+
+    // Check genre match if specific genres are selected
+    if (filters.genres && filters.genres.length > 0) {
+      const hasGenreMatch = movie.genres.some((g) =>
+        filters.genres!.some((selected) =>
+          g.toLowerCase().includes(selected.toLowerCase()) ||
+          selected.toLowerCase().includes(g.toLowerCase())
+        )
+      );
+      if (!hasGenreMatch) return false;
+    }
+
     // Check runtime limit (if not "no limit" >= 210 min)
     if (filters.maxRuntimeMinutes < 210 && movie.duration) {
       const match = movie.duration.match(/(\d+)h\s*(\d+)?m?/);

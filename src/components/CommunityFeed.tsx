@@ -86,17 +86,6 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                 </span>
               </div>
             </div>
-
-            <IconButton
-              onClick={onOpenSendRecommendation}
-              aria-label="Tipp senden"
-              variant="primary"
-              size="md"
-              radius="full"
-              className="shadow-md shadow-[#d80b69]/30"
-            >
-              <span className="material-symbols-outlined text-[20px]">add</span>
-            </IconButton>
           </div>
 
           {/* Friend Recommendation Highlight Banner: Arcane S2 */}

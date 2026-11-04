@@ -35,8 +35,7 @@ export const SendRecommendationModal: React.FC<SendRecommendationModalProps> = (
     setTimeout(() => {
       onSend(selectedMovieId, selectedFriendId, note);
       setIsSending(false);
-      onClose();
-    }, 400);
+    }, 200);
   };
 
   return (

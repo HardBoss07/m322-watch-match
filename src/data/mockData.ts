@@ -10,6 +10,8 @@ export const INITIAL_FILTERS: FilterSettings = {
     paramount: false,
   },
   onlyDeAudio: true,
+  audioLanguages: ['DE'],
+  genres: [],
   hideUnreleased: false,
   maxRuntimeMinutes: 120,
   pushNewSeasons: true,

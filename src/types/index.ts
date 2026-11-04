@@ -138,6 +138,8 @@ export interface UserProfile {
 export interface FilterSettings {
   providers: Record<StreamingProvider, boolean>;
   onlyDeAudio: boolean;
+  audioLanguages?: string[];
+  genres?: string[];
   hideUnreleased: boolean;
   maxRuntimeMinutes: number; // 80 - 210 (210 = no limit)
   pushNewSeasons: boolean;

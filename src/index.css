@@ -59,6 +59,33 @@
   scrollbar-width: none;
 }
 
+/* Idle Swipe Nudge Animation */
+@keyframes swipe-nudge {
+  0% {
+    transform: translateX(0px) rotate(0deg);
+  }
+  20% {
+    transform: translateX(-18px) rotate(-4.2deg);
+  }
+  45% {
+    transform: translateX(18px) rotate(4.2deg);
+  }
+  70% {
+    transform: translateX(-10px) rotate(-2deg);
+  }
+  85% {
+    transform: translateX(6px) rotate(1.2deg);
+  }
+  100% {
+    transform: translateX(0px) rotate(0deg);
+  }
+}
+
+.animate-swipe-nudge {
+  animation: swipe-nudge 1.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 1;
+}
+
+
 /* Strict root viewport lock to prevent outer page scrollbars on desktop */
 html,
 body,
