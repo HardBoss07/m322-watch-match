@@ -17,15 +17,15 @@ export const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
   outline:
     "bg-transparent text-on-surface border border-surface-300 hover:bg-white/5 active:bg-white/10 hover:border-surface-bright",
   ghost:
-    "bg-transparent text-[#a3a3a3] hover:text-white hover:bg-white/10 active:bg-white/15 border border-transparent",
+    "bg-transparent text-[#d6d4d3] hover:text-white hover:bg-white/10 active:bg-white/15 border border-transparent",
   danger:
     "bg-[#dc2626] text-white hover:bg-[#b91c1c] active:bg-[#991b1b] border border-transparent shadow-sm",
 };
 
 export const BUTTON_SIZES: Record<ButtonSize, string> = {
-  sm: "text-xs px-3 py-1.5 h-8 gap-1.5",
-  md: "text-sm px-4 py-2 h-10 gap-2",
-  lg: "text-base px-5 py-2.5 h-12 gap-2.5",
+  sm: "text-xs px-3.5 py-2 min-h-[44px] gap-1.5",
+  md: "text-sm px-4 py-2.5 min-h-[44px] gap-2",
+  lg: "text-base px-5 py-3 min-h-[48px] gap-2.5",
 };
 
 export const BUTTON_RADII: Record<ButtonRadius, string> = {
@@ -37,11 +37,11 @@ export const BUTTON_RADII: Record<ButtonRadius, string> = {
 };
 
 export const ICON_BUTTON_SIZES: Record<ButtonSize | "xs" | "xl", string> = {
-  xs: "w-7 h-7 min-w-[28px] min-h-[28px] text-xs p-0",
-  sm: "w-8 h-8 min-w-[32px] min-h-[32px] text-sm p-0",
-  md: "w-10 h-10 min-w-[40px] min-h-[40px] text-base p-0",
+  xs: "w-11 h-11 min-w-[44px] min-h-[44px] text-xs p-0",
+  sm: "w-11 h-11 min-w-[44px] min-h-[44px] text-sm p-0",
+  md: "w-11 h-11 min-w-[44px] min-h-[44px] text-base p-0",
   lg: "w-12 h-12 min-w-[48px] min-h-[48px] text-lg p-0",
-  xl: "w-15 h-15 min-w-[60px] min-h-[60px] text-2xl p-0",
+  xl: "w-14 h-14 min-w-[56px] min-h-[56px] text-2xl p-0",
 };
 
 export const ICON_CONTAINER_SIZES: Record<ButtonSize | "xs" | "xl", string> = {

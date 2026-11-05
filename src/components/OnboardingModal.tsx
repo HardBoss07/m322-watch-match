@@ -206,51 +206,65 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 e.preventDefault();
                 setStep("prefs");
               }}
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-3.5"
             >
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-semibold text-on-surface">
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="onboarding-email"
+                  className="text-xs font-bold text-white"
+                >
                   E-Mail-Adresse
                 </label>
                 <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3 text-tertiary text-[18px]">
+                  <span
+                    className="material-symbols-outlined absolute left-3.5 text-[#d6d4d3] text-[20px]"
+                    aria-hidden="true"
+                  >
                     mail
                   </span>
                   <input
+                    id="onboarding-email"
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="alex@watchmatch.io"
-                    className="w-full h-11 pl-9 pr-3 rounded-xl bg-surface-container-low border border-surface-bright text-xs text-white placeholder:text-tertiary outline-none focus:border-primary-container"
+                    className="w-full h-12 pl-10 pr-3 rounded-xl bg-surface-container-low border border-surface-bright text-xs text-white placeholder:text-[#d6d4d3] outline-none focus:border-primary-container"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-xs font-semibold text-on-surface">
+                  <label
+                    htmlFor="onboarding-password"
+                    className="text-xs font-bold text-white"
+                  >
                     Passwort
                   </label>
                   <button
                     type="button"
                     onClick={() => setStep("forgot_password")}
-                    className="text-[11px] text-secondary hover:underline font-semibold cursor-pointer"
+                    className="text-xs text-secondary hover:underline font-bold cursor-pointer py-1"
                   >
-                    Vergessen?
+                    Passwort vergessen?
                   </button>
                 </div>
                 <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3 text-tertiary text-[18px]">
+                  <span
+                    className="material-symbols-outlined absolute left-3.5 text-[#d6d4d3] text-[20px]"
+                    aria-hidden="true"
+                  >
                     lock
                   </span>
                   <input
+                    id="onboarding-password"
                     type="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-11 pl-9 pr-3 rounded-xl bg-surface-container-low border border-surface-bright text-xs text-white placeholder:text-tertiary outline-none focus:border-primary-container"
+                    className="w-full h-12 pl-10 pr-3 rounded-xl bg-surface-container-low border border-surface-bright text-xs text-white placeholder:text-[#d6d4d3] outline-none focus:border-primary-container"
                   />
                 </div>
               </div>
@@ -266,9 +280,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                     arrow_forward
                   </span>
                 }
-                className="mt-1 font-bold shadow-none"
+                className="mt-2 font-bold shadow-none"
               >
-                Weiter mit E-Mail
+                Mit E-Mail anmelden
               </Button>
             </form>
           </section>
@@ -281,7 +295,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               <h2 className="text-xl font-bold text-white tracking-tight">
                 Deine Streaming-DNA
               </h2>
-              <p className="text-xs text-tertiary mt-0.5">
+              <p className="text-xs text-[#d6d4d3] mt-0.5">
                 Wähle Genres und Abos für punktgenaue Film- & Serienmatches.
               </p>
             </div>
@@ -290,12 +304,17 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-secondary text-[18px] icon-filled">
+                  <span
+                    className="material-symbols-outlined text-secondary text-[18px] icon-filled"
+                    aria-hidden="true"
+                  >
                     category
                   </span>
                   <span>Lieblings-Genres</span>
                 </label>
-                <span className="text-[10px] text-tertiary">min. 2 wählen</span>
+                <span className="text-[11px] text-secondary font-bold">
+                  Wähle mindestens 2 Genres
+                </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
@@ -306,22 +325,27 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                       key={g.name}
                       type="button"
                       onClick={() => toggleGenre(g.name)}
-                      className={`flex items-center justify-between px-3 py-2.5 rounded-xl border transition-all text-xs font-bold cursor-pointer ${
+                      aria-pressed={isSel}
+                      className={`flex items-center justify-between px-3 py-2.5 min-h-[44px] rounded-xl border transition-all text-xs font-bold cursor-pointer ${
                         isSel
                           ? "bg-primary-container/15 border-primary-container text-white shadow-sm"
-                          : "bg-surface-container-low border-surface-300 text-tertiary hover:text-white"
+                          : "bg-surface-container-low border-surface-300 text-[#d6d4d3] hover:text-white"
                       }`}
                     >
                       <span className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[16px]">
+                        <span
+                          className="material-symbols-outlined text-[18px]"
+                          aria-hidden="true"
+                        >
                           {g.icon}
                         </span>
                         <span>{g.name}</span>
                       </span>
                       <span
-                        className={`material-symbols-outlined text-[14px] ${
+                        className={`material-symbols-outlined text-[16px] ${
                           isSel ? "text-primary opacity-100" : "opacity-0"
                         }`}
+                        aria-hidden="true"
                       >
                         check
                       </span>
@@ -334,7 +358,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             {/* Streaming Subscriptions */}
             <div className="flex flex-col gap-2">
               <label className="text-xs font-bold text-white flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-provider-prime text-[18px] icon-filled">
+                <span
+                  className="material-symbols-outlined text-provider-prime text-[18px] icon-filled"
+                  aria-hidden="true"
+                >
                   play_circle
                 </span>
                 <span>Deine Streaming-Abos</span>
@@ -379,19 +406,24 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                       key={prov}
                       type="button"
                       onClick={() => toggleProvider(prov)}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                      aria-pressed={isSel}
+                      className={`flex items-center gap-2 px-3 py-2.5 min-h-[44px] rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                         isSel
                           ? "bg-surface-container border-primary-container text-white shadow-sm"
-                          : "bg-surface-container-low border-surface-300 text-tertiary"
+                          : "bg-surface-container-low border-surface-300 text-[#d6d4d3]"
                       }`}
                     >
                       <span
-                        className="w-2.5 h-2.5 rounded-full"
+                        className="w-3 h-3 rounded-full shrink-0"
                         style={{ backgroundColor: labels[prov].color }}
+                        aria-hidden="true"
                       ></span>
                       <span>{labels[prov].name}</span>
                       {isSel && (
-                        <span className="material-symbols-outlined text-[14px] text-secondary">
+                        <span
+                          className="material-symbols-outlined text-[16px] text-secondary"
+                          aria-hidden="true"
+                        >
                           check
                         </span>
                       )}
@@ -402,19 +434,22 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             </div>
 
             {/* DE Audio Preference Card */}
-            <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-300 flex items-center justify-between shadow-sm">
+            <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-300 flex items-center justify-between shadow-sm min-h-[56px]">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-lg bg-secondary-container/15 flex items-center justify-center text-secondary">
+                <div
+                  className="w-9 h-9 rounded-lg bg-secondary-container/15 flex items-center justify-center text-secondary"
+                  aria-hidden="true"
+                >
                   <span className="material-symbols-outlined text-[20px] icon-filled">
                     translate
                   </span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs font-bold text-white">
-                    DE-Audio Vorzug
+                    Deutsche Tonspur bevorzugen
                   </span>
-                  <span className="text-[10px] text-tertiary">
-                    Deutsche Tonspur bevorzugt filtern
+                  <span className="text-[11px] text-[#d6d4d3]">
+                    Nur Titel mit deutscher Tonspur anzeigen
                   </span>
                 </div>
               </div>
@@ -423,14 +458,18 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 type="button"
                 role="switch"
                 aria-checked={deAudioPref}
+                aria-label="Nur Titel mit deutscher Tonspur anzeigen"
                 onClick={() => setDeAudioPref(!deAudioPref)}
-                className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
+                className={`w-12 h-7 rounded-full p-1 transition-colors cursor-pointer flex items-center min-w-[48px] min-h-[44px] ${
                   deAudioPref
                     ? "bg-primary-container justify-end"
                     : "bg-surface-bright justify-start"
                 }`}
               >
-                <div className="w-5 h-5 rounded-full bg-white shadow-md"></div>
+                <div
+                  className="w-5 h-5 rounded-full bg-white shadow-md"
+                  aria-hidden="true"
+                ></div>
               </button>
             </div>
 

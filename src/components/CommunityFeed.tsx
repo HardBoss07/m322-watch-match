@@ -90,7 +90,15 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
           {/* Quick Action: Tipp an Freunde senden */}
           <div
             onClick={onOpenSendRecommendation}
-            className="bg-surface-100 border border-surface-300 rounded-xl p-3 flex items-center justify-between shadow-sm cursor-pointer hover:border-surface-bright transition-colors"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onOpenSendRecommendation();
+              }
+            }}
+            className="bg-surface-100 border border-surface-300 rounded-xl p-3 flex items-center justify-between shadow-sm cursor-pointer hover:border-surface-bright transition-colors min-h-[44px]"
           >
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0 text-white">
@@ -100,15 +108,15 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-xs font-bold text-white truncate">
-                  Empfehlung teilen
+                  Filmtipp senden
                 </span>
                 <span className="text-[11px] text-tertiary truncate">
-                  Sende einen Filmtipp an deine Freunde
+                  Sende einen Filmtipp direkt an deine Freunde
                 </span>
               </div>
             </div>
-            <span className="material-symbols-outlined text-tertiary text-[18px]">
-              chevron_right
+            <span className="px-2.5 py-1 rounded-lg bg-surface-container text-white text-[11px] font-semibold shrink-0">
+              Tipp senden
             </span>
           </div>
 
@@ -117,11 +125,11 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
             <div className="flex items-center justify-between gap-2">
               <div
                 onClick={() => onOpenUserProfile("dario-m")}
-                className="flex items-center gap-2 min-w-0 cursor-pointer group"
+                className="flex items-center gap-2 min-w-0 cursor-pointer group min-h-[44px]"
               >
                 <img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX-DATfZHnME16uKVt6ohsEU31ezgDSVxOcOEmRXW0MlDDTT2yHeNNw_iZK7kEDnW09Q7oa6WzgdiapNlqNsVykTW7r23d0F_JC8CScXmxfWQ680JXQ91eGZl_rJA7nIABj6n_5apEseObUZ9oGXAqK-WVFms2wF-wBFlkuBe4OnxySo0ycSaCOXDlBF_gEBIMUr0IquTRM3BGJo9yvl-D1JCvzlXbJ9q5ccaUZrPrX0wRwgB9WkCK"
-                  alt="Dario Profilbild"
+                  alt="Profilbild von Dario"
                   className="w-9 h-9 rounded-full object-cover shrink-0 ring-1 ring-secondary/50"
                 />
                 <div className="flex flex-col min-w-0">
@@ -142,7 +150,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
             <div className="flex items-center gap-3 pt-1">
               <img
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcxi1K6Kj4ffG8g4_xb9SvzHFgmDyYSTgebhEIPgRUGOpg6C5p1He4eocAitUCWjZAPleZEQf1wmKAkzl1vkqAUJ-9uCXewTVGSKunEPxBNpluQwt1tK4ASE9n-hfiNKXGRsboY3FDWxYPacQM4FeF8SKtkK-qNmudLh9w79H41DpNhhmzFJznh9SP_XAVGgKQZNe8hmxtKUbrqxemSeMbkhf9dFzzSs-6MLjYYyXSCu-bmfio8yG3"
-                alt="Arcane Poster"
+                alt="Poster von Arcane: Staffel 2"
                 className="w-14 h-18 rounded-lg object-cover shrink-0 shadow-md cursor-pointer"
                 onClick={() => onOpenMovieDetails("arcane-s2")}
               />
@@ -170,6 +178,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                 size="sm"
                 radius="md"
                 onClick={() => onOpenMovieDetails("arcane-s2")}
+                className="min-h-[44px] px-3.5 font-semibold"
                 leftIcon={
                   <span className="material-symbols-outlined text-[16px] text-secondary icon-filled">
                     play_arrow
@@ -193,11 +202,11 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                 <div className="flex items-center justify-between">
                   <div
                     onClick={() => onOpenUserProfile(rev.userId)}
-                    className="flex items-center gap-2.5 min-w-0 cursor-pointer group"
+                    className="flex items-center gap-2.5 min-w-0 cursor-pointer group min-h-[44px]"
                   >
                     <img
                       src={rev.userAvatar}
-                      alt={rev.userName}
+                      alt={`Profilbild von ${rev.userName}`}
                       className="w-10 h-10 rounded-full object-cover shrink-0 ring-1 ring-surface-bright"
                     />
                     <div className="flex flex-col min-w-0">
@@ -206,7 +215,11 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                           {rev.userName} {rev.userAge ? `(${rev.userAge})` : ""}
                         </span>
                         {rev.isVerified && (
-                          <span className="material-symbols-outlined text-[15px] text-secondary icon-filled">
+                          <span
+                            className="material-symbols-outlined text-[15px] text-secondary icon-filled"
+                            title="Verifizierter Nutzer"
+                            aria-label="Verifiziert"
+                          >
                             verified
                           </span>
                         )}
@@ -225,11 +238,11 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                   </div>
 
                   <IconButton
-                    aria-label="Mehr Optionen"
+                    aria-label={`Mehr Optionen zu Review von ${rev.userName}`}
                     variant="ghost"
                     size="sm"
                     radius="full"
-                    className="text-tertiary hover:text-white"
+                    className="min-h-[44px] min-w-[44px] text-tertiary hover:text-white"
                   >
                     <span className="material-symbols-outlined text-[18px]">
                       more_horiz
@@ -240,11 +253,11 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                 {/* Embedded Movie Ribbon */}
                 <div
                   onClick={() => onOpenMovieDetails(rev.movieId)}
-                  className="flex items-center gap-2.5 p-2 bg-surface border border-surface-bright rounded-lg cursor-pointer hover:border-surface-300 transition-colors"
+                  className="flex items-center gap-2.5 p-2 bg-surface border border-surface-bright rounded-lg cursor-pointer hover:border-surface-300 transition-colors min-h-[44px]"
                 >
                   <img
                     src={rev.moviePoster}
-                    alt={rev.movieTitle}
+                    alt={`Poster von ${rev.movieTitle}`}
                     className="w-11 h-14 rounded object-cover shrink-0 shadow"
                   />
                   <div className="flex flex-col min-w-0 flex-1">
@@ -255,7 +268,10 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                       {rev.movieInfo}
                     </span>
                   </div>
-                  <div className="flex items-center gap-0.5 text-secondary pr-1">
+                  <div
+                    className="flex items-center gap-0.5 text-secondary pr-1"
+                    aria-label={`Bewertung: ${rev.rating} von 5`}
+                  >
                     {[1, 2, 3, 4, 5].map((s) => (
                       <span
                         key={s}
@@ -291,7 +307,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                           visibility
                         </span>
                       }
-                      className="absolute inset-0 bg-black/60 backdrop-blur-xs text-secondary hover:text-secondary hover:bg-black/70 font-bold"
+                      className="absolute inset-0 min-h-[44px] bg-black/60 backdrop-blur-xs text-secondary hover:text-secondary hover:bg-black/70 font-bold"
                     >
                       Spoiler anzeigen
                     </Button>
@@ -306,6 +322,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                       size="sm"
                       radius="full"
                       onClick={() => onToggleLike(rev.id)}
+                      aria-label={`${rev.likes} Gefällt mir Angaben`}
                       leftIcon={
                         <span
                           className={`material-symbols-outlined text-[18px] ${
@@ -317,7 +334,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                           favorite
                         </span>
                       }
-                      className="px-2.5 h-7 text-xs text-tertiary hover:text-primary-container"
+                      className="px-3 min-h-[44px] min-w-[44px] text-xs text-tertiary hover:text-primary-container"
                     >
                       <span className="font-bold text-white">{rev.likes}</span>
                     </Button>
@@ -326,12 +343,13 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                       variant="ghost"
                       size="sm"
                       radius="full"
+                      aria-label={`${rev.commentsCount} Kommentare`}
                       leftIcon={
                         <span className="material-symbols-outlined text-[18px]">
                           chat_bubble
                         </span>
                       }
-                      className="px-2.5 h-7 text-xs text-tertiary hover:text-white"
+                      className="px-3 min-h-[44px] min-w-[44px] text-xs text-tertiary hover:text-white"
                     >
                       <span className="font-bold text-white">
                         {rev.commentsCount}
@@ -344,6 +362,11 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                     size="sm"
                     radius="md"
                     onClick={() => onToggleWatchlist(rev.movieTitle)}
+                    aria-label={
+                      rev.savedToWatchlist
+                        ? `Aus Watchlist entfernen: ${rev.movieTitle}`
+                        : `Auf Watchlist speichern: ${rev.movieTitle}`
+                    }
                     leftIcon={
                       <span className="material-symbols-outlined text-[15px]">
                         {rev.savedToWatchlist
@@ -351,7 +374,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
                           : "bookmark_add"}
                       </span>
                     }
-                    className="h-8 text-xs font-semibold"
+                    className="min-h-[44px] px-3.5 text-xs font-semibold"
                   >
                     Watchlist
                   </Button>
@@ -376,16 +399,20 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
             <div
               key={chat.id}
               onClick={() => onOpenChat(chat)}
-              className="bg-surface-100 border border-surface-300 hover:border-surface-bright p-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all active:scale-[0.99] shadow-sm"
+              className="bg-surface-100 border border-surface-300 hover:border-surface-bright p-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all active:scale-[0.99] shadow-sm min-h-[44px]"
             >
               <div className="relative shrink-0">
                 <img
                   src={chat.participantAvatar}
-                  alt={chat.participantName}
+                  alt={`Profilbild von ${chat.participantName}`}
                   className="w-12 h-12 rounded-full object-cover ring-1 ring-surface-bright"
                 />
                 {chat.isOnline && (
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full ring-2 ring-surface-100"></span>
+                  <span
+                    className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 rounded-full ring-2 ring-surface-100"
+                    title="Online"
+                    aria-label="Online Status"
+                  ></span>
                 )}
               </div>
 
@@ -420,7 +447,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
         </div>
       )}
 
-      {/* Floating Action Button */}
+      {/* Action Button */}
       <div className="sticky bottom-4 self-end mr-4 z-30 mt-2">
         <Button
           variant="primary"
@@ -430,7 +457,7 @@ export const CommunityFeed: React.FC<CommunityFeedProps> = ({
           leftIcon={
             <span className="material-symbols-outlined text-[18px]">edit</span>
           }
-          className="shadow-xl shadow-primary-container/40 font-bold"
+          className="shadow-xl shadow-primary-container/40 font-bold min-h-[44px] px-4"
         >
           Review verfassen
         </Button>

@@ -66,14 +66,19 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
       }`}
     >
       {/* Poster Art with Cinematic Gradient Scrim */}
+      <img
+        src={movie.posterUrl}
+        alt={`Poster von ${movie.title}`}
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+      />
       <div
-        className="absolute inset-0 bg-cover bg-center pointer-events-none"
-        style={{ backgroundImage: `url(${movie.posterUrl})` }}
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-surface via-surface/85 via-50% to-transparent pointer-events-none"
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/85 via-50% to-transparent pointer-events-none"></div>
 
       {/* Gesture Feedback Stamps */}
       <div
+        aria-hidden="true"
         style={{ opacity: matchOpacity }}
         className="absolute top-4 right-4 px-3 py-1 bg-primary-container text-white rounded-xl font-bold text-sm rotate-12 pointer-events-none transition-opacity shadow-lg flex items-center gap-1.5 border-2 border-white/50 z-20"
       >
@@ -84,6 +89,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
       </div>
 
       <div
+        aria-hidden="true"
         style={{ opacity: passOpacity }}
         className="absolute top-4 left-4 px-3 py-1 bg-surface-container-high text-on-surface rounded-xl font-bold text-sm -rotate-12 pointer-events-none transition-opacity shadow-lg flex items-center gap-1.5 border-2 border-surface-bright z-20"
       >
@@ -92,9 +98,9 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
       </div>
 
       {/* Card Content Dock */}
-      <div className="relative z-10 p-3.5 flex flex-col gap-1.5">
+      <div className="relative z-10 p-4 flex flex-col gap-2">
         {/* Badges Row */}
-        <div className="flex items-center flex-wrap gap-1.5">
+        <div className="flex items-center flex-wrap gap-2">
           {movie.providers.map((p) => {
             const dotColor =
               p.id === "netflix"
@@ -114,7 +120,10 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
             <Pill
               variant="audio"
               icon={
-                <span className="material-symbols-outlined text-[12px]">
+                <span
+                  className="material-symbols-outlined text-[13px]"
+                  aria-hidden="true"
+                >
                   record_voice_over
                 </span>
               }
@@ -130,18 +139,24 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         {/* Title & Rating */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col min-w-0">
-            <h2 className="text-lg font-extrabold text-white tracking-tight truncate leading-tight">
+            <h2 className="text-xl font-extrabold text-white tracking-tight line-clamp-2 leading-tight">
               {movie.title}
             </h2>
-            <span className="text-[10px] text-tertiary mt-0.5 truncate">
+            <span className="text-[11px] text-[#d6d4d3] mt-0.5 truncate">
               {movie.type === "series" ? "Serie" : "Film"} • {movie.year} •{" "}
               {movie.duration || `${movie.episodes} Episoden`} •{" "}
               {movie.genres.slice(0, 2).join(" / ")}
             </span>
           </div>
 
-          <div className="flex items-center gap-1 bg-surface-container border border-surface-300 px-2 py-0.5 rounded-full shrink-0 shadow-sm">
-            <span className="material-symbols-outlined text-[14px] text-secondary icon-filled">
+          <div
+            aria-label={`Bewertung: ${movie.rating} von 10 Sternen`}
+            className="flex items-center gap-1 bg-surface-container border border-surface-300 px-2.5 py-1 rounded-full shrink-0 shadow-sm"
+          >
+            <span
+              className="material-symbols-outlined text-[15px] text-secondary icon-filled"
+              aria-hidden="true"
+            >
               star
             </span>
             <span className="text-xs text-secondary font-bold">
@@ -151,7 +166,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         </div>
 
         {/* Teaser Description */}
-        <p className="text-[11px] text-[#d4d4d4] line-clamp-2 leading-relaxed">
+        <p className="text-xs text-[#e5e2e1] line-clamp-2 leading-relaxed">
           {movie.synopsis}
         </p>
 
@@ -160,16 +175,19 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
           <Button
             variant="ghost"
             size="sm"
-            onClick={(e: any) => {
+            onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
               onOpenDetails(movie);
             }}
             rightIcon={
-              <span className="material-symbols-outlined text-[14px] transform group-hover:translate-x-1 transition-transform text-secondary">
+              <span
+                className="material-symbols-outlined text-[15px] transform group-hover:translate-x-1 transition-transform text-secondary"
+                aria-hidden="true"
+              >
                 arrow_forward
               </span>
             }
-            className="p-0 h-auto text-[11px] font-bold text-white hover:text-primary-container hover:bg-transparent group"
+            className="px-2 py-2 min-h-[44px] text-xs font-bold text-white hover:text-primary-container hover:bg-white/5 rounded-lg group"
           >
             Trailer & Details
           </Button>
@@ -179,16 +197,19 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
               variant="secondary"
               size="sm"
               radius="full"
-              onClick={(e: any) => {
+              onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 onOpenReview(movie);
               }}
               leftIcon={
-                <span className="material-symbols-outlined text-[13px] text-secondary">
+                <span
+                  className="material-symbols-outlined text-[14px] text-secondary"
+                  aria-hidden="true"
+                >
                   star
                 </span>
               }
-              className="h-6.5 text-[10px] px-2.5 py-0 bg-surface-container-high border-surface-300 text-white hover:border-secondary/60 hover:bg-surface-container-highest font-semibold"
+              className="min-h-[44px] text-xs px-3.5 bg-surface-container-high border-surface-300 text-white hover:border-secondary/60 hover:bg-surface-container-highest font-bold"
             >
               Bewerten
             </Button>

@@ -110,7 +110,8 @@ export const TitleDetailModal: React.FC<TitleDetailModalProps> = ({
               <button
                 type="button"
                 onClick={() => setIsPlayingTrailer(false)}
-                className="absolute top-2 right-2 bg-black/80 px-2 py-1 rounded text-white text-[11px] font-bold z-10"
+                className="absolute top-2 right-2 bg-black/80 min-h-[44px] min-w-[44px] px-3 py-1.5 rounded-lg text-white text-xs font-bold z-10 cursor-pointer flex items-center justify-center hover:bg-black"
+                aria-label="Trailer schließen"
               >
                 Schließen ✕
               </button>
@@ -265,19 +266,22 @@ export const TitleDetailModal: React.FC<TitleDetailModalProps> = ({
                     </div>
                   </div>
 
-                  <a
-                    href="#watch"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert(`Öffne ${movie.title} auf ${p.name}...`);
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Handled cleanly without window.alert
                     }}
-                    className="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-white font-semibold text-xs transition-colors flex items-center gap-1"
+                    className="px-3.5 py-2.5 min-h-[44px] rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-white font-bold text-xs transition-colors flex items-center gap-1.5 border border-surface-300 cursor-pointer active:scale-95"
+                    aria-label={`Auf ${p.name} ansehen`}
                   >
-                    <span>Streamen</span>
-                    <span className="material-symbols-outlined text-[14px]">
+                    <span>Auf {p.name} ansehen</span>
+                    <span
+                      className="material-symbols-outlined text-[16px] text-secondary"
+                      aria-hidden="true"
+                    >
                       open_in_new
                     </span>
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>

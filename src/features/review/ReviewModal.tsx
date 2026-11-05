@@ -83,20 +83,26 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           <div className="relative w-16 h-22 rounded-lg overflow-hidden shrink-0 shadow-sm bg-surface-container-highest">
             <img
               src={movie.posterUrl}
-              alt={movie.title}
+              alt={`Poster von ${movie.title}`}
               className="w-full h-full object-cover"
             />
           </div>
           <div className="flex flex-col min-w-0 justify-center flex-1">
-            <span className="text-xs font-bold text-white truncate">
+            <span className="text-sm font-bold text-white line-clamp-2">
               {movie.title}
             </span>
-            <div className="flex items-center gap-1.5 mt-1 text-[11px] text-tertiary">
+            <div className="flex items-center gap-1.5 mt-1 text-[11px] text-[#d6d4d3]">
               <span>{movie.year}</span>
               <span>•</span>
               <span>{movie.genres.join(", ")}</span>
             </div>
-            <span className="text-[10px] text-secondary font-semibold bg-secondary-container/15 px-2 py-0.5 rounded-full mt-2 w-fit">
+            <span className="text-[11px] text-secondary font-bold bg-secondary-container/20 border border-secondary/30 px-2.5 py-0.5 rounded-full mt-2 w-fit flex items-center gap-1">
+              <span
+                className="material-symbols-outlined text-[13px] icon-filled"
+                aria-hidden="true"
+              >
+                bolt
+              </span>
               +20 XP für Review
             </span>
           </div>
@@ -121,15 +127,15 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Was hat dir am besten gefallen? (max. 100 Zeichen)"
-              className="w-full bg-transparent text-white placeholder:text-tertiary text-xs resize-none outline-none leading-relaxed"
+              className="w-full bg-transparent text-white placeholder:text-[#d6d4d3] text-xs resize-none outline-none leading-relaxed"
             />
             <div className="flex justify-between items-center pt-2 mt-1 border-t border-surface-300">
-              <span className="text-[10px] text-tertiary">
+              <span className="text-[11px] text-[#d6d4d3]">
                 Maximal 100 Zeichen
               </span>
               <span
-                className={`text-[10px] font-mono font-bold ${
-                  isNearLimit ? "text-primary-container" : "text-tertiary"
+                className={`text-[11px] font-mono font-bold ${
+                  isNearLimit ? "text-primary-container" : "text-[#d6d4d3]"
                 }`}
               >
                 {charCount} / 100 Zeichen
@@ -138,21 +144,38 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           </div>
         </div>
 
-        {/* 3. Submit Button */}
-        <Button
-          variant="primary"
-          size="lg"
-          radius="md"
-          fullWidth
-          onClick={handleSubmit}
-          isLoading={isSubmitting}
-          leftIcon={
-            <span className="material-symbols-outlined text-[18px]">send</span>
-          }
-          className="mt-2 font-bold shadow-lg shadow-primary-container/30"
-        >
-          Review veröffentlichen (+20 XP)
-        </Button>
+        {/* 3. XP Gamification Visual & Primary CTA */}
+        <div className="flex flex-col gap-2 mt-2">
+          <div className="flex items-center justify-center gap-1.5 px-3 py-1 rounded-lg bg-surface-container-high border border-surface-300 w-fit mx-auto">
+            <span
+              className="material-symbols-outlined text-secondary text-[16px] icon-filled"
+              aria-hidden="true"
+            >
+              stars
+            </span>
+            <span className="text-xs font-bold text-secondary">
+              +20 XP Belohnung nach Veröffentlichung
+            </span>
+          </div>
+
+          <Button
+            type="button"
+            variant="primary"
+            size="lg"
+            radius="md"
+            fullWidth
+            onClick={handleSubmit}
+            isLoading={isSubmitting}
+            leftIcon={
+              <span className="material-symbols-outlined text-[18px]">
+                send
+              </span>
+            }
+            className="font-bold shadow-lg shadow-primary-container/30 min-h-[48px]"
+          >
+            Bewertung veröffentlichen
+          </Button>
+        </div>
       </div>
     </div>
   );

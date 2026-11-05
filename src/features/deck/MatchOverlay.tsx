@@ -16,32 +16,41 @@ export const MatchOverlay: React.FC<MatchOverlayProps> = ({
   onDismiss,
 }) => {
   return (
-    <div className="absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="match-dialog-title"
+      className="absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+    >
       <div className="bg-surface-100 border border-surface-300 rounded-2xl p-5 max-w-xs w-full text-center flex flex-col items-center gap-3 shadow-2xl relative overflow-hidden">
         <button
+          type="button"
           onClick={onDismiss}
           aria-label="Schließen"
-          className="absolute top-3 right-3 text-tertiary hover:text-white p-1 cursor-pointer"
+          className="absolute top-1 right-1 min-w-[44px] min-h-[44px] flex items-center justify-center text-[#d6d4d3] hover:text-white cursor-pointer"
         >
-          <span className="material-symbols-outlined text-[18px]">close</span>
+          <span className="material-symbols-outlined text-[20px]">close</span>
         </button>
 
         <div className="relative my-1">
           <img
             src="/watchmatch-icon.svg"
-            alt="WatchMatch"
+            alt="WatchMatch Logo Icon"
             className="w-14 h-14 relative z-10 animate-bounce"
           />
         </div>
 
         <div>
           <span className="text-xs uppercase font-extrabold text-secondary tracking-widest block">
-            It's a Match!
+            IT'S A MATCH!
           </span>
-          <h3 className="text-lg font-bold text-white mt-1">
+          <h3
+            id="match-dialog-title"
+            className="text-lg font-bold text-white mt-1"
+          >
             Du & {friendName}
           </h3>
-          <p className="text-xs text-tertiary mt-1">
+          <p className="text-xs text-[#d6d4d3] mt-1">
             Ihr beide wollt{" "}
             <strong className="text-white">{movie.title}</strong> sehen!
           </p>

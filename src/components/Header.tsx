@@ -251,23 +251,20 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
 
                 {/* Quick Actions List */}
-                <div className="mt-2.5 pt-2 border-t border-surface-container-high flex flex-col gap-1">
+                <div className="mt-2.5 pt-2 border-t border-surface-container-high flex flex-col gap-1.5">
                   <button
                     type="button"
                     onClick={() => {
                       onOpenSettings();
                       setShowProfileMenu(false);
                     }}
-                    className="w-full h-8 px-2.5 rounded-lg flex items-center justify-between text-left text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
+                    className="w-full min-h-[44px] px-3 rounded-lg flex items-center justify-between text-left text-xs font-bold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
                   >
-                    <span className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[16px] text-secondary">
+                    <span className="flex items-center gap-2.5">
+                      <span className="material-symbols-outlined text-[18px] text-secondary">
                         tune
                       </span>
                       <span>Streaming-Abos & Filter</span>
-                    </span>
-                    <span className="material-symbols-outlined text-[16px] text-tertiary">
-                      chevron_right
                     </span>
                   </button>
 
@@ -278,16 +275,13 @@ export const Header: React.FC<HeaderProps> = ({
                         onOpenRecommendation();
                         setShowProfileMenu(false);
                       }}
-                      className="w-full h-8 px-2.5 rounded-lg flex items-center justify-between text-left text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
+                      className="w-full min-h-[44px] px-3 rounded-lg flex items-center justify-between text-left text-xs font-bold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
                     >
-                      <span className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[16px] text-primary-container">
+                      <span className="flex items-center gap-2.5">
+                        <span className="material-symbols-outlined text-[18px] text-primary-container">
                           send
                         </span>
-                        <span>Filmtipp an Freunde</span>
-                      </span>
-                      <span className="material-symbols-outlined text-[16px] text-tertiary">
-                        chevron_right
+                        <span>Filmtipp senden</span>
                       </span>
                     </button>
                   )}
@@ -299,16 +293,13 @@ export const Header: React.FC<HeaderProps> = ({
                         onEditProfile();
                         setShowProfileMenu(false);
                       }}
-                      className="w-full h-8 px-2.5 rounded-lg flex items-center justify-between text-left text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
+                      className="w-full min-h-[44px] px-3 rounded-lg flex items-center justify-between text-left text-xs font-bold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
                     >
-                      <span className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[16px] text-tertiary">
+                      <span className="flex items-center gap-2.5">
+                        <span className="material-symbols-outlined text-[18px] text-[#d6d4d3]">
                           edit
                         </span>
                         <span>Profil bearbeiten</span>
-                      </span>
-                      <span className="material-symbols-outlined text-[16px] text-tertiary">
-                        chevron_right
                       </span>
                     </button>
                   )}

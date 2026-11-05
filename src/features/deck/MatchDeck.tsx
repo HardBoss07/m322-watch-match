@@ -1,10 +1,12 @@
 import React from "react";
 import { Movie, FilterSettings } from "../../types";
-import { Button, IconButton, ButtonIcon } from "../../components/ui/button";
+import { Button } from "../../components/ui/button";
 import { useMatchDeck } from "./useMatchDeck";
 import { useSwipeGesture } from "./useSwipeGesture";
 import { SwipeCard } from "./SwipeCard";
 import { MatchOverlay } from "./MatchOverlay";
+import { DeckHeader } from "./DeckHeader";
+import { DeckControls } from "./DeckControls";
 
 interface MatchDeckProps {
   movies: Movie[];
@@ -67,94 +69,20 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
     idleTimeoutMs: 3500,
   });
 
-  const activeProvidersCount = Object.values(filters.providers).filter(
-    Boolean,
-  ).length;
-  const activeProvidersSummary =
-    activeProvidersCount > 0
-      ? Object.entries(filters.providers)
-          .filter(([, v]) => v)
-          .map(([k]) =>
-            k === "netflix"
-              ? "Netflix"
-              : k === "disney"
-                ? "Disney+"
-                : k === "prime"
-                  ? "Prime"
-                  : k === "crunchyroll"
-                    ? "Crunchyroll"
-                    : k,
-          )
-          .slice(0, 2)
-          .join(", ") +
-        (activeProvidersCount > 2 ? ` +${activeProvidersCount - 2}` : "")
-      : "Keine Abos gewählt";
-
   return (
     <div
       onMouseMove={resetIdleTimer}
       onTouchStart={resetIdleTimer}
       className="flex flex-col w-full h-full justify-between relative px-3 sm:px-4 gap-2 select-none pb-2 max-w-lg mx-auto flex-1 min-h-0"
     >
-      {/* Interactive Filters Header & Surprise Toggle */}
-      <div className="flex items-center justify-between gap-2 mt-1 shrink-0">
-        <Button
-          variant="secondary"
-          size="sm"
-          radius="full"
-          onClick={() => {
-            resetIdleTimer();
-            onOpenFilters();
-          }}
-          aria-label="Aktive Filter anpassen"
-          className="h-auto min-h-[38px] py-1 px-3 bg-surface-container hover:bg-surface-container-high border-surface-300 justify-between text-left shadow-none group font-normal flex-1 max-w-[260px]"
-        >
-          <div className="flex items-center gap-2 min-w-0">
-            <ButtonIcon position="left" size="sm">
-              <span className="material-symbols-outlined text-[17px] text-secondary">
-                tune
-              </span>
-            </ButtonIcon>
-            <div className="flex flex-col min-w-0 leading-tight">
-              <span className="text-[11px] font-semibold text-white truncate">
-                {activeProvidersSummary}
-              </span>
-              <span className="text-[10px] text-tertiary truncate">
-                {filters.audioLanguages && filters.audioLanguages.length > 0
-                  ? `Synchro: ${filters.audioLanguages.join(", ")}`
-                  : filters.onlyDeAudio
-                    ? "Audio: Deutsch"
-                    : "Audio: Alle"}
-              </span>
-            </div>
-          </div>
-        </Button>
-
-        {/* Surprise Mode Toggle */}
-        <div className="flex items-center gap-1.5 bg-surface-container border border-surface-300 px-2.5 py-1.5 rounded-full shrink-0">
-          <span className="material-symbols-outlined text-[17px] text-primary-container">
-            shuffle
-          </span>
-          <span className="text-[11px] font-semibold text-white hidden xs:inline">
-            Zufall
-          </span>
-          <button
-            role="switch"
-            aria-checked={surpriseMode}
-            onClick={() => {
-              resetIdleTimer();
-              toggleSurpriseMode();
-            }}
-            className={`w-8 h-4.5 rounded-full p-0.5 transition-colors cursor-pointer flex items-center ${
-              surpriseMode
-                ? "bg-primary-container justify-end"
-                : "bg-surface-container-highest justify-start"
-            }`}
-          >
-            <span className="w-3.5 h-3.5 rounded-full bg-white shadow-sm block transition-transform"></span>
-          </button>
-        </div>
-      </div>
+      {/* Decoupled Interactive Filters Header & Surprise Toggle */}
+      <DeckHeader
+        filters={filters}
+        surpriseMode={surpriseMode}
+        onOpenFilters={onOpenFilters}
+        onToggleSurprise={toggleSurpriseMode}
+        onInteractionReset={resetIdleTimer}
+      />
 
       {/* Non-intrusive Wrap Notification Banner */}
       {wrapNotice && (
@@ -245,71 +173,16 @@ export const MatchDeck: React.FC<MatchDeckProps> = ({
       </div>
 
       {/* Floating Cinematic Controls Dock */}
-      <div className="flex items-center justify-center gap-3 py-1 shrink-0">
-        <IconButton
-          onClick={() => {
-            resetIdleTimer();
-            triggerPass();
-          }}
-          onMouseEnter={resetIdleTimer}
-          aria-label="Diesen Titel ablehnen"
-          variant="secondary"
-          size="lg"
-          radius="full"
-          className="w-12 h-12 min-w-[48px] min-h-[48px] border-surface-300 text-tertiary hover:text-white hover:bg-surface-container-high"
-        >
-          <span className="material-symbols-outlined text-[22px]">close</span>
-        </IconButton>
-
-        <IconButton
-          onClick={() => {
-            resetIdleTimer();
-            if (currentMovie) onOpenDetails(currentMovie);
-          }}
-          onMouseEnter={resetIdleTimer}
-          aria-label="Filmdetails anzeigen"
-          variant="secondary"
-          size="md"
-          radius="full"
-          className="w-10 h-10 min-w-[40px] min-h-[40px] border-surface-300 text-white hover:bg-surface-container-high"
-        >
-          <span className="material-symbols-outlined text-[18px]">info</span>
-        </IconButton>
-
-        <IconButton
-          onClick={() => {
-            resetIdleTimer();
-            triggerSuperlike();
-          }}
-          onMouseEnter={resetIdleTimer}
-          aria-label="Als Favorit markieren"
-          variant="secondary"
-          size="md"
-          radius="full"
-          className="w-10 h-10 min-w-[40px] min-h-[40px] border-surface-300 text-secondary hover:bg-surface-container-high"
-        >
-          <span className="material-symbols-outlined text-[18px] icon-filled">
-            star
-          </span>
-        </IconButton>
-
-        <IconButton
-          onClick={() => {
-            resetIdleTimer();
-            triggerLike();
-          }}
-          onMouseEnter={resetIdleTimer}
-          aria-label="Gefällt mir und zur Watchlist hinzufügen"
-          variant="primary"
-          size="xl"
-          radius="full"
-          className="w-14 h-14 min-w-[56px] min-h-[56px] shadow-lg shadow-black/50"
-        >
-          <span className="material-symbols-outlined text-[26px] icon-filled">
-            favorite
-          </span>
-        </IconButton>
-      </div>
+      <DeckControls
+        onPass={triggerPass}
+        onFriendsInfo={() => {
+          if (currentMovie) onOpenDetails(currentMovie);
+        }}
+        onSuperlike={triggerSuperlike}
+        onLike={triggerLike}
+        friendsCount={3}
+        onInteractionReset={resetIdleTimer}
+      />
 
       {/* Friend Match Celebration Modal */}
       {matchNotification && (

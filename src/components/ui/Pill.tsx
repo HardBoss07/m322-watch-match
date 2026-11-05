@@ -24,15 +24,15 @@ export const Pill: React.FC<PillProps> = ({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 h-6 px-2.5 py-0 rounded-full text-[11px] font-medium leading-none whitespace-nowrap select-none shrink-0 border border-surface-300 bg-surface-container/90 text-white shadow-none transition-colors",
+        "inline-flex items-center gap-1.5 min-h-[26px] px-2.5 py-0.5 rounded-full text-[11px] font-semibold leading-none whitespace-nowrap select-none shrink-0 border border-surface-300 bg-surface-container/90 text-white shadow-none transition-colors",
         variant === "accent" &&
-          "border-secondary/40 text-secondary bg-surface-container",
+          "border-secondary/50 text-secondary bg-surface-container",
         variant === "audio" &&
           "border-surface-300 text-secondary bg-surface-container",
         variant === "quality" &&
-          "border-surface-300 text-tertiary bg-surface-container",
+          "border-surface-300 text-[#d6d4d3] bg-surface-container",
         variant === "neutral" &&
-          "border-surface-container-high text-tertiary bg-surface-container-low",
+          "border-surface-container-high text-[#d6d4d3] bg-surface-container-low",
         className,
       )}
       {...props}

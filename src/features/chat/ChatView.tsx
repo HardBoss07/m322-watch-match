@@ -105,11 +105,17 @@ export const ChatView: React.FC<ChatViewProps> = ({
       {/* Messages Feed */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 max-w-lg mx-auto w-full pb-20">
         {/* Match Introduction Box */}
-        <div className="p-3 rounded-xl bg-surface-100 border border-surface-300 text-center flex flex-col items-center gap-1 shadow-sm">
-          <span className="text-xs font-bold text-secondary">
-            88% Geschmack-Match mit {chat.participantName}
+        <div className="p-3.5 rounded-xl bg-surface-100 border border-surface-300 text-center flex flex-col items-center gap-1 shadow-sm">
+          <span className="text-xs font-bold text-secondary flex items-center gap-1">
+            <span
+              className="material-symbols-outlined text-[16px] icon-filled"
+              aria-hidden="true"
+            >
+              bolt
+            </span>
+            88% Filmgeschmack-Match mit {chat.participantName}
           </span>
-          <p className="text-[11px] text-tertiary">
+          <p className="text-[11px] text-[#d6d4d3]">
             Ihr beide teilt Vorlieben für Sci-Fi, Anime und Psychothriller auf
             Netflix & Prime Video.
           </p>
@@ -131,13 +137,15 @@ export const ChatView: React.FC<ChatViewProps> = ({
 
               {/* Embedded Film Tip Card */}
               {msg.filmTip && (
-                <div
+                <button
+                  type="button"
                   onClick={() => onOpenMovieDetails(msg.filmTip!.movieId)}
-                  className="mt-2 p-2 bg-surface border border-surface-300 rounded-xl flex items-center gap-2.5 cursor-pointer hover:border-secondary transition-colors"
+                  aria-label={`Filmdetails öffnen: ${msg.filmTip.title}`}
+                  className="mt-2 p-2 bg-surface border border-surface-300 rounded-xl flex items-center gap-2.5 cursor-pointer hover:border-secondary transition-colors text-left w-full min-h-[44px]"
                 >
                   <img
                     src={msg.filmTip.poster}
-                    alt={msg.filmTip.title}
+                    alt={`Poster von ${msg.filmTip.title}`}
                     className="w-12 h-16 rounded object-cover shrink-0 shadow"
                   />
                   <div className="flex flex-col min-w-0 flex-1">
@@ -147,25 +155,25 @@ export const ChatView: React.FC<ChatViewProps> = ({
                     <span className="text-xs font-bold text-white truncate">
                       {msg.filmTip.title}
                     </span>
-                    <span className="text-[10px] text-tertiary mt-0.5">
+                    <span className="text-[10px] text-[#d6d4d3] mt-0.5">
                       {msg.filmTip.provider}
                     </span>
                     <span className="text-[10px] text-secondary font-bold mt-1 flex items-center gap-0.5">
-                      <span className="material-symbols-outlined text-[12px] icon-filled">
+                      <span
+                        className="material-symbols-outlined text-[13px] icon-filled"
+                        aria-hidden="true"
+                      >
                         bolt
                       </span>
                       {msg.filmTip.matchScore}% Match
                     </span>
                   </div>
-                  <span className="material-symbols-outlined text-[18px] text-tertiary">
-                    chevron_right
-                  </span>
-                </div>
+                </button>
               )}
 
               <span
                 className={`block text-[9px] mt-1 text-right font-mono ${
-                  msg.isMe ? "text-white/70" : "text-tertiary"
+                  msg.isMe ? "text-white/80" : "text-[#d6d4d3]"
                 }`}
               >
                 {msg.timestamp}
@@ -187,29 +195,33 @@ export const ChatView: React.FC<ChatViewProps> = ({
             variant="secondary"
             size="md"
             radius="full"
-            className="text-secondary hover:bg-surface-300"
+            className="text-secondary hover:bg-surface-300 min-w-[44px] min-h-[44px]"
           >
             <span className="material-symbols-outlined text-[20px]">movie</span>
           </IconButton>
 
+          <label htmlFor="chat-text-input" className="sr-only">
+            Nachricht an {chat.participantName}
+          </label>
           <input
+            id="chat-text-input"
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder={`Nachricht an ${chat.participantName}...`}
-            className="flex-1 h-10 px-3 rounded-full bg-surface border border-surface-300 text-xs text-white placeholder:text-tertiary outline-none focus:border-primary-container"
+            className="flex-1 h-11 px-3.5 rounded-full bg-surface border border-surface-300 text-xs text-white placeholder:text-[#d6d4d3] outline-none focus:border-primary-container"
           />
 
           <IconButton
             type="submit"
             disabled={!inputText.trim()}
-            aria-label="Senden"
+            aria-label="Nachricht senden"
             variant={inputText.trim() ? "primary" : "secondary"}
             size="md"
             radius="full"
-            className={
-              inputText.trim() ? "shadow-md" : "text-tertiary opacity-60"
-            }
+            className={`min-w-[44px] min-h-[44px] ${
+              inputText.trim() ? "shadow-md" : "text-[#d6d4d3] opacity-60"
+            }`}
           >
             <span className="material-symbols-outlined text-[18px]">send</span>
           </IconButton>

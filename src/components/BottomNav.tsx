@@ -14,6 +14,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   activeTab,
   onTabChange,
   communityBadge = 3,
+  watchlistCount,
 }) => {
   const tabs = [
     { id: "match" as NavTab, label: "Match", icon: "local_fire_department" },
@@ -24,7 +25,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({
       icon: "forum",
       badge: communityBadge,
     },
-    { id: "watchlist" as NavTab, label: "Watchlist", icon: "bookmark" },
+    {
+      id: "watchlist" as NavTab,
+      label: "Watchlist",
+      icon: "bookmark",
+      badge: watchlistCount,
+    },
     { id: "profile" as NavTab, label: "Profil", icon: "person" },
   ];
 

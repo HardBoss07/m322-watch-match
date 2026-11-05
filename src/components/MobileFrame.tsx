@@ -162,9 +162,7 @@ export const MobileFrame: React.FC<MobileFrameProps> = ({
                 <option value="Streaming Filters">
                   ⚙️ Streaming-Abos & Filter
                 </option>
-                <option value="Send Recommendation">
-                  🎁 Filmtipp empfehlen
-                </option>
+                <option value="Send Recommendation">🎁 Filmtipp senden</option>
                 <option value="Onboarding & Login">
                   🔐 Onboarding & Setup
                 </option>

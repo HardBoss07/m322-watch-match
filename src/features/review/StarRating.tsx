@@ -15,12 +15,12 @@ export const StarRating: React.FC<StarRatingProps> = ({
   return (
     <div className="rounded-xl bg-surface-container border border-surface-300 p-3.5 flex flex-col items-center gap-2 shadow-md w-full">
       <div className="w-full flex items-center justify-between">
-        <span className="text-xs font-semibold text-tertiary">
+        <span className="text-xs font-semibold text-[#d6d4d3]">
           Deine Wertung (1-10 Sterne)
         </span>
         <div className="flex items-baseline gap-1">
           <span className="text-2xl font-black text-secondary">{rating}</span>
-          <span className="text-xs text-tertiary">/ 10</span>
+          <span className="text-xs text-[#d6d4d3]">/ {maxStars}</span>
         </div>
       </div>
 
@@ -28,6 +28,8 @@ export const StarRating: React.FC<StarRatingProps> = ({
       <div
         className="w-full flex items-center justify-between py-1"
         id="star-row"
+        role="group"
+        aria-label="Sternebewertung auswählen"
       >
         {Array.from({ length: maxStars }, (_, i) => i + 1).map((val) => {
           const isFilled = rating >= val;
@@ -36,15 +38,16 @@ export const StarRating: React.FC<StarRatingProps> = ({
               key={val}
               type="button"
               onClick={() => onChange(val)}
-              aria-label={`Wertung: ${val} von 10`}
-              className="w-7 h-9 flex items-center justify-center transition-transform active:scale-125 cursor-pointer text-secondary"
+              aria-label={`Wertung: ${val} von ${maxStars} Sternen`}
+              className="w-7 h-11 min-h-[44px] flex items-center justify-center transition-transform active:scale-125 cursor-pointer text-secondary"
             >
               <span
-                className={`material-symbols-outlined text-[22px] ${
+                className={`material-symbols-outlined text-[24px] ${
                   isFilled
                     ? "icon-filled text-secondary"
                     : "text-surface-container-highest"
                 }`}
+                aria-hidden="true"
               >
                 star
               </span>

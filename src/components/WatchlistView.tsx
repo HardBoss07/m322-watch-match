@@ -55,7 +55,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
           size="sm"
           radius="full"
           onClick={() => setFilterProvider("all")}
-          className="font-bold shrink-0"
+          className="font-bold shrink-0 min-h-[44px] px-3.5"
         >
           Alle Dienste
         </Button>
@@ -66,7 +66,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
             size="sm"
             radius="full"
             onClick={() => setFilterProvider(prov)}
-            className="font-bold shrink-0 capitalize"
+            className="font-bold shrink-0 capitalize min-h-[44px] px-3.5"
           >
             {prov === "prime" ? "Prime Video" : prov}
           </Button>
@@ -83,7 +83,7 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
             >
               <img
                 src={movie.posterUrl}
-                alt={movie.title}
+                alt={`Poster von ${movie.title}`}
                 onClick={() => onOpenMovieDetails(movie.id)}
                 className="w-16 h-22 rounded-lg object-cover shrink-0 cursor-pointer shadow"
               />
@@ -93,7 +93,8 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
                   <div className="flex items-start justify-between gap-1">
                     <h3
                       onClick={() => onOpenMovieDetails(movie.id)}
-                      className="text-xs font-bold text-white truncate cursor-pointer hover:text-primary-container transition-colors"
+                      className="text-xs font-bold text-white line-clamp-2 leading-tight break-words cursor-pointer hover:text-primary-container transition-colors"
+                      title={movie.title}
                     >
                       {movie.title}
                     </h3>
@@ -118,25 +119,25 @@ export const WatchlistView: React.FC<WatchlistViewProps> = ({
                   <div className="flex items-center gap-1.5">
                     <IconButton
                       onClick={() => onShareRecommendation(movie)}
-                      aria-label="Freund empfehlen"
+                      aria-label={`Filmtipp zu ${movie.title} senden`}
                       variant="secondary"
-                      size="xs"
+                      size="sm"
                       radius="md"
-                      className="text-tertiary hover:text-white"
+                      className="min-h-[44px] min-w-[44px] text-tertiary hover:text-white"
                     >
-                      <span className="material-symbols-outlined text-[15px]">
+                      <span className="material-symbols-outlined text-[18px]">
                         send
                       </span>
                     </IconButton>
                     <IconButton
                       onClick={() => onRemoveFromWatchlist(movie.id)}
-                      aria-label="Von Watchlist entfernen"
+                      aria-label={`${movie.title} von Watchlist entfernen`}
                       variant="secondary"
-                      size="xs"
+                      size="sm"
                       radius="md"
-                      className="text-tertiary hover:text-red-400"
+                      className="min-h-[44px] min-w-[44px] text-tertiary hover:text-red-400"
                     >
-                      <span className="material-symbols-outlined text-[15px]">
+                      <span className="material-symbols-outlined text-[18px]">
                         delete
                       </span>
                     </IconButton>

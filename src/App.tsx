@@ -457,13 +457,13 @@ function AppContent() {
         </main>
 
         {/* Global Quick Action Floating Action Button (FAB) */}
-        {!activeModal && (
+        {!activeModal && activeTab !== "community" && (
           <button
             type="button"
             onClick={() => setActiveModal("send-recommendation")}
-            aria-label="Filmtipp empfehlen"
+            aria-label="Filmtipp senden"
             className="absolute bottom-20 right-4 z-30 w-12 h-12 rounded-full bg-[#d80b69] hover:bg-[#ba095b] text-white shadow-xl shadow-[#d80b69]/40 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer group"
-            title="Filmtipp empfehlen"
+            title="Filmtipp senden"
           >
             <span className="material-symbols-outlined text-[24px] font-bold transition-transform duration-200 group-hover:rotate-90">
               add
